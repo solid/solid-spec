@@ -34,8 +34,9 @@ However, we have found that while LDP is usually sufficient, there are some case
 
 Our existing servers support the following HTTP methods for reading data:
 
-####HEAD
-Returns a list of headers related to the resource in question. Among these headers, two very important Link headers contain pointers to corresponding ACL and metadata resources:
+####The HEAD method
+Returns a list of headers related to the resource in question. Among these headers, two very important Link headers contain pointers to corresponding ACL and metadata resources. More information on naming conventions for these resources can be found [here](#wac).
+
 REQUEST:
 ```
 HEAD /data/ HTTP/1.1
@@ -49,7 +50,7 @@ Link: <https://example.org/data/.acl>; rel="acl"
 Link: <https://example.org/data/.meta>; rel="describedby"
 ```
 
-####OPTIONS
+#### The OPTIONS method
 Returns a list of headers describing the server's capabilities.
 
 REQUEST:

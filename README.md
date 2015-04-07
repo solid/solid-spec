@@ -79,6 +79,7 @@ To create a new **basic container** resource, the Link header value must be set 
 `Link: <http://www.w3.org/ns/ldp#BasicContainer>; rel="type"`
 
 For example, to create a basic container called **data** under http://example.org/, the client will need to send the following POST request, with the Content-Type header set to `text/turtle`:
+
 REQUEST:
 ```
 POST / HTTP/1.1
@@ -99,6 +100,7 @@ To create a new resource, the Link header value must be set to the following val
 `Link: <http://www.w3.org/ns/ldp#Resource>; rel="type"`
 
 For example, to create a resource called **test** under http://example.org/data/, the client will need to send the following POST request, with the Content-Type header set to `text/turtle`:
+
 REQUEST:
 ```
 POST / HTTP/1.1

@@ -69,16 +69,48 @@ Access-Control-Expose-Headers: User, Triples, Location, Link, Vary, Last-Modifie
 Allow: OPTIONS, HEAD, GET, PATCH, POST, PUT, MKCOL, DELETE, COPY, MOVE, LOCK, UNLOCK
 ```
 
-### Creating new resources (documents)
-When writing data using LDP, the client must indicate the type of the new resource that is going to be created. LDP uses Link headers with specific URI values, which can be dereferenced to obtain additional information about each type of resource.
+### Creating new resources
+When creating new resources (directories or documents) using LDP, the client must indicate the type of the new resource that is going to be created. LDP uses Link headers with specific URI values, which in turn can be dereferenced to obtain additional information about each type of resource. Currently, our LDP implementation supports only [Basic Containers](http://www.w3.org/TR/ldp/#ldpbc).
 
-LDP also offers a mechanism through which clients can provide a preferred name for the new resource
+LDP also offers a mechanism through which clients can provide a preferred name for the new resource through a header called **Slug**.
 
 ####Creating containers (directories)
 To create a new **basic container** resource, the Link header value must be set to the following value:
 `Link: <http://www.w3.org/ns/ldp#BasicContainer>; rel="type"`
 
+For example, to create a basic container called **data** under http://example.org/, the client will need to send the following POST request, with the Content-Type header set to `text/turtle`:
+REQUEST:
+```
+POST / HTTP/1.1
+Host: example.org
+Content-Type: text/turtle
+Slug: data
 
+<> <http://purl.org/dc/terms/title> "Basic container" .
+```
+RESPONSE:
+```
+HTTP/1.1 201 Created
+```
+
+#### Creating documents (files)
+To create a new resource, the Link header value must be set to the following value:
+`Link: <http://www.w3.org/ns/ldp#Resource>; rel="type"`
+
+For example, to create a resource called **test** under http://example.org/data/, the client will need to send the following POST request, with the Content-Type header set to `text/turtle`:
+REQUEST:
+```
+POST / HTTP/1.1
+Host: example.org
+Content-Type: text/turtle
+Slug: test
+
+<> a <http://www.w3.org/ns/ldp#Resource> .
+```
+RESPONSE:
+```
+HTTP/1.1 201 Created
+```
 
 ## Reading and writing data using SPARQL
 
@@ -114,7 +146,7 @@ RESPONSE:
       {
         "s" : { "type": "uri", "value": "http://example.org/data/" },
         "p" : { "type": "uri", "value": "http://purl.org/dc/terms/title" },
-        "o" : { "type": "literal", "value": "Data container" }
+        "o" : { "type": "literal", "value": "Basic container" }
       }
     ]
   }
@@ -129,8 +161,8 @@ REQUEST:
 PATCH /data/resource HTTP/1.1
 Host: example.org
 
-DELETE DATA { <> <http://purl.org/dc/terms/title> "Data container" };
-INSERT DATA { <> <http://purl.org/dc/terms/title> "Generic data container" }
+DELETE DATA { <> <http://purl.org/dc/terms/title> "Basic container" };
+INSERT DATA { <> <http://purl.org/dc/terms/title> "My data container" }
 ```
 
 **IMPORTANT:** There is currently no support for blank nodes and RDF lists for the SPARQL statements.

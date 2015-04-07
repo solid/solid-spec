@@ -34,7 +34,7 @@ However, we have found that while LDP is usually sufficient, there are some case
 
 Our existing servers support the following HTTP methods for reading data:
 
-**HEAD**
+####HEAD
 Returns a list of headers related to the resource in question. Among these headers, two very important Link headers contain pointers to corresponding ACL and metadata resources:
 REQUEST:
 ```
@@ -49,7 +49,7 @@ Link: <https://example.org/data/.acl>; rel="acl"
 Link: <https://example.org/data/.meta>; rel="describedby"
 ```
 
-**OPTIONS**
+####OPTIONS
 Returns a list of headers describing the server's capabilities.
 
 REQUEST:
@@ -69,7 +69,16 @@ Access-Control-Expose-Headers: User, Triples, Location, Link, Vary, Last-Modifie
 Allow: OPTIONS, HEAD, GET, PATCH, POST, PUT, MKCOL, DELETE, COPY, MOVE, LOCK, UNLOCK
 ```
 
-### Writing data using LDP
+### Creating new resources (documents)
+When writing data using LDP, the client must indicate the type of the new resource that is going to be created. LDP uses Link headers with specific URI values, which can be dereferenced to obtain additional information about each type of resource.
+
+LDP also offers a mechanism through which clients can provide a preferred name for the new resource
+
+####Creating containers (directories)
+To create a new **basic container** resource, the Link header value must be set to the following value:
+`Link: <http://www.w3.org/ns/ldp#BasicContainer>; rel="type"`
+
+
 
 ## Reading and writing data using SPARQL
 
@@ -77,7 +86,7 @@ Another possible way of reading and writing data is to use SPARQL. Currently, ou
 
 ### Reading data using SPARQL
 
-To read (query) a resource, the client can send a SPARQL SELECT query through a GET request. The server will use the given resource as the default graph that is being queried. The response will be serialized using `application/json` mime type.
+To read (query) a resource, the client can send a SPARQL SELECT query through an HTTP GET request. The server will use the given resource as the default graph that is being queried. The response will be serialized using `application/json` mime type.
 
 For instance, the client can send the following form-encoded query:
 
@@ -113,7 +122,7 @@ RESPONSE:
 ```
 
 ### Writing/deleting data using SPARQL
-To write data, clients can send a PATCH request with a SPARQL payload to the resource in question. For instance, to update the *title* of the container from the previous example, the client would have to send a DELETE statement, followed by an INSERT statement.
+To write data, clients can send an HTTP PATCH request with a SPARQL payload to the resource in question. For instance, to update the *title* of the container from the previous example, the client would have to send a DELETE statement, followed by an INSERT statement.
 
 REQUEST:
 ```

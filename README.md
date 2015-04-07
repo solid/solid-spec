@@ -74,7 +74,7 @@ When creating new resources (directories or documents) using LDP, the client mus
 
 LDP also offers a mechanism through which clients can provide a preferred name for the new resource through a header called **Slug**.
 
-####Creating containers (directories)
+#### Creating containers (directories)
 To create a new **basic container** resource, the Link header value must be set to the following value:
 `Link: <http://www.w3.org/ns/ldp#BasicContainer>; rel="type"`
 
@@ -86,7 +86,8 @@ Host: example.org
 Content-Type: text/turtle
 Slug: data
 
-<> <http://purl.org/dc/terms/title> "Basic container" .
+<> a <http://www.w3.org/ns/ldp#BasicContainer> ;
+   <http://purl.org/dc/terms/title> "Basic container" .
 ```
 RESPONSE:
 ```
@@ -105,7 +106,8 @@ Host: example.org
 Content-Type: text/turtle
 Slug: test
 
-<> a <http://www.w3.org/ns/ldp#Resource> .
+<> a <http://www.w3.org/ns/ldp#Resource> ;
+   <http://purl.org/dc/terms/title> "This is a test file" .
 ```
 RESPONSE:
 ```

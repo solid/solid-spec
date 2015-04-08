@@ -235,6 +235,8 @@ Upon account creation, a series of dedicated LDP containers (i.e. workspaces) ar
  * Friends
  * Preferences
 
+You can consider workspaces to be dedicated containers, which store application-specific data. For example, one of the reasons we decided to use this concept of workspaces is that complicated ACL logic can be set per workspace, and then all data inside the workspace will inherit the same policies.
+
 ## Authentication
 ### <a name="webid-tls"></a>WebID-TLS
 

@@ -1,0 +1,337 @@
+<h1 id="solid-social-linked-data-platform">SoLiD - Social Linked Data platform</h1>
+
+<p>This document contains design notes on individual components used by SoLiD. They are intended to be a guide for developers who plan to build social linked data servers and applications.</p>
+
+<h1 id="software-implementing-solid">Software implementing SoLiD</h1>
+
+<h1 id="components">Components</h1>
+
+<p>SoLiD was designed from the ground up to be modular and openly extensible. It relies as much as possible on existing <a href="http://www.w3.org/">W3C</a> standards, except in one case in which it extends the <a href="http://www.w3.org/TR/ldp/">LDP standard</a>. Among the technologies it uses, you can find:</p>
+
+<ul>
+<li><a href="#rdf">RDF</a></li>
+<li><a href="#webid">WebID</a></li>
+<li><a href="#webid-tls">WebID-TLS</a></li>
+<li><a href="#webid-tls">WebID-RSA</a></li>
+<li><a href="#wac">WebAccessControl</a></li>
+<li><a href="#ldp">LDP</a></li>
+</ul>
+
+<h2 id="rdf"><a></a>RDF</h2>
+
+<p>The Resource Description Framework (RDF) is a framework for representing information in the Web [<a href="http://www.w3.org/TR/rdf11-concepts/">RDF1.1</a>], originally designed as a graph-based data model, where the core structure of the abstract syntax is a set of triples, each consisting of a subject, a predicate and an object.</p>
+
+<p>SoLiD uses several serialization syntaxes for storing and exchanging RDF such as <a href="http://www.w3.org/TR/turtle/">Turtle</a> and <a href="http://www.w3.org/TR/json-ld/">JSON-LD</a>. When creating new RDF resources, the preferred <strong>default</strong> serialization is Turtle. SoLiD-compliant servers should implement content negotiation in order to handle different serialization formats.</p>
+
+<h2 id="reading-and-writing-data-using-ldp">Reading and writing data using LDP</h2>
+
+<p>To simplify data portability, we opted for a design that follows the classic POSIX standards. For instance, resources are stored directly on the file system instead of using a database. This allows people to read/write data both using desktop applications as well as Web-based ones, and also to share the same disk drive between different machines/servers.</p>
+
+<p>For this precise reason, we decided to use a fairly recent spec proposed by the W3C, called Linked Data Platform. </p>
+
+<p><a></a>The <a href="http://www.w3.org/TR/ldp/">LDP specification</a> defines a set of rules for HTTP operations on Web resources, some based on RDF, to provide an architecture for reading and writing Linked Data on the Web. The most important feature of LDP is that it provides us with a standard way of RESTfully writing resources (documents) on the Web, without having to rely on less flexible conventions (APIs) based around sending form-encoded data using POST.</p>
+
+<p>To find out how LDP works, you can take a look at the examples in the LDP <a href="http://www.w3.org/TR/ldp-primer/">Primer document</a>. </p>
+
+<p>However, we have found that while LDP is usually sufficient, there are some cases where it doesn’t cover some of our use cases, and therefore we had to extend it.</p>
+
+<h3 id="getting-information-on-resources-and-server-capabilities">Getting information on resources and server capabilities</h3>
+
+<p>Our existing servers support the following HTTP methods for reading data:</p>
+
+
+
+<h4 id="the-head-method">The HEAD method</h4>
+
+<p>Returns a list of headers related to the resource in question. Among these headers, two very important Link headers contain pointers to corresponding ACL and metadata resources. More information on naming conventions for these resources can be found <a href="#wac">here</a>.</p>
+
+<p>REQUEST:</p>
+
+<pre class="prettyprint"><code class=" hljs http"><span class="hljs-request">HEAD <span class="hljs-string">/data/</span> HTTP/1.1</span>
+<span class="hljs-attribute">Host</span>: <span class="hljs-string">example.org</span></code></pre>
+
+<p>RESPONSE:</p>
+
+<pre class="prettyprint"><code class=" hljs livecodeserver">HTTP/<span class="hljs-number">1.1</span> <span class="hljs-number">200</span> OK
+....
+Link: &lt;<span class="hljs-keyword">https</span>://example.org/data/.acl&gt;; <span class="hljs-built_in">rel</span>=<span class="hljs-string">"acl"</span>
+Link: &lt;<span class="hljs-keyword">https</span>://example.org/data/.meta&gt;; <span class="hljs-built_in">rel</span>=<span class="hljs-string">"describedby"</span></code></pre>
+
+
+
+<h4 id="the-options-method">The OPTIONS method</h4>
+
+<p>Returns a list of headers describing the server’s capabilities.</p>
+
+<p>REQUEST:</p>
+
+<pre class="prettyprint"><code class=" hljs http"><span class="hljs-request">OPTIONS <span class="hljs-string">/data/</span> HTTP/1.1</span>
+<span class="hljs-attribute">Host</span>: <span class="hljs-string">example.org</span></code></pre>
+
+<p>RESPONSE:</p>
+
+<pre class="prettyprint"><code class=" hljs lasso">HTTP/<span class="hljs-number">1.1</span> <span class="hljs-number">200</span> OK
+Accept<span class="hljs-attribute">-Patch</span>: application/json, application/sparql<span class="hljs-attribute">-update</span>
+Accept<span class="hljs-attribute">-Post</span>: text/turtle, application/ld<span class="hljs-subst">+</span>json
+Access<span class="hljs-attribute">-Control</span><span class="hljs-attribute">-Allow</span><span class="hljs-attribute">-Credentials</span>: <span class="hljs-literal">true</span>
+Access<span class="hljs-attribute">-Control</span><span class="hljs-attribute">-Allow</span><span class="hljs-attribute">-Methods</span>: OPTIONS, HEAD, GET, PATCH, POST, PUT, MKCOL, DELETE, COPY, MOVE, LOCK, UNLOCK
+Access<span class="hljs-attribute">-Control</span><span class="hljs-attribute">-Allow</span><span class="hljs-attribute">-Origin</span>: <span class="hljs-subst">*</span>
+Access<span class="hljs-attribute">-Control</span><span class="hljs-attribute">-Expose</span><span class="hljs-attribute">-Headers</span>: User, Triples, Location, <span class="hljs-keyword">Link</span>, Vary, Last<span class="hljs-attribute">-Modified</span>, Content<span class="hljs-attribute">-Length</span>
+Allow: OPTIONS, HEAD, GET, PATCH, POST, PUT, MKCOL, DELETE, COPY, MOVE, LOCK, UNLOCK</code></pre>
+
+
+
+<h3 id="creating-new-resources">Creating new resources</h3>
+
+<p>When creating new resources (directories or documents) using LDP, the client must indicate the type of the new resource that is going to be created. LDP uses Link headers with specific URI values, which in turn can be dereferenced to obtain additional information about each type of resource. Currently, our LDP implementation supports only <a href="http://www.w3.org/TR/ldp/#ldpbc">Basic Containers</a>.</p>
+
+<p>LDP also offers a mechanism through which clients can provide a preferred name for the new resource through a header called <strong>Slug</strong>.</p>
+
+<h4 id="creating-containers-directories">Creating containers (directories)</h4>
+
+<p>To create a new <strong>basic container</strong> resource, the Link header value must be set to the following value: <br>
+<code>Link: &lt;http://www.w3.org/ns/ldp#BasicContainer&gt;; rel="type"</code></p>
+
+<p>For example, to create a basic container called <strong>data</strong> under <a href="http://example.org/">http://example.org/</a>, the client will need to send the following POST request, with the Content-Type header set to <code>text/turtle</code>:</p>
+
+<p>REQUEST:</p>
+
+<pre class="prettyprint"><code class=" hljs http"><span class="hljs-request">POST <span class="hljs-string">/</span> HTTP/1.1</span>
+<span class="hljs-attribute">Host</span>: <span class="hljs-string">example.org</span>
+<span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">text/turtle</span>
+<span class="hljs-attribute">Slug</span>: <span class="hljs-string">data</span>
+
+<span class="livecodeserver">&lt;&gt; <span class="hljs-operator">a</span> &lt;<span class="hljs-keyword">http</span>://www.w3.org/ns/ldp<span class="hljs-comment">#BasicContainer&gt; ;</span>
+   &lt;<span class="hljs-keyword">http</span>://purl.org/dc/terms/title&gt; <span class="hljs-string">"Basic container"</span> .</span></code></pre>
+
+<p>RESPONSE:</p>
+
+<pre class="prettyprint"><code class=" hljs http"><span class="hljs-status">HTTP/1.1 <span class="hljs-number">201</span> Created</span></code></pre>
+
+<h4 id="creating-documents-files">Creating documents (files)</h4>
+
+<p>To create a new resource, the Link header value must be set to the following value: <br>
+<code>Link: &lt;http://www.w3.org/ns/ldp#Resource&gt;; rel="type"</code></p>
+
+<p>For example, to create a resource called <strong>test</strong> under <a href="http://example.org/data/">http://example.org/data/</a>, the client will need to send the following POST request, with the Content-Type header set to <code>text/turtle</code>:</p>
+
+<p>REQUEST:</p>
+
+<pre class="prettyprint"><code class=" hljs http"><span class="hljs-request">POST <span class="hljs-string">/</span> HTTP/1.1</span>
+<span class="hljs-attribute">Host</span>: <span class="hljs-string">example.org</span>
+<span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">text/turtle</span>
+<span class="hljs-attribute">Slug</span>: <span class="hljs-string">test</span>
+
+<span class="livecodeserver">&lt;&gt; <span class="hljs-operator">a</span> &lt;<span class="hljs-keyword">http</span>://www.w3.org/ns/ldp<span class="hljs-comment">#Resource&gt; ;</span>
+   &lt;<span class="hljs-keyword">http</span>://purl.org/dc/terms/title&gt; <span class="hljs-string">"This is a test file"</span> .</span></code></pre>
+
+<p>RESPONSE:</p>
+
+<pre class="prettyprint"><code class=" hljs http"><span class="hljs-status">HTTP/1.1 <span class="hljs-number">201</span> Created</span></code></pre>
+
+<h2 id="reading-and-writing-data-using-sparql">Reading and writing data using SPARQL</h2>
+
+<p>Another possible way of reading and writing data is to use SPARQL. Currently, our SoLiD servers support a subset of <a href="http://www.w3.org/TR/rdf-sparql-query/">SPARQL 1.0</a>, where each resource is its own SPARQL endpoint, accepting basic SELECT, INSERT and DELETE statements.</p>
+
+
+
+<h3 id="reading-data-using-sparql">Reading data using SPARQL</h3>
+
+<p>To read (query) a resource, the client can send a SPARQL SELECT query through an HTTP GET request. The server will use the given resource as the default graph that is being queried. The resource can be an RDF document or even a container. The response will be serialized using <code>application/json</code> mime type.</p>
+
+<p>For instance, the client can send the following form-encoded query:</p>
+
+<p>REQUEST:</p>
+
+<pre class="prettyprint"><code class=" hljs http"><span class="hljs-request">GET <span class="hljs-string">/data/</span> HTTP/1.1</span>
+<span class="hljs-attribute">Host</span>: <span class="hljs-string">example.org</span>
+<span class="hljs-attribute">Query</span>: <span class="hljs-string">SELECT * WHERE { ?s ?p ?o . }</span></code></pre>
+
+<p>RESPONSE:</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs json">{
+  "<span class="hljs-attribute">head</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">vars</span>": <span class="hljs-value">[ <span class="hljs-string">"s"</span>, <span class="hljs-string">"p"</span>, <span class="hljs-string">"o"</span> ]
+  </span>}</span>,
+  "<span class="hljs-attribute">results</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">ordered</span>" : <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+    "<span class="hljs-attribute">distinct</span>" : <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+    "<span class="hljs-attribute">bindings</span>" : <span class="hljs-value">[
+      {
+        "<span class="hljs-attribute">s</span>" : <span class="hljs-value">{ "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"uri"</span></span>, "<span class="hljs-attribute">value</span>": <span class="hljs-value"><span class="hljs-string">"http://example.org/data/"</span> </span>}</span>,
+        "<span class="hljs-attribute">p</span>" : <span class="hljs-value">{ "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"uri"</span></span>, "<span class="hljs-attribute">value</span>": <span class="hljs-value"><span class="hljs-string">"http://www.w3.org/1999/02/22-rdf-syntax-ns#type"</span> </span>}</span>,
+        "<span class="hljs-attribute">o</span>" : <span class="hljs-value">{ "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"uri"</span></span>, "<span class="hljs-attribute">value</span>": <span class="hljs-value"><span class="hljs-string">"http://www.w3.org/ns/ldp#BasicContainer"</span> </span>}
+      </span>},
+      {
+        "<span class="hljs-attribute">s</span>" : <span class="hljs-value">{ "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"uri"</span></span>, "<span class="hljs-attribute">value</span>": <span class="hljs-value"><span class="hljs-string">"http://example.org/data/"</span> </span>}</span>,
+        "<span class="hljs-attribute">p</span>" : <span class="hljs-value">{ "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"uri"</span></span>, "<span class="hljs-attribute">value</span>": <span class="hljs-value"><span class="hljs-string">"http://purl.org/dc/terms/title"</span> </span>}</span>,
+        "<span class="hljs-attribute">o</span>" : <span class="hljs-value">{ "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"literal"</span></span>, "<span class="hljs-attribute">value</span>": <span class="hljs-value"><span class="hljs-string">"Basic container"</span> </span>}
+      </span>}
+    ]
+  </span>}
+</span>}</code></pre>
+
+
+
+<h3 id="writingdeleting-data-using-sparql">Writing/deleting data using SPARQL</h3>
+
+<p>To write data, clients can send an HTTP PATCH request with a SPARQL payload to the resource in question. If the resource doesn’t exist, it should be created through an LDP POST or through a PUT.</p>
+
+<p>For instance, to update the <em>title</em> of the container from the previous example, the client would have to send a DELETE statement, followed by an INSERT statement. Multiple statements  (delimited by a <strong>;</strong>) can be sent in the same PATCH request.</p>
+
+<p>REQUEST:</p>
+
+<pre class="prettyprint"><code class=" hljs http"><span class="hljs-request">PATCH <span class="hljs-string">/data/resource</span> HTTP/1.1</span>
+<span class="hljs-attribute">Host</span>: <span class="hljs-string">example.org</span>
+
+<span class="css"><span class="hljs-tag">DELETE</span> <span class="hljs-tag">DATA</span> <span class="hljs-rules">{ <span class="hljs-rule">&lt;&gt; &lt;<span class="hljs-attribute">http</span>:<span class="hljs-value">//purl.org/dc/terms/title&gt; <span class="hljs-string">"Basic container"</span> </span></span></span>};
+<span class="hljs-tag">INSERT</span> <span class="hljs-tag">DATA</span> <span class="hljs-rules">{ <span class="hljs-rule">&lt;&gt; &lt;<span class="hljs-attribute">http</span>:<span class="hljs-value">//purl.org/dc/terms/title&gt; <span class="hljs-string">"My data container"</span> </span></span></span>}</span></code></pre>
+
+<p><strong>IMPORTANT:</strong> There is currently no support for blank nodes and RDF lists in our SPARQL patches.</p>
+
+<h2 id="cors-cross-origin-resource-sharing">CORS - Cross Origin Resource Sharing</h2>
+
+<p>There are two different ways CORS support must be implemented on SoLiD servers. First, when the request is sent through a browser that sets the Origin header. And second, when clients do not set an Origin header (e.g. curl or non-browser clients).</p>
+
+<p>When the Origin header is set:</p>
+
+<ol>
+<li><p>Client (browser) loads an app from <a href="http://app.org">http://app.org</a> and wants to send an XHR (ajax) request to the server at <a href="http://example.org">http://example.org</a>. Before sending the request over the wire, the browser adds the Origin header: <code>Origin: http://app.org</code>, which corresponds to the domain from where the app was loaded.</p></li>
+<li><p>The server running on <a href="http://example.org">http://example.org</a> receives the request and looks at the Origin header. It sees <a href="http://app.org">http://app.org</a>, stores the value and handles the request.</p></li>
+<li><p>The server responds to the request and sets the value of the request Origin header to the CORS header in the HTTP response: <br>
+ Access-Control-Allow-Origin: <a href="http://app.org">http://app.org</a></p></li>
+</ol>
+
+<p>Without an Origin header:</p>
+
+<ol>
+<li><p>A curl request is sent from the terminal to <a href="http://example.org">http://example.org</a>. Unless explicitly specified though a curl parameter, the Origin header will not be set.</p></li>
+<li><p>The server running on <a href="http://example.org">http://example.org</a> receives the request and does not find an Origin header.</p></li>
+<li><p>The server responds to the request and sets a default “all” value for the Access-Control-Allow-Origin header in the HTTP response: <br>
+ Access-Control-Allow-Origin: *</p></li>
+</ol>
+
+<p>The star character (*) signifies “allow all”. If you want to learn more about CORS, please visit this page: <a href="http://enable-cors.org/">http://enable-cors.org/</a></p>
+
+<h2 id="live-updates">Live updates</h2>
+
+
+
+<h3 id="websockets">Websockets</h3>
+
+
+
+<h2 id="identity-management-based-on-webid"><a></a>Identity management based on WebID</h2>
+
+<p>Identity management as well as unique identifiers are the core of any social system. SoLiD uses <a href="http://www.w3.org/2005/Incubator/webid/spec/identity/">WebID</a>, an HTTP(S) URI, to uniquely refer to users (people or agents). The advantage of WebID is that the URI can be dereferenced to reveal useful information about the user. Also, since WebID profiles can be hosted anywhere (including your basement server), users are no longer trapped inside Identity Provider Silos (e.g. Twitter, Facebook, Google+, etc.).</p>
+
+
+
+<h3 id="creating-new-accounts">Creating new accounts</h3>
+
+<h4 id="client-server-api">Client - server API</h4>
+
+<p>The signup component requires that servers implement a very simple API, indicating whether an account name is available or not on the server. Clients (i.e. the signup component) send an HTTP POST request containing the following JSON structure, where <em>accountName</em> contains the target account name (e.g. user):</p>
+
+<pre class="prettyprint"><code class=" hljs css"><span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">method</span>:<span class="hljs-value">      <span class="hljs-string">"accountStatus"</span>,
+    accountName: <span class="hljs-string">"user"</span>
+</span></span></span>}</code></pre>
+
+<p>The server response has to contain the following JSON structure:</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs css"><span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">method</span>:<span class="hljs-value">   <span class="hljs-string">"accountStatus"</span>,
+    status:   <span class="hljs-string">"success"</span>,
+    formURI:  <span class="hljs-string">"https://example.org/api/spkac"</span>,
+    loginURI: <span class="hljs-string">"https://example.org/"</span>,
+    response: {
+                accountURL: <span class="hljs-string">"https://user.example.org/"</span>,
+                available:   true
+            </span></span></span>}
+}</code></pre>
+
+<p><strong>Attention!</strong> Because creating client certificates requires the &lt;KEYGEN&gt; HTML element, which does not work with AJAX requests, the client must submit a form to the <em>formURI</em> it receives from the server. This restriction means that a predefined set of form element names must be respected on the server. Here is a list of form element names  (case sensitive!) that are sent by the signup component:</p>
+
+<ul>
+<li><code>spkac</code> - SPKAC containing the public key generated by the KEYGEN element</li>
+<li><code>username</code> - account user name</li>
+<li><code>name</code> - user’s full name</li>
+<li><code>email</code> - user’s email address</li>
+<li><code>img</code> - user’s picture URL</li>
+</ul>
+
+<p>Finally, if the <em>status</em> indicates success, and the <em>available</em> flag is set to <em>true</em>, then the form containing user details can be submitted, using the URI provided by the server (i.e. the value of <em>formuri</em>).</p>
+
+<p>The value of <em>loginURI</em> is used to indicate where the app can fake a WebID-TLS login, in order to find the user’s WebID.</p>
+
+<p>Once the WebID certificate is installed in the browser, the user is presented with a button that finishes setting up the account when clicked. At the end, the user ends up with a series of default workspaces, access control policies (ACLs) for them, and also a <em>preferences</em> document (file).</p>
+
+<h3 id="personal-data-workspaces">Personal data workspaces</h3>
+
+<p>Upon account creation, a series of dedicated LDP containers (i.e. workspaces) are created in the user’s data space, together with their corresponding ACL resources. At the moment, the list is contains the following workspaces:</p>
+
+<ul>
+<li>Public</li>
+<li>Private</li>
+<li>Work</li>
+<li>Family</li>
+<li>Friends</li>
+<li>Preferences</li>
+</ul>
+
+<p>You can consider workspaces to be dedicated containers, which store application-specific data. For example, one of the reasons we decided to use this concept of workspaces is that complicated ACL logic can be set per workspace, and then all data inside the workspace will inherit the same policies.</p>
+
+<h3 id="preferences-document">Preferences document</h3>
+
+<p>The <em>preferences</em> document is used to describe useful information about the user and the data server, which can later on be used by applications. This resource currently lists the workspaces that were just created. In the future it may contain user preferences such as a preferred language, date format, etc.</p>
+
+<p>By default, the preferences resource will be created in the <em>Preferences</em> workspaces – i.e. <code>https://user.example.org/Preferences/prefs</code>.</p>
+
+<p>A triple pointing to the preferences file will also be added to the user’s WebID profile.</p>
+
+<h2 id="authentication">Authentication</h2>
+
+
+
+<h3 id="webid-tls"><a></a>WebID-TLS</h3>
+
+
+
+<h3 id="webid-rsa"><a></a>WebID-RSA</h3>
+
+
+
+<h2 id="access-control">Access Control</h2>
+
+
+
+<h3 id="web-access-control"><a></a>Web Access Control</h3>
+
+<p>Here is an example of an LDP request to create a new container in an existing one (i.e. /data/):</p>
+
+<p>REQUEST:</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs http"><span class="hljs-request">POST <span class="hljs-string">/data/</span> HTTP/1.1</span>
+<span class="hljs-attribute">Host</span>: <span class="hljs-string">example.org</span>
+<span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">text/turtle</span>
+<span class="hljs-attribute">Slug</span>: <span class="hljs-string">contacts</span>
+<span class="hljs-attribute">Link</span>: <span class="hljs-string">&lt;http://www.w3.org/ns/ldp#BasicContainer&gt;; rel="type"</span>
+
+<span class="css">&lt;&gt;  <span class="hljs-tag">a</span> <span class="hljs-tag">ldp</span><span class="hljs-pseudo">:BasicContainer</span>;
+    <span class="hljs-tag">dc</span><span class="hljs-pseudo">:title</span> "<span class="hljs-tag">Contacts</span> <span class="hljs-tag">container</span>" .</span></code></pre>
+
+<p>RESPONSE:</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs http"><span class="hljs-status">HTTP/1.1 <span class="hljs-number">201</span> Created</span>
+<span class="hljs-attribute">Location</span>: <span class="hljs-string">https://example.org/data/contacts/</span>
+<span class="hljs-attribute">Link</span>: <span class="hljs-string">&lt;https://example.org/data/contacts/.acl&gt;; rel=acl</span>
+<span class="hljs-attribute">Link</span>: <span class="hljs-string">&lt;https://example.org/data/contacts/.meta&gt;; rel=meta</span></code></pre>

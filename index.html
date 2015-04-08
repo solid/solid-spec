@@ -1,20 +1,25 @@
-<h1 id="solid-social-linked-data-platform">SoLiD - Social Linked Data platform</h1>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SoLiD</title>
+<link rel="stylesheet" href="https://stackedit.io/res-min/themes/base.css" />
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body><div class="container"><h1 id="solid-social-linked-data-platform">SoLiD - Social Linked Data platform</h1>
 
 <p>This document contains design notes on individual components used by SoLiD. They are intended to be a guide for developers who plan to build social linked data servers and applications.</p>
-
-<h1 id="software-implementing-solid">Software implementing SoLiD</h1>
-
-<h1 id="components">Components</h1>
 
 <p>SoLiD was designed from the ground up to be modular and openly extensible. It relies as much as possible on existing <a href="http://www.w3.org/">W3C</a> standards, except in one case in which it extends the <a href="http://www.w3.org/TR/ldp/">LDP standard</a>. Among the technologies it uses, you can find:</p>
 
 <ul>
 <li><a href="#rdf">RDF</a></li>
+<li><a href="#ldp">LDP</a></li>
 <li><a href="#webid">WebID</a></li>
 <li><a href="#webid-tls">WebID-TLS</a></li>
 <li><a href="#webid-tls">WebID-RSA</a></li>
 <li><a href="#wac">WebAccessControl</a></li>
-<li><a href="#ldp">LDP</a></li>
 </ul>
 
 <h2 id="rdf"><a></a>RDF</h2>
@@ -90,9 +95,9 @@ Allow: OPTIONS, HEAD, GET, PATCH, POST, PUT, MKCOL, DELETE, COPY, MOVE, LOCK, UN
 <h4 id="creating-containers-directories">Creating containers (directories)</h4>
 
 <p>To create a new <strong>basic container</strong> resource, the Link header value must be set to the following value: <br>
-<code>Link: &lt;http://www.w3.org/ns/ldp#BasicContainer&gt;; rel="type"</code></p>
+<code>Link: &lt;https://www.w3.org/ns/ldp#BasicContainer&gt;; rel="type"</code></p>
 
-<p>For example, to create a basic container called <strong>data</strong> under <a href="http://example.org/">http://example.org/</a>, the client will need to send the following POST request, with the Content-Type header set to <code>text/turtle</code>:</p>
+<p>For example, to create a basic container called <strong>data</strong> under <a href="https://example.org/">https://example.org/</a>, the client will need to send the following POST request, with the Content-Type header set to <code>text/turtle</code>:</p>
 
 <p>REQUEST:</p>
 
@@ -113,7 +118,7 @@ Allow: OPTIONS, HEAD, GET, PATCH, POST, PUT, MKCOL, DELETE, COPY, MOVE, LOCK, UN
 <p>To create a new resource, the Link header value must be set to the following value: <br>
 <code>Link: &lt;http://www.w3.org/ns/ldp#Resource&gt;; rel="type"</code></p>
 
-<p>For example, to create a resource called <strong>test</strong> under <a href="http://example.org/data/">http://example.org/data/</a>, the client will need to send the following POST request, with the Content-Type header set to <code>text/turtle</code>:</p>
+<p>For example, to create a resource called <strong>test</strong> under <a href="https://example.org/data/">https://example.org/data/</a>, the client will need to send the following POST request, with the Content-Type header set to <code>text/turtle</code>:</p>
 
 <p>REQUEST:</p>
 
@@ -148,9 +153,15 @@ Content-Type: image/jpeg
 
 <p>The metadata (i.e. extra RDF triples such as types, titles, comments, etc.) about non-RDF resources (e.g. containers, images, binaries, etc.) will be stored in a corresponding <em>meta</em> resources. SoLiD servers use a specific naming convention when referring to these meta resources. Basically, every non-RDF resource may have a corresponding metadata resource, with a name composed of the resource’s name together with a <strong>.meta</strong> suffix.</p>
 
-<p>For example, the corresponding metadata resource for the newly created container will be accessible through this URI: <code>http://example.org/data/.meta</code>. Alternatively, the photo at <code>http://example.org/data/image.jpg</code> will have it’s metadata stored in <code>http://example.org/data/image.jpg.meta</code>.</p>
+<p>For example, the corresponding metadata resource for the newly created container will be accessible through this URI: <code>https://example.org/data/.meta</code>. Alternatively, the photo at <code>https://example.org/data/image.jpg</code> will have it’s metadata stored in <code>https://example.org/data/image.jpg.meta</code>.</p>
 
 <p>Metadata resources are a “special” type of resources, which are not publicly listed by the server when browsing files (typically when doing a GET on an LDP container). However, they can still be modified by client apps using the methods described in this section. The corresponding metadata resources are advertised and can be discovered when doing HTTP GET/HEAD on regular resources, as mentioned before.</p>
+
+<h3 id="reading-resources">Reading resources</h3>
+
+<p>Resources can be commonly accessed (i.e. read) using HTTP GET requests. SoLiD servers are encouraged to perform content negotiation for RDF resources, depending on the value of the <em>Accept</em> header.</p>
+
+<p><strong>IMPORTANT:</strong> a default <strong>text/turtle</strong> Content-Type will be used for requests for RDF resources or views (e.g. containers) that do not have an <em>Accept</em> header.</p>
 
 <h2 id="reading-and-writing-data-using-sparql">Reading and writing data using SPARQL</h2>
 
@@ -174,7 +185,9 @@ Content-Type: image/jpeg
 
 
 
-<pre class="prettyprint"><code class=" hljs json">{
+<pre class="prettyprint"><code class=" hljs http"><span class="hljs-status">HTTP/1.1 <span class="hljs-number">200</span> OK</span>
+
+<span class="json">{
   "<span class="hljs-attribute">head</span>": <span class="hljs-value">{
     "<span class="hljs-attribute">vars</span>": <span class="hljs-value">[ <span class="hljs-string">"s"</span>, <span class="hljs-string">"p"</span>, <span class="hljs-string">"o"</span> ]
   </span>}</span>,
@@ -183,20 +196,18 @@ Content-Type: image/jpeg
     "<span class="hljs-attribute">distinct</span>" : <span class="hljs-value"><span class="hljs-literal">false</span></span>,
     "<span class="hljs-attribute">bindings</span>" : <span class="hljs-value">[
       {
-        "<span class="hljs-attribute">s</span>" : <span class="hljs-value">{ "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"uri"</span></span>, "<span class="hljs-attribute">value</span>": <span class="hljs-value"><span class="hljs-string">"http://example.org/data/"</span> </span>}</span>,
+        "<span class="hljs-attribute">s</span>" : <span class="hljs-value">{ "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"uri"</span></span>, "<span class="hljs-attribute">value</span>": <span class="hljs-value"><span class="hljs-string">"https://example.org/data/"</span> </span>}</span>,
         "<span class="hljs-attribute">p</span>" : <span class="hljs-value">{ "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"uri"</span></span>, "<span class="hljs-attribute">value</span>": <span class="hljs-value"><span class="hljs-string">"http://www.w3.org/1999/02/22-rdf-syntax-ns#type"</span> </span>}</span>,
         "<span class="hljs-attribute">o</span>" : <span class="hljs-value">{ "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"uri"</span></span>, "<span class="hljs-attribute">value</span>": <span class="hljs-value"><span class="hljs-string">"http://www.w3.org/ns/ldp#BasicContainer"</span> </span>}
       </span>},
       {
-        "<span class="hljs-attribute">s</span>" : <span class="hljs-value">{ "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"uri"</span></span>, "<span class="hljs-attribute">value</span>": <span class="hljs-value"><span class="hljs-string">"http://example.org/data/"</span> </span>}</span>,
+        "<span class="hljs-attribute">s</span>" : <span class="hljs-value">{ "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"uri"</span></span>, "<span class="hljs-attribute">value</span>": <span class="hljs-value"><span class="hljs-string">"https://example.org/data/"</span> </span>}</span>,
         "<span class="hljs-attribute">p</span>" : <span class="hljs-value">{ "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"uri"</span></span>, "<span class="hljs-attribute">value</span>": <span class="hljs-value"><span class="hljs-string">"http://purl.org/dc/terms/title"</span> </span>}</span>,
         "<span class="hljs-attribute">o</span>" : <span class="hljs-value">{ "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"literal"</span></span>, "<span class="hljs-attribute">value</span>": <span class="hljs-value"><span class="hljs-string">"Basic container"</span> </span>}
       </span>}
     ]
   </span>}
-</span>}</code></pre>
-
-
+</span>}</span></code></pre>
 
 <h3 id="writingdeleting-data-using-sparql">Writing/deleting data using SPARQL</h3>
 
@@ -212,6 +223,12 @@ Content-Type: image/jpeg
 <span class="css"><span class="hljs-tag">DELETE</span> <span class="hljs-tag">DATA</span> <span class="hljs-rules">{ <span class="hljs-rule">&lt;&gt; &lt;<span class="hljs-attribute">http</span>:<span class="hljs-value">//purl.org/dc/terms/title&gt; <span class="hljs-string">"Basic container"</span> </span></span></span>};
 <span class="hljs-tag">INSERT</span> <span class="hljs-tag">DATA</span> <span class="hljs-rules">{ <span class="hljs-rule">&lt;&gt; &lt;<span class="hljs-attribute">http</span>:<span class="hljs-value">//purl.org/dc/terms/title&gt; <span class="hljs-string">"My data container"</span> </span></span></span>}</span></code></pre>
 
+<p>RESPONSE:</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs http"><span class="hljs-status">HTTP/1.1 <span class="hljs-number">200</span> OK</span></code></pre>
+
 <p><strong>IMPORTANT:</strong> There is currently no support for blank nodes and RDF lists in our SPARQL patches.</p>
 
 <h2 id="cors-cross-origin-resource-sharing">CORS - Cross Origin Resource Sharing</h2>
@@ -221,22 +238,24 @@ Content-Type: image/jpeg
 <p>When the Origin header is set:</p>
 
 <ol>
-<li><p>Client (browser) loads an app from <a href="http://app.org">http://app.org</a> and wants to send an XHR (ajax) request to the server at <a href="http://example.org">http://example.org</a>. Before sending the request over the wire, the browser adds the Origin header: <code>Origin: http://app.org</code>, which corresponds to the domain from where the app was loaded.</p></li>
-<li><p>The server running on <a href="http://example.org">http://example.org</a> receives the request and looks at the Origin header. It sees <a href="http://app.org">http://app.org</a>, stores the value and handles the request.</p></li>
+<li><p>Client (browser) loads an app from <a href="https://app.org">https://app.org</a> and wants to send an XHR (ajax) request to the server at <a href="https://example.org">https://example.org</a>. Before sending the request over the wire, the browser adds the Origin header: <code>Origin: https://app.org</code>, which corresponds to the domain from where the app was loaded.</p></li>
+<li><p>The server running on <a href="https://example.org">https://example.org</a> receives the request and looks at the Origin header. It sees <a href="https://app.org">https://app.org</a>, stores the value and handles the request.</p></li>
 <li><p>The server responds to the request and sets the value of the request Origin header to the CORS header in the HTTP response: <br>
- Access-Control-Allow-Origin: <a href="http://app.org">http://app.org</a></p></li>
+ Access-Control-Allow-Origin: <a href="https://app.org">https://app.org</a></p></li>
 </ol>
 
 <p>Without an Origin header:</p>
 
 <ol>
-<li><p>A curl request is sent from the terminal to <a href="http://example.org">http://example.org</a>. Unless explicitly specified though a curl parameter, the Origin header will not be set.</p></li>
-<li><p>The server running on <a href="http://example.org">http://example.org</a> receives the request and does not find an Origin header.</p></li>
+<li><p>A curl request is sent from the terminal to <a href="https://example.org">https://example.org</a>. Unless explicitly specified though a curl parameter, the Origin header will not be set.</p></li>
+<li><p>The server running on <a href="https://example.org">https://example.org</a> receives the request and does not find an Origin header.</p></li>
 <li><p>The server responds to the request and sets a default “all” value for the Access-Control-Allow-Origin header in the HTTP response: <br>
  Access-Control-Allow-Origin: *</p></li>
 </ol>
 
 <p>The star character (*) signifies “allow all”. If you want to learn more about CORS, please visit this page: <a href="http://enable-cors.org/">http://enable-cors.org/</a></p>
+
+
 
 <h2 id="live-updates">Live updates</h2>
 
@@ -244,19 +263,25 @@ Content-Type: image/jpeg
 
 <h3 id="websockets">Websockets</h3>
 
+<p>@@@TODO</p>
+
 
 
 <h2 id="identity-management-based-on-webid"><a></a>Identity management based on WebID</h2>
 
-<p>Identity management as well as unique identifiers are the core of any social system. SoLiD uses <a href="http://www.w3.org/2005/Incubator/webid/spec/identity/">WebID</a>, an HTTP(S) URI, to uniquely refer to users (people or agents). The advantage of WebID is that the URI can be dereferenced to reveal useful information about the user. Also, since WebID profiles can be hosted anywhere (including your basement server), users are no longer trapped inside Identity Provider Silos (e.g. Twitter, Facebook, Google+, etc.).</p>
+<p>Identity management as well as unique identifiers are the core of any social system. SoLiD uses <a href="http://www.w3.org/2005/Incubator/webid/spec/identity/">WebID</a>, an HTTP(S) URI, to uniquely refer to users (people or agents). The advantage of WebID is that the URI can be dereferenced to a WebID profile document, in order to reveal useful information about the user. Also, since WebID profiles can be hosted anywhere (including your basement server), users are no longer trapped inside Identity Provider Silos (e.g. Twitter, Facebook, Google+, etc.).</p>
 
 
 
 <h3 id="creating-new-accounts">Creating new accounts</h3>
 
+
+
 <h4 id="client-server-api">Client - server API</h4>
 
 <p>SoLiD-compliant servers must implement a very simple API, indicating whether an account name is available or not on the server. Clients (e.g. the signup Web component) send an HTTP POST request containing the following JSON structure, where <em>accountName</em> contains the target account name (e.g. a preferred username):</p>
+
+
 
 <pre class="prettyprint"><code class=" hljs css"><span class="hljs-rules">{
     <span class="hljs-rule"><span class="hljs-attribute">method</span>:<span class="hljs-value">      <span class="hljs-string">"accountStatus"</span>,
@@ -264,6 +289,8 @@ Content-Type: image/jpeg
 </span></span></span>}</code></pre>
 
 <p>The server response has to contain the following JSON structure:</p>
+
+
 
 <pre class="prettyprint"><code class=" hljs css"><span class="hljs-rules">{
     <span class="hljs-rule"><span class="hljs-attribute">method</span>:<span class="hljs-value">   <span class="hljs-string">"accountStatus"</span>,
@@ -292,6 +319,8 @@ Content-Type: image/jpeg
 
 <p>Once the WebID certificate is installed in the browser, the user is presented with a button that finishes setting up the account when clicked. At the end, the user ends up with a series of default workspaces, access control policies (ACLs) for them, and also a <em>preferences</em> document (file).</p>
 
+
+
 <h3 id="personal-data-workspaces">Personal data workspaces</h3>
 
 <p>Upon account creation, a series of dedicated workspaces (i.e. LDP containers) are created in the user’s data space, together with their corresponding ACL resources. At the moment, the list contains the following workspaces:</p>
@@ -307,6 +336,8 @@ Content-Type: image/jpeg
 
 <p>You can consider workspaces to be dedicated containers, which store application-specific data. For example, one of the reasons we decided to use this concept of workspaces is that complicated ACL logic can be set per workspace, and then all data inside the workspace will inherit the same policies.</p>
 
+
+
 <h3 id="preferences-document">Preferences document</h3>
 
 <p>The <em>preferences</em> document is used to describe useful information about the user and the data server, which can later on be used by applications. This resource currently lists the workspaces that were just created. In the future it may contain user preferences such as a preferred language, date format, etc.</p>
@@ -315,17 +346,61 @@ Content-Type: image/jpeg
 
 <p>A triple pointing to the preferences file will also be added to the user’s WebID profile.</p>
 
+
+
 <h2 id="authentication">Authentication</h2>
 
 
 
 <h3 id="webid-tls"><a></a>WebID-TLS</h3>
 
+<p>The WebID-TLS protocol (<a href="http://www.w3.org/2005/Incubator/webid/spec/tls/">W3C draft</a>) enables secure, efficient authentication on the Web. It enables users to authenticate onto any site by simply choosing one of the certificates proposed to them by their browser. These certificates can be created by any Web Site for any purpose. A user may have multiple client certificates, bound to one or multiple WebIDs.</p>
+
+<p>Basically, WebID-TLS relies on matching a public key received from a client certificate, to the public key published in the WebID profile obtained by dereferencing the WebID included in the SubjectAlternativeName field of the client certificate. In other words, users must prove they own a public key they publish in their WebID profiles.</p>
+
+<p>WebID-TLS is currently the preferred authentication mechanism in SoLiD. </p>
+
+<p>More information on WebID-TLS can be found here: <a href="http://www.w3.org/2005/Incubator/webid/spec/tls/">http://www.w3.org/2005/Incubator/webid/spec/tls/</a>.</p>
+
 
 
 <h3 id="webid-rsa"><a></a>WebID-RSA</h3>
 
+<p>WebID-RSA is somehow similar to WebID-TLS, in that a public RSA key is published in the WebID profile, and the user will sign a token with the corresponding private key that matches the public key in the profile.</p>
 
+<p>The client receives a secure token from the server, which it signs and then sends back to the server. The implementation of WebID-RSA is somehow similar to <a href="https://tools.ietf.org/html/rfc2617">Digest access authentication</a> in HTTP, in that it reuses the same headers.</p>
+
+<p>Here is a step by step example that covers the authentication handshake. </p>
+
+<p>First, the client attempts to access a protected resource at <code>https://example.org/data/</code>.</p>
+
+<p>REQUEST:</p>
+
+<pre class="prettyprint"><code class=" hljs http"><span class="hljs-request">GET <span class="hljs-string">/data/</span> HTTP/1.1</span>
+<span class="hljs-attribute">Host</span>: <span class="hljs-string">example.org</span></code></pre>
+
+<p>RESPONSE:</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs http"><span class="hljs-status">HTTP/1.1 <span class="hljs-number">401</span> Unauthorized</span>
+<span class="hljs-attribute">WWW-Authenticate</span>: <span class="hljs-string">WebID-RSA nonce="securestring"</span></code></pre>
+
+<p>Next, the client sets the username value to the user’s WebID and signs the concatenated value of <strong>WebID + nonce</strong> before resending the request.</p>
+
+<p>REQUEST:</p>
+
+<pre class="prettyprint"><code class=" hljs avrasm">GET /data/ HTTP/<span class="hljs-number">1.1</span>
+<span class="hljs-label">Host:</span> example<span class="hljs-preprocessor">.org</span>
+<span class="hljs-label">Authorization:</span> Digest username=<span class="hljs-string">"https://alice.example.org/card#me"</span>, 
+                      nonce=<span class="hljs-string">"securestring"</span>,
+                      sig=<span class="hljs-string">"signatureOverUsernamePlusNonce"</span></code></pre>
+
+<p>RESPONSE:</p>
+
+<pre class="prettyprint"><code class=" hljs http"><span class="hljs-status">HTTP/1.1 <span class="hljs-number">200</span> OK</span></code></pre>
+
+<p>One important advantage of WebID-RSA over WebID-TLS is that the same keys can also be used to sign and encrypt data. The way client certificate management is currently implemented in browsers, it does not offer the means to access the certificate keys for purposes other than authentication.</p>
 
 <h2 id="access-control">Access Control</h2>
 
@@ -341,6 +416,33 @@ Content-Type: image/jpeg
 
 <p>Similar to the metadata resource naming convention, SoLiD servers use a specific naming convention for ACL resources. This convention relies on appending a <strong>.acl</strong> suffix to its corresponding resource.</p>
 
-<p>For example, the container <code>http://example.org/data/</code> will have a corresponding ACL resource with the URI: <code>http://example.org/data/.acl</code>. A resource <code>http://example.org/data/test</code> will have a corresponding ACL resource at <code>http://example.org/data/test.acl</code></p>
+<p>For example, the container <code>https://example.org/data/</code> will have a corresponding ACL resource with the URI: <code>https://example.org/data/.acl</code>. A resource <code>https://example.org/data/test</code> will have a corresponding ACL resource at <code>https://example.org/data/test.acl</code></p>
 
 <p>More information on Web Access Control can be found here: <a href="https://www.w3.org/wiki/WebAccessControl">https://www.w3.org/wiki/WebAccessControl</a>.</p>
+
+<h1 id="software-implementing-solid">Software implementing SoLiD</h1>
+
+
+
+<h2 id="servers">Servers</h2>
+
+<ul>
+<li>gold – <a href="https://github.com/linkeddata/gold">https://github.com/linkeddata/gold</a></li>
+<li>ldphp <strong>[not maintained]</strong> – <a href="https://github.com/linkeddata/ldphp">https://github.com/linkeddata/ldphp</a></li>
+<li>ld-node [partial support] – <a href="https://github.com/linkeddata/node-ldp-httpd">https://github.com/linkeddata/node-ldp-httpd</a></li>
+<li>meccano [partial support] – <a href="https://github.com/Qatar-Computing-Research-Institute/qcri-crosscloudP/tree/meccano">https://github.com/Qatar-Computing-Research-Institute/qcri-crosscloudP/tree/meccano</a></li>
+</ul>
+
+
+
+<h2 id="applications">Applications</h2>
+
+<ul>
+<li>Warp – <a href="https://github.com/linkeddata/warp">https://github.com/linkeddata/warp</a></li>
+<li>Profile editor – <a href="https://github.com/linkeddata/profile-editor">https://github.com/linkeddata/profile-editor</a></li>
+<li>Cimba – <a href="https://github.com/linkeddata/cimba">https://github.com/linkeddata/cimba</a></li>
+<li>Meeting scheduler – <a href="https://github.com/linkeddata/app-schedule">https://github.com/linkeddata/app-schedule</a></li>
+<li>Contacts manager – <a href="https://github.com/mzereba/contacts">https://github.com/mzereba/contacts</a></li>
+<li>Todo list – <a href="https://github.com/mzereba/todo">https://github.com/mzereba/todo</a></li>
+</ul></div></body>
+</html>

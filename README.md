@@ -223,9 +223,7 @@ The value of *loginURI* is used to indicate where the app can fake a WebID-TLS l
 
 Once the WebID certificate is installed in the browser, the user is presented with a button that finishes setting up the account when clicked. At the end, the user ends up with a series of default workspaces, access control policies (ACLs) for them, and also a *preferences* document (file).
 
-### Preferences document
-
-### Personal Data Workspaces
+### Personal data workspaces
 Upon account creation, a series of dedicated LDP containers (i.e. workspaces) are created in the user's data space, together with their corresponding ACL resources. At the moment, the list is contains the following workspaces:
 
  * Public
@@ -236,6 +234,13 @@ Upon account creation, a series of dedicated LDP containers (i.e. workspaces) ar
  * Preferences
 
 You can consider workspaces to be dedicated containers, which store application-specific data. For example, one of the reasons we decided to use this concept of workspaces is that complicated ACL logic can be set per workspace, and then all data inside the workspace will inherit the same policies.
+
+### Preferences document
+The *preferences* document is used to describe useful information about the user and the data server, which can later on be used by applications. This resource currently lists the workspaces that were just created. In the future it may contain user preferences such as a preferred language, date format, etc.
+
+By default, the preferences resource will be created in the *Preferences* workspaces -- i.e. `https://user.example.org/Preferences/prefs`.
+
+A triple pointing to the preferences file will also be added to the user's WebID profile.
 
 ## Authentication
 ### <a name="webid-tls"></a>WebID-TLS

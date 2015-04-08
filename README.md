@@ -174,7 +174,29 @@ INSERT DATA { <> <http://purl.org/dc/terms/title> "My data container" }
 
 **IMPORTANT:** There is currently no support for blank nodes and RDF lists in our SPARQL patches.
 
-## CORS
+## CORS - Cross Origin Resource Sharing
+There are two different ways CORS support must be implemented on SoLiD servers. First, when the request is sent through a browser that sets the Origin header. And second, when clients do not set an Origin header (e.g. curl or non-browser clients).
+
+When the Origin header is set:
+
+1. Client (browser) loads an app from http://app.org and wants to send an XHR (ajax) request to the server at http://example.org. Before sending the request over the wire, the browser adds the Origin header: `Origin: http://app.org`, which corresponds to the domain from where the app was loaded.
+
+2. The server running on http://example.org receives the request and looks at the Origin header. It sees http://app.org, stores the value and handles the request.
+
+3. The server responds to the request and sets the value of the request Origin header to the CORS header in the HTTP response:
+     Access-Control-Allow-Origin: http://app.org
+ 
+
+Without an Origin header:
+
+1. A curl request is sent from the terminal to http://example.org. Unless explicitly specified though a curl parameter, the Origin header will not be set.
+
+2. The server running on http://example.org receives the request and does not find an Origin header.
+
+3. The server responds to the request and sets a default "all" value for the Access-Control-Allow-Origin header in the HTTP response:
+     Access-Control-Allow-Origin: *
+
+The star character (*) signifies "allow all". If you want to learn more about CORS, please visit this page: http://enable-cors.org/
 
 ## Live updates
 ### Websockets

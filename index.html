@@ -5,13 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SoLiD</title>
 <link rel="stylesheet" href="https://stackedit.io/res-min/themes/base.css" />
-<style>
-  body {
-    font-size: 2em;
-    font-weight: 200;
-  }
-
-</style>
 <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body><div class="container"><h1 id="solid-social-linked-data-platform">SoLiD - Social Linked Data platform</h1>
@@ -22,11 +15,12 @@
 
 <ul>
 <li><a href="#rdf">RDF</a></li>
-<li><a href="#ldp">LDP</a></li>
-<li><a href="#webid">WebID</a></li>
+<li><a href="#reading-and-writing-data-using-ldp">LDP</a></li>
+<li><a href="#websockets">Websockets</a></li>
+<li><a href="#identity-management-based-on-webid">WebID</a></li>
 <li><a href="#webid-tls">WebID-TLS</a></li>
 <li><a href="#webid-rsa">WebID-RSA</a></li>
-<li><a href="#wac">WebAccessControl</a></li>
+<li><a href="#web-access-control">WebAccessControl</a></li>
 </ul>
 
 <h2 id="rdf"><a></a>RDF</h2>
@@ -35,7 +29,7 @@
 
 <p>SoLiD uses several serialization syntaxes for storing and exchanging RDF such as <a href="http://www.w3.org/TR/turtle/">Turtle</a> and <a href="http://www.w3.org/TR/json-ld/">JSON-LD</a>. When creating new RDF resources, the preferred <strong>default</strong> serialization is Turtle. SoLiD-compliant servers should implement content negotiation in order to handle different serialization formats.</p>
 
-<h2 id="ldp">Reading and writing data using LDP</h2>
+<h2 id="reading-and-writing-data-using-ldp">Reading and writing data using LDP</h2>
 
 <p>To simplify data portability, we opted for a design that follows the classic POSIX standards. For instance, resources are stored directly on the file system instead of using a database. This allows people to read/write data both using desktop applications as well as Web-based ones, and also to share the same disk drive between different machines/servers.</p>
 
@@ -190,6 +184,8 @@ Content-Type: image/jpeg
 
 <p>RESPONSE:</p>
 
+
+
 <pre class="prettyprint"><code class=" hljs http"><span class="hljs-status">HTTP/1.1 <span class="hljs-number">200</span> OK</span>
 
 <span class="json">{
@@ -222,15 +218,14 @@ Content-Type: image/jpeg
 
 <p>REQUEST:</p>
 
-<pre class="prettyprint"><code class=" hljs http"><span class="hljs-request">PATCH <span class="hljs-string">/data/resource</span> HTTP/1.1</span>
+<pre class="prettyprint"><code class=" hljs http"><span class="hljs-request">PATCH <span class="hljs-string">/data/</span> HTTP/1.1</span>
 <span class="hljs-attribute">Host</span>: <span class="hljs-string">example.org</span>
+<span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/sparql-update</span>
 
 <span class="css"><span class="hljs-tag">DELETE</span> <span class="hljs-tag">DATA</span> <span class="hljs-rules">{ <span class="hljs-rule">&lt;&gt; &lt;<span class="hljs-attribute">http</span>:<span class="hljs-value">//purl.org/dc/terms/title&gt; <span class="hljs-string">"Basic container"</span> </span></span></span>};
 <span class="hljs-tag">INSERT</span> <span class="hljs-tag">DATA</span> <span class="hljs-rules">{ <span class="hljs-rule">&lt;&gt; &lt;<span class="hljs-attribute">http</span>:<span class="hljs-value">//purl.org/dc/terms/title&gt; <span class="hljs-string">"My data container"</span> </span></span></span>}</span></code></pre>
 
 <p>RESPONSE:</p>
-
-
 
 <pre class="prettyprint"><code class=" hljs http"><span class="hljs-status">HTTP/1.1 <span class="hljs-number">200</span> OK</span></code></pre>
 
@@ -268,11 +263,54 @@ Content-Type: image/jpeg
 
 <h3 id="websockets">Websockets</h3>
 
-<p>@@@TODO</p>
+<p>Live updates are currently only supported through websockets. There are two ways in which clients can be notified in real time of changes affecting a give resource. One possible way is through a subscription mechanism, while the other way is through SPARQL patches.</p>
+
+<h4 id="pubsub-notifications">PubSub notifications</h4>
+
+<p>The PubSub system is very basic. Clients only need to open a websocket connection and <em>sub</em>(scribe) to a given resource URI. If any change occurs in that resource, a <em>pub</em>(lish) event will be sent to all the subscribed clients. </p>
+
+<p>The websocket server URI is the same for any resource located on a given data space (same hostname). To discover the URI of the websocket server, clients can send an HTTP OPTIONS. The server will then include an <strong>Updates-Via</strong> header in the response:</p>
+
+<p>REQUEST:</p>
 
 
 
-<h2 id="webid"><a></a>Identity management based on WebID</h2>
+<pre class="prettyprint"><code class=" hljs http"><span class="hljs-request">OPTIONS <span class="hljs-string">/data/test</span> HTTP/1.1</span>
+<span class="hljs-attribute">Host</span>: <span class="hljs-string">example.org</span></code></pre>
+
+<p>RESPONSE:</p>
+
+<pre class="prettyprint"><code class=" hljs r">HTTP/<span class="hljs-number">1.1</span> <span class="hljs-number">200</span> OK
+<span class="hljs-keyword">...</span>
+Updates-Via: wss://example.org/</code></pre>
+
+<p>To subscribe to a resource, clients will need to send the keyword <strong>sub</strong> followed by an empty space and then the URI of the resource:</p>
+
+<p><code>sub https://example.org/data/test</code></p>
+
+<p>If a change occurs and the client is subscribed to that resource, it will receive a websocket message composed of the keyword <strong>pub</strong>, followed by an empty space and the URI of the resource that has changed:</p>
+
+<p><code>pub https://example.org/data/test</code></p>
+
+<p>Here is a Javascript example on how to subscribe to live updates for our <em>test</em> resource at <code>https://example.org/data/test</code>:</p>
+
+<pre class="prettyprint"><code class=" hljs javascript"><span class="hljs-keyword">var</span> socket = <span class="hljs-keyword">new</span> WebSocket(<span class="hljs-string">'wss://example.org/'</span>);
+socket.onopen = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">this</span>.send(<span class="hljs-string">'sub https://example.org/data/test'</span>);
+};
+socket.onmessage = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(msg)</span> {</span>
+    <span class="hljs-keyword">if</span> (msg.data &amp;&amp; msg.data.slice(<span class="hljs-number">0</span>, <span class="hljs-number">3</span>) === <span class="hljs-string">'pub'</span>) {
+        <span class="hljs-comment">// resource updated, refetch resource</span>
+    }
+};</code></pre>
+
+
+
+<h4 id="sparql-patches">SPARQL patches</h4>
+
+<p>@@@TODO </p>
+
+<h2 id="identity-management-based-on-webid"><a></a>Identity management based on WebID</h2>
 
 <p>Identity management as well as unique identifiers are the core of any social system. SoLiD uses <a href="http://www.w3.org/2005/Incubator/webid/spec/identity/">WebID</a>, an HTTP(S) URI, to uniquely refer to users (people or agents). The advantage of WebID is that the URI can be dereferenced to a WebID profile document, in order to reveal useful information about the user. Also, since WebID profiles can be hosted anywhere (including your basement server), users are no longer trapped inside Identity Provider Silos (e.g. Twitter, Facebook, Google+, etc.).</p>
 
@@ -355,6 +393,8 @@ Content-Type: image/jpeg
 
 <h2 id="authentication">Authentication</h2>
 
+
+
 <h3 id="webid-tls"><a></a>WebID-TLS</h3>
 
 <p>The WebID-TLS protocol (<a href="http://www.w3.org/2005/Incubator/webid/spec/tls/">W3C draft</a>) enables secure, efficient authentication on the Web. It enables users to authenticate onto any site by simply choosing one of the certificates proposed to them by their browser. These certificates can be created by any Web Site for any purpose. A user may have multiple client certificates, bound to one or multiple WebIDs.</p>
@@ -364,6 +404,7 @@ Content-Type: image/jpeg
 <p>WebID-TLS is currently the preferred authentication mechanism in SoLiD. </p>
 
 <p>More information on WebID-TLS can be found here: <a href="http://www.w3.org/2005/Incubator/webid/spec/tls/">http://www.w3.org/2005/Incubator/webid/spec/tls/</a>.</p>
+
 
 
 <h3 id="webid-rsa"><a></a>WebID-RSA</h3>
@@ -378,10 +419,14 @@ Content-Type: image/jpeg
 
 <p>REQUEST:</p>
 
+
+
 <pre class="prettyprint"><code class=" hljs http"><span class="hljs-request">GET <span class="hljs-string">/data/</span> HTTP/1.1</span>
 <span class="hljs-attribute">Host</span>: <span class="hljs-string">example.org</span></code></pre>
 
 <p>RESPONSE:</p>
+
+
 
 <pre class="prettyprint"><code class=" hljs http"><span class="hljs-status">HTTP/1.1 <span class="hljs-number">401</span> Unauthorized</span>
 <span class="hljs-attribute">WWW-Authenticate</span>: <span class="hljs-string">WebID-RSA nonce="securestring"</span></code></pre>
@@ -389,6 +434,8 @@ Content-Type: image/jpeg
 <p>Next, the client sets the username value to the user’s WebID and signs the concatenated value of <strong>WebID + nonce</strong> before resending the request.</p>
 
 <p>REQUEST:</p>
+
+
 
 <pre class="prettyprint"><code class=" hljs avrasm">GET /data/ HTTP/<span class="hljs-number">1.1</span>
 <span class="hljs-label">Host:</span> example<span class="hljs-preprocessor">.org</span>
@@ -398,13 +445,17 @@ Content-Type: image/jpeg
 
 <p>RESPONSE:</p>
 
+
+
 <pre class="prettyprint"><code class=" hljs http"><span class="hljs-status">HTTP/1.1 <span class="hljs-number">200</span> OK</span></code></pre>
 
 <p>One important advantage of WebID-RSA over WebID-TLS is that the same keys can also be used to sign and encrypt data. The way client certificate management is currently implemented in browsers, it does not offer the means to access the certificate keys for purposes other than authentication.</p>
 
 <h2 id="access-control">Access Control</h2>
 
-<h3 id="wac"><a></a>Web Access Control</h3>
+
+
+<h3 id="web-access-control"><a></a>Web Access Control</h3>
 
 <p>Web Access Control (WAC) is a decentralized system that allows different users and groups various forms of access to resources where users and groups are identified by HTTP URIs. The system is similar to the access control system used within many file systems except that the documents controlled, the users and the groups are all identified by URIs. Users are identified by WebIDs. Groups of users are identified by the URI of a class of users which, if you look it up, returns a list of users in the class. This means a WebID hosted by any server can be a member of a group hosted some other server.</p>
 

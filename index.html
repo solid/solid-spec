@@ -81,7 +81,7 @@ Allow: OPTIONS, HEAD, GET, PATCH, POST, PUT, MKCOL, DELETE, COPY, MOVE, LOCK, UN
 
 
 
-<h3 id="creating-new-resources">Creating new resources</h3>
+<h3 id="creating-new-resources"><a></a>Creating new resources</h3>
 
 <p>When creating new resources (directories or documents) using LDP, the client must indicate the type of the new resource that is going to be created. LDP uses Link headers with specific URI values, which in turn can be dereferenced to obtain additional information about each type of resource. Currently, our LDP implementation supports only <a href="http://www.w3.org/TR/ldp/#ldpbc">Basic Containers</a>.</p>
 
@@ -128,6 +128,29 @@ Allow: OPTIONS, HEAD, GET, PATCH, POST, PUT, MKCOL, DELETE, COPY, MOVE, LOCK, UN
 <p>RESPONSE:</p>
 
 <pre class="prettyprint"><code class=" hljs http"><span class="hljs-status">HTTP/1.1 <span class="hljs-number">201</span> Created</span></code></pre>
+
+<p>More examples can be found in the LDP <a href="http://www.w3.org/TR/ldp-primer/">Primer document</a>.</p>
+
+<p>An alternative, though not standard way of creating new resources is to use HTTP PUT. Although HTTP PUT is commonly used to overwrite resources, this way is usually preferred when creating new non-RDF resources (i.e. using a mime type different than <em>text/turtle</em>).</p>
+
+<p>REQUEST:</p>
+
+<pre class="prettyprint"><code class=" hljs r">PUT / HTTP/<span class="hljs-number">1.1</span>
+Host: example.org
+Content-Type: image/jpeg
+<span class="hljs-keyword">...</span></code></pre>
+
+<p>RESPONSE :</p>
+
+<pre class="prettyprint"><code class=" hljs http"><span class="hljs-status">HTTP/1.1 <span class="hljs-number">201</span> Created</span></code></pre>
+
+<h4 id="handling-metadata-for-non-rdf-resources">Handling metadata for non-RDF resources</h4>
+
+<p>The metadata (i.e. extra RDF triples such as types, titles, comments, etc.) about non-RDF resources (e.g. containers, images, binaries, etc.) will be stored in a corresponding <em>meta</em> resources. SoLiD servers use a specific naming convention when referring to these meta resources. Basically, every non-RDF resource may have a corresponding metadata resource, with a name composed of the resource’s name together with a <strong>.meta</strong> suffix.</p>
+
+<p>For example, the corresponding metadata resource for the newly created container will be accessible through this URI: <code>http://example.org/data/.meta</code>. Alternatively, the photo at <code>http://example.org/data/image.jpg</code> will have it’s metadata stored in <code>http://example.org/data/image.jpg.meta</code>.</p>
+
+<p>Metadata resources are a “special” type of resources, which are not publicly listed by the server when browsing files (typically when doing a GET on an LDP container). However, they can still be modified by client apps using the methods described in this section. The corresponding metadata resources are advertised and can be discovered when doing HTTP GET/HEAD on regular resources, as mentioned before.</p>
 
 <h2 id="reading-and-writing-data-using-sparql">Reading and writing data using SPARQL</h2>
 
@@ -233,16 +256,14 @@ Allow: OPTIONS, HEAD, GET, PATCH, POST, PUT, MKCOL, DELETE, COPY, MOVE, LOCK, UN
 
 <h4 id="client-server-api">Client - server API</h4>
 
-<p>The signup component requires that servers implement a very simple API, indicating whether an account name is available or not on the server. Clients (i.e. the signup component) send an HTTP POST request containing the following JSON structure, where <em>accountName</em> contains the target account name (e.g. user):</p>
+<p>SoLiD-compliant servers must implement a very simple API, indicating whether an account name is available or not on the server. Clients (e.g. the signup Web component) send an HTTP POST request containing the following JSON structure, where <em>accountName</em> contains the target account name (e.g. a preferred username):</p>
 
 <pre class="prettyprint"><code class=" hljs css"><span class="hljs-rules">{
     <span class="hljs-rule"><span class="hljs-attribute">method</span>:<span class="hljs-value">      <span class="hljs-string">"accountStatus"</span>,
-    accountName: <span class="hljs-string">"user"</span>
+    accountName: <span class="hljs-string">"alice"</span>
 </span></span></span>}</code></pre>
 
 <p>The server response has to contain the following JSON structure:</p>
-
-
 
 <pre class="prettyprint"><code class=" hljs css"><span class="hljs-rules">{
     <span class="hljs-rule"><span class="hljs-attribute">method</span>:<span class="hljs-value">   <span class="hljs-string">"accountStatus"</span>,
@@ -273,7 +294,7 @@ Allow: OPTIONS, HEAD, GET, PATCH, POST, PUT, MKCOL, DELETE, COPY, MOVE, LOCK, UN
 
 <h3 id="personal-data-workspaces">Personal data workspaces</h3>
 
-<p>Upon account creation, a series of dedicated LDP containers (i.e. workspaces) are created in the user’s data space, together with their corresponding ACL resources. At the moment, the list is contains the following workspaces:</p>
+<p>Upon account creation, a series of dedicated workspaces (i.e. LDP containers) are created in the user’s data space, together with their corresponding ACL resources. At the moment, the list contains the following workspaces:</p>
 
 <ul>
 <li>Public</li>
@@ -312,26 +333,14 @@ Allow: OPTIONS, HEAD, GET, PATCH, POST, PUT, MKCOL, DELETE, COPY, MOVE, LOCK, UN
 
 <h3 id="web-access-control"><a></a>Web Access Control</h3>
 
-<p>Here is an example of an LDP request to create a new container in an existing one (i.e. /data/):</p>
+<p>Web Access Control (WAC) is a decentralized system that allows different users and groups various forms of access to resources where users and groups are identified by HTTP URIs. The system is similar to the access control system used within many file systems except that the documents controlled, the users and the groups are all identified by URIs. Users are identified by WebIDs. Groups of users are identified by the URI of a class of users which, if you look it up, returns a list of users in the class. This means a WebID hosted by any server can be a member of a group hosted some other server.</p>
 
-<p>REQUEST:</p>
+<p><strong>IMPORTANT:</strong> Users do not need to have an account (i.e. WebID) on a given server to have access to documents on it.</p>
 
+<p>Same as for metadata resources, ACL resources are not publicly listed by the server when browsing files (typically when doing a GET on an LDP container). However, they can still be read/written by client apps using the above mentioned ways of writing data. The corresponding ACL resources are advertised and can be discovered when doing HTTP GET/HEAD on regular resources.</p>
 
+<p>Similar to the metadata resource naming convention, SoLiD servers use a specific naming convention for ACL resources. This convention relies on appending a <strong>.acl</strong> suffix to its corresponding resource.</p>
 
-<pre class="prettyprint"><code class=" hljs http"><span class="hljs-request">POST <span class="hljs-string">/data/</span> HTTP/1.1</span>
-<span class="hljs-attribute">Host</span>: <span class="hljs-string">example.org</span>
-<span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">text/turtle</span>
-<span class="hljs-attribute">Slug</span>: <span class="hljs-string">contacts</span>
-<span class="hljs-attribute">Link</span>: <span class="hljs-string">&lt;http://www.w3.org/ns/ldp#BasicContainer&gt;; rel="type"</span>
+<p>For example, the container <code>http://example.org/data/</code> will have a corresponding ACL resource with the URI: <code>http://example.org/data/.acl</code>. A resource <code>http://example.org/data/test</code> will have a corresponding ACL resource at <code>http://example.org/data/test.acl</code></p>
 
-<span class="css">&lt;&gt;  <span class="hljs-tag">a</span> <span class="hljs-tag">ldp</span><span class="hljs-pseudo">:BasicContainer</span>;
-    <span class="hljs-tag">dc</span><span class="hljs-pseudo">:title</span> "<span class="hljs-tag">Contacts</span> <span class="hljs-tag">container</span>" .</span></code></pre>
-
-<p>RESPONSE:</p>
-
-
-
-<pre class="prettyprint"><code class=" hljs http"><span class="hljs-status">HTTP/1.1 <span class="hljs-number">201</span> Created</span>
-<span class="hljs-attribute">Location</span>: <span class="hljs-string">https://example.org/data/contacts/</span>
-<span class="hljs-attribute">Link</span>: <span class="hljs-string">&lt;https://example.org/data/contacts/.acl&gt;; rel=acl</span>
-<span class="hljs-attribute">Link</span>: <span class="hljs-string">&lt;https://example.org/data/contacts/.meta&gt;; rel=meta</span></code></pre>
+<p>More information on Web Access Control can be found here: <a href="https://www.w3.org/wiki/WebAccessControl">https://www.w3.org/wiki/WebAccessControl</a>.</p>

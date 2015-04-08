@@ -29,7 +29,7 @@ body {
 <li><a href="#web-access-control">WebAccessControl</a></li>
 </ul>
 
-<h2 id="rdf"><a></a>RDF</h2>
+<h2 id="rdf">RDF</h2>
 
 <p>The Resource Description Framework (RDF) is a framework for representing information in the Web [<a href="http://www.w3.org/TR/rdf11-concepts/">RDF1.1</a>], originally designed as a graph-based data model, where the core structure of the abstract syntax is a set of triples, each consisting of a subject, a predicate and an object.</p>
 
@@ -41,7 +41,7 @@ body {
 
 <p>For this precise reason, we decided to use a fairly recent spec proposed by the W3C, called Linked Data Platform. </p>
 
-<p><a></a>The <a href="http://www.w3.org/TR/ldp/">LDP specification</a> defines a set of rules for HTTP operations on Web resources, some based on RDF, to provide an architecture for reading and writing Linked Data on the Web. The most important feature of LDP is that it provides us with a standard way of RESTfully writing resources (documents) on the Web, without having to rely on less flexible conventions (APIs) based around sending form-encoded data using POST.</p>
+<p>The <a href="http://www.w3.org/TR/ldp/">LDP specification</a> defines a set of rules for HTTP operations on Web resources, some based on RDF, to provide an architecture for reading and writing Linked Data on the Web. The most important feature of LDP is that it provides us with a standard way of RESTfully writing resources (documents) on the Web, without having to rely on less flexible conventions (APIs) based around sending form-encoded data using POST.</p>
 
 <p>To find out how LDP works, you can take a look at the examples in the LDP <a href="http://www.w3.org/TR/ldp-primer/">Primer document</a>. </p>
 
@@ -93,7 +93,7 @@ Allow: OPTIONS, HEAD, GET, PATCH, POST, PUT, MKCOL, DELETE, COPY, MOVE, LOCK, UN
 
 
 
-<h3 id="creating-new-resources"><a></a>Creating new resources</h3>
+<h3 id="creating-new-resources">Creating new resources</h3>
 
 <p>When creating new resources (directories or documents) using LDP, the client must indicate the type of the new resource that is going to be created. LDP uses Link headers with specific URI values, which in turn can be dereferenced to obtain additional information about each type of resource. Currently, our LDP implementation supports only <a href="http://www.w3.org/TR/ldp/#ldpbc">Basic Containers</a>.</p>
 
@@ -316,11 +316,9 @@ socket.onmessage = <span class="hljs-function"><span class="hljs-keyword">functi
 
 <p>@@@TODO </p>
 
-<h2 id="identity-management-based-on-webid"><a></a>Identity management based on WebID</h2>
+<h2 id="identity-management-based-on-webid">Identity management based on WebID</h2>
 
 <p>Identity management as well as unique identifiers are the core of any social system. SoLiD uses <a href="http://www.w3.org/2005/Incubator/webid/spec/identity/">WebID</a>, an HTTP(S) URI, to uniquely refer to users (people or agents). The advantage of WebID is that the URI can be dereferenced to a WebID profile document, in order to reveal useful information about the user. Also, since WebID profiles can be hosted anywhere (including your basement server), users are no longer trapped inside Identity Provider Silos (e.g. Twitter, Facebook, Google+, etc.).</p>
-
-
 
 <h3 id="creating-new-accounts">Creating new accounts</h3>
 
@@ -401,7 +399,7 @@ socket.onmessage = <span class="hljs-function"><span class="hljs-keyword">functi
 
 
 
-<h3 id="webid-tls"><a></a>WebID-TLS</h3>
+<h3 id="webid-tls">WebID-TLS</h3>
 
 <p>The WebID-TLS protocol (<a href="http://www.w3.org/2005/Incubator/webid/spec/tls/">W3C draft</a>) enables secure, efficient authentication on the Web. It enables users to authenticate onto any site by simply choosing one of the certificates proposed to them by their browser. These certificates can be created by any Web Site for any purpose. A user may have multiple client certificates, bound to one or multiple WebIDs.</p>
 
@@ -411,9 +409,7 @@ socket.onmessage = <span class="hljs-function"><span class="hljs-keyword">functi
 
 <p>More information on WebID-TLS can be found here: <a href="http://www.w3.org/2005/Incubator/webid/spec/tls/">http://www.w3.org/2005/Incubator/webid/spec/tls/</a>.</p>
 
-
-
-<h3 id="webid-rsa"><a></a>WebID-RSA</h3>
+<h3 id="webid-rsa">WebID-RSA</h3>
 
 <p>WebID-RSA is somehow similar to WebID-TLS, in that a public RSA key is published in the WebID profile, and the user will sign a token with the corresponding private key that matches the public key in the profile.</p>
 
@@ -424,8 +420,6 @@ socket.onmessage = <span class="hljs-function"><span class="hljs-keyword">functi
 <p>First, the client attempts to access a protected resource at <code>https://example.org/data/</code>.</p>
 
 <p>REQUEST:</p>
-
-
 
 <pre class="prettyprint"><code class=" hljs http"><span class="hljs-request">GET <span class="hljs-string">/data/</span> HTTP/1.1</span>
 <span class="hljs-attribute">Host</span>: <span class="hljs-string">example.org</span></code></pre>
@@ -461,7 +455,7 @@ socket.onmessage = <span class="hljs-function"><span class="hljs-keyword">functi
 
 
 
-<h3 id="web-access-control"><a></a>Web Access Control</h3>
+<h3 id="web-access-control">Web Access Control</h3>
 
 <p>Web Access Control (WAC) is a decentralized system that allows different users and groups various forms of access to resources where users and groups are identified by HTTP URIs. The system is similar to the access control system used within many file systems except that the documents controlled, the users and the groups are all identified by URIs. Users are identified by WebIDs. Groups of users are identified by the URI of a class of users which, if you look it up, returns a list of users in the class. This means a WebID hosted by any server can be a member of a group hosted some other server.</p>
 

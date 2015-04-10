@@ -1,4 +1,6 @@
 # SoLiD - Social Linked Data platform
+
+[![Join the chat at https://gitter.im/linkeddata/SoLiD](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/linkeddata/SoLiD?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 This document contains design notes on individual components used by SoLiD. They are intended to be a guide for developers who plan to build social linked data servers and applications.
 
 SoLiD was designed from the ground up to be modular and openly extensible. It relies as much as possible on existing [W3C](http://www.w3.org/) standards. Among the technologies it uses, you can find:

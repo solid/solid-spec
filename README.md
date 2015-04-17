@@ -101,6 +101,8 @@ https://example.org/space/foo.exe  text/html     /home/user/data/foo.exe$.html
 
 As you might have noticed, if a resource has an extension that doesn't match the Content-Type value, the server will append the right extension while adding an otherwise forbidden character (i.e. `$`) between the "real" resource name and the extension -- i.e. foo.exe$.html
 
+Timbl's [DesignIssues](http://www.w3.org/DesignIssues/HTTPFilenameMapping.html) document has more details on this matter.
+
 ### Creating new resources
 When creating new resources (directories or documents) using LDP, the client must indicate the type of the new resource that is going to be created. LDP uses Link headers with specific URI values, which in turn can be dereferenced to obtain additional information about each type of resource. Currently, our LDP implementation supports only [Basic Containers](http://www.w3.org/TR/ldp/#ldpbc).
 

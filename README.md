@@ -70,6 +70,37 @@ Access-Control-Expose-Headers: User, Triples, Location, Link, Vary, Last-Modifie
 Allow: OPTIONS, HEAD, GET, PATCH, POST, PUT, MKCOL, DELETE, COPY, MOVE, LOCK, UNLOCK
 ```
 
+### Resource naming / filename mapping
+Since SoLiD tries to stay as close as possible to POSIX, a very important aspect to consider revolves around keeping the namespaces consistent across both the Web and local file systems.
+
+We managed to come up with three basic rules:
+
+ 1. The filenames and URIs should directly correspond -- so that links work on both spaces -- i.e. `https://example.org/data/foo.html`	maps to `/home/user/data/foo.html`
+ 2. A web-side user should be able to PUT a file with any URI they like onto the server
+ 3. Within `file:` space the extensions match the actual type of the files
+
+Respecting all three rules at the same time is very difficult if not impossible, since they are obviously incompatible. We had to keep in mind that whatever decision we end up taking, we must do so without having to sacrifice the system's security and integrity. 
+
+For example, it would be really bad if users were allowed to PUT `https://example.org/data/foo.exe` using Content-Type `text/html`, which is what happens if we respect *Rule 3*. To fix this security issue, the server could append the right extension based on the Content-Type value:
+
+```
+URI on the web                    Content type	Filename on the system
+https://example.org/space/foo.exe text/html     /home/user/data/foo.exe.html
+```
+
+However, this means breaking *Rule 1*, since the namespaces are no longer consistent. Another solution would be to outright block "unsafe" extensions, but this means that we won't respect *Rule 2* anymore.
+
+We managed to find a sweet spot which covers 2.5 out of the 3 rules, slightly bending the 1st one. Basically the first rule becomes: "1. **Some** filenames and URIs should directly correspond". Here is what we came up with.
+
+```
+URI on the web                     Content type	 Filename on the system
+https://example.org/space/foo.html text/html     /home/user/data/foo.html
+https://example.org/space/foo.bar  text/html     /home/user/data/foo.bar$.html
+https://example.org/space/foo.exe  text/html     /home/user/data/foo.exe$.html
+```
+
+As you might have noticed, if a resource has an extension that doesn't match the Content-Type value, the server will append the right extension while adding an otherwise forbidden character (i.e. `$`) between the "real" resource name and the extension -- i.e. foo.exe$.html
+
 ### Creating new resources
 When creating new resources (directories or documents) using LDP, the client must indicate the type of the new resource that is going to be created. LDP uses Link headers with specific URI values, which in turn can be dereferenced to obtain additional information about each type of resource. Currently, our LDP implementation supports only [Basic Containers](http://www.w3.org/TR/ldp/#ldpbc).
 

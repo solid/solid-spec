@@ -4,7 +4,7 @@
 
 ## Table of contents
 
- 1. [Intro](#intro)
+ 1. [Quick intro](#intro)
  2. [RDF](#rdf)
  3. [Reading and writing data using LDP](#reading-and-writing-data-using-ldp)
  4. [Reading and writing data using SPARQL](#reading-and-writing-data-using-sparql)
@@ -16,19 +16,11 @@
  10. [Software implementing SoLiD](#software-implementing-solid)
 
 
-## Intro
+## Quick Intro
 
 This document contains design notes on individual components used by SoLiD. They are intended to be a guide for developers who plan to build social linked data servers and applications.
 
-SoLiD was designed from the ground up to be modular and openly extensible. It relies as much as possible on existing [W3C](http://www.w3.org/) standards. Among the technologies it uses, you can find:
-
- - [RDF](#rdf)
- - [LDP](#reading-and-writing-data-using-ldp)
- - [Websockets](#websockets)
- - [WebID](#identity-management-based-on-webid)
- - [WebID-TLS](#webid-tls)
- - [WebID-RSA](#webid-rsa)
- - [WebAccessControl](#web-access-control)
+SoLiD was designed from the ground up to be modular and openly extensible. It relies as much as possible on existing [W3C](http://www.w3.org/) standards.
 
 ## RDF
 The Resource Description Framework (RDF) is a framework for representing information in the Web [[RDF1.1](http://www.w3.org/TR/rdf11-concepts/)], originally designed as a graph-based data model, where the core structure of the abstract syntax is a set of triples, each consisting of a subject, a predicate and an object.

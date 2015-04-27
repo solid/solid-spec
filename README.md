@@ -5,7 +5,7 @@
 ## Table of contents
 
  1. [Quick intro](#quick-intro)
- 2. [TL;DR example of SoLiD in action](#tldr-example-of-solid-in-action)
+ 2. [TL;DR example of SoLiD in action](#brief-example-of-solid-in-action)
  3. [RDF](#rdf)
  4. [Reading and writing data using LDP](#reading-and-writing-data-using-ldp)
  5. [Reading and writing data using SPARQL](#reading-and-writing-data-using-sparql)
@@ -23,7 +23,7 @@ SoLiD is a proposed set of conventions for building decentralized social applica
 
 SoLiD is modular and extensible. It relies as much as possible on existing [W3C](http://www.w3.org/) standards.
 
-##Brief Example of SoLiD in Action
+## Brief Example of SoLiD in Action
 
 This example is taken from W3C's [Social Web WG](http://www.w3.org/wiki/Socialwg/) user stories, where it is called ["user posts a note"](http://www.w3.org/wiki/Socialwg/Social_API/User_stories#User_posts_a_note):
 
@@ -477,14 +477,14 @@ More information on Web Access Control can be found here: https://www.w3.org/wik
 
 # Software implementing SoLiD
 ## Servers
- - gold -- https://github.com/linkeddata/gold
- - ldphp **[not maintained]** -- https://github.com/linkeddata/ldphp
- - ld-node [partial support] -- https://github.com/linkeddata/node-ldp-httpd
- - meccano [partial support] -- https://github.com/Qatar-Computing-Research-Institute/qcri-crosscloudP/tree/meccano
 
-Server | LDP | Cors | WebID | WebAccessControl   
--------|-----|------|-------|------------------
-[rww-play](https://github.com/read-write-web/rww-play)|Basic Containers, file storage, SEARCH|Proxy|TLS|yes
+Name | Maintained | LDP | Cors | WebID provider | WebID-TLS | WebID-RSA | WebAccessControl   
+-----|------------|-----|------|----------------|-----------|-----------|-----------------
+[rww-play](https://github.com/read-write-web/rww-play)|Yes|Basic Containers, file storage, SEARCH|Proxy|Yes|Yes|No|Yes
+[gold](https://github.com/linkeddata/gold)|Yes|Basic Containers, file storage|Proxy|Yes|Yes|Yes|Yes
+[ldphp](https://github.com/linkeddata/ldphp)|No|Basic Containers, file storage|Proxy|Yes|Yes|No|Yes
+[ld-node](https://github.com/linkeddata/node-ldp-httpd)|Yes|In progress, file storage|N/A|Yes|Yes|No|Yes
+[meccano](https://github.com/Qatar-Computing-Research-Institute/qcri-crosscloudP/tree/meccano)|Yes|Basic Containers (adaptor), SPARQL store|No|No|No|No|Partial
 
 ## Applications
  - Warp -- https://github.com/linkeddata/warp

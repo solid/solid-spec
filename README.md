@@ -34,7 +34,7 @@ Here is how SoLiD would handle the three steps, using [curl](http://curl.haxx.se
 
 1) Eric writes a short note to be shared with his followers. The *Slug* header is optional but useful for controlling the URI namespace.
 ```
-curl -H"Content-Type: text/turtle" -H"Slug: social-web-2015" -X POST --data '@prefix as: <http://www.w3.org/ns/activitystreams#>. <> a as:Note; as:content "Foo".  "Going to Social Web WG".' https://eric.example.org/notes/
+curl -H"Content-Type: text/turtle" -H"Slug: social-web-2015" -X POST --data 'PREFIX as: <http://www.w3.org/ns/activitystreams#>. <> a as:Note; as:content "Going to Social Web WG".' https://eric.example.org/notes/
 ```
 
 The URI of the new note can be found in the *Location* header returned by the server: https://user.example.org/notes/social-web-2015

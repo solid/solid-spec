@@ -428,6 +428,10 @@ More information on Web Access Control can be found here: https://www.w3.org/wik
  - ld-node [partial support] -- https://github.com/linkeddata/node-ldp-httpd
  - meccano [partial support] -- https://github.com/Qatar-Computing-Research-Institute/qcri-crosscloudP/tree/meccano
 
+Server | LDP | Cors | WebID | WebAccessControl   
+-------|-----|------|-------|------------------
+[rww-play](https://github.com/read-write-web/rww-play)|Basic Containers, file storage, SEARCH|Proxy|TLS|yes
+
 ## Applications
  - Warp -- https://github.com/linkeddata/warp
  - Profile editor -- https://github.com/linkeddata/profile-editor

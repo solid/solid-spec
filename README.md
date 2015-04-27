@@ -43,19 +43,21 @@ The URI of the new note can be found in the *Location* header returned by the se
 
 Using HTTP PUT:
 ```
-curl -H"Content-Type: text/turtle" -X PUT --data "<> <http://www.w3.org/2004/02/skos/core#note> "Going to Social Web WG in Paris" ." https://user.example.org/notes/social-web-2015
+curl -H"Content-Type: text/turtle" -X PUT --data "<> <http://example.com/#note> "Going to Social Web WG in Paris" ." https://eric.example.org/notes/social-web-2015
 ```
 
 or using HTTP PATCH with SPARQL:
 
 ```
-curl -H"Content-Type: application/sparql-update" -X PATCH --data "DELETE DATA { <> <http://www.w3.org/2004/02/skos/core#note> "Going to Social WG" . }; INSERT DATA { <> <http://www.w3.org/2004/02/skos/core#note> "Going to Social Web WG in Paris" . } " https://user.example.org/notes/social-web-2015
+curl -H"Content-Type: application/sparql-update" -X PATCH --data "DELETE DATA { <> <http://example.com/#note> "Going to Social WG" . }; INSERT DATA { <> <http://example.com/#note> "Going to Social Web WG in Paris" . } " https://eric.example.org/notes/social-web-2015
 ```
+
+While repeating the triple in the DELETE statement does add extra redundancy, it makes sure that a match is found for that specific note. If no match is found, the request fails.
 
 3) Later, Eric decides that the information in the note is incorrect. He deletes the note.
 
 ```
-curl -X DELETE https://user.example.org/notes/social-web-2015
+curl -X DELETE https://eric.example.org/notes/social-web-2015
 ```
 
 As you might have noticed, all three actions have been performed through RESTful HTTP requests.

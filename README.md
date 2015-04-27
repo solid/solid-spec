@@ -19,11 +19,12 @@
 
 ## Quick Intro
 
-This document contains design notes on individual components used by SoLiD. They are intended to be a guide for developers who plan to build social linked data servers and applications.
+SoLiD is a proposed set of conventions for building decentralized social applications on the Linked Data stack.  This document contains design notes on the individual components used, intended to be a guide for developers who plan to build servers or applications.
 
-SoLiD was designed from the ground up to be modular and openly extensible. It relies as much as possible on existing [W3C](http://www.w3.org/) standards.
+SoLiD is modular and extensible. It relies as much as possible on existing [W3C](http://www.w3.org/) standards.
 
-##TL;DR example of SoLiD in action
+##Brief Example of SoLiD in Action
+
 This example is taken from W3C's [Social Web WG](http://www.w3.org/wiki/Socialwg/) user stories, where it is called ["user posts a note"](http://www.w3.org/wiki/Socialwg/Social_API/User_stories#User_posts_a_note):
 
  1. Eric writes a short note to be shared with his followers.
@@ -32,27 +33,27 @@ This example is taken from W3C's [Social Web WG](http://www.w3.org/wiki/Socialwg
 
 Here is how SoLiD would handle the three steps, using [curl](http://curl.haxx.se/) as the client application:
 
-1) Eric writes a short note to be shared with his followers. The *Slug* header is optional but useful for controlling the URI namespace.
+1) Eric writes a short note to be shared with his followers. The *Slug* header is optional but useful for controlling the resulting URL.
 ```
 curl -H"Content-Type: text/turtle" -H"Slug: social-web-2015" -X POST --data 'PREFIX as: <http://www.w3.org/ns/activitystreams#>. <> a as:Note; as:content "Going to Social Web WG".' https://eric.example.org/notes/
 ```
 
-The URI of the new note can be found in the *Location* header returned by the server: https://user.example.org/notes/social-web-2015
+The URL of the new note can be found in the *Location* header returned by the server.  In this example it is likely to be: https://eric.example.org/notes/social-web-2015
 
-2) After posting the note, he notices a spelling error. He edits the note and re-posts it. SoLiD handles updates in two different ways: PUT (overwrite) or PATCH with *sparql-update* content type.
+2) After posting the note, he notices a spelling error. He edits the note and re-posts it. SoLiD servers can handle updates in two different ways: PUT (overwrite) or PATCH with *sparql-update* content type.
 
-Using HTTP PUT:
+Use HTTP PUT, when you just want to replace the data:
 ```
-curl -H"Content-Type: text/turtle" -X PUT --data "<> <http://example.com/#note> "Going to Social Web WG in Paris" ." https://eric.example.org/notes/social-web-2015
-```
-
-or using HTTP PATCH with SPARQL:
-
-```
-curl -H"Content-Type: application/sparql-update" -X PATCH --data "DELETE DATA { <> <http://example.com/#note> "Going to Social WG" . }; INSERT DATA { <> <http://example.com/#note> "Going to Social Web WG in Paris" . } " https://eric.example.org/notes/social-web-2015
+curl -H"Content-Type: text/turtle" -X PUT --data 'PREFIX as: <http://www.w3.org/ns/activitystreams#>. <> a as:Note; as:content "Going to Social Web WG in Paris".' https://eric.example.org/notes/social-web-2015
 ```
 
-While repeating the triple in the DELETE statement does add extra redundancy, it makes sure that a match is found for that specific note. If no match is found, the request fails.
+Or you can use HTTP PATCH with SPARQL if you only want to change certain parts of the resource, leaving the others unchanged (perhaps because other applications are modifying them):
+
+```
+curl -H"Content-Type: application/sparql-update" -X PATCH --data "DELETE DATA { <> <http://www.w3.org/ns/activitystreams#content> "Going to Social WG" . }; INSERT DATA { <> <http://www.w3.org/ns/activitystreams#content> "Going to Social Web WG in Paris" . } " https://eric.example.org/notes/social-web-2015
+```
+
+If no match is found for the triple to DELETE, the request safely aborts without changing any data.
 
 3) Later, Eric decides that the information in the note is incorrect. He deletes the note.
 
@@ -60,7 +61,9 @@ While repeating the triple in the DELETE statement does add extra redundancy, it
 curl -X DELETE https://eric.example.org/notes/social-web-2015
 ```
 
-As you might have noticed, all three actions have been performed through RESTful HTTP requests.
+Note that all three actions have been performed through RESTful HTTP requests.
+
+In these example, data was sent to the server using text/turtle (which is mandated in LDP), but other content types (such as JSON-LD) could be used if implemented by servers.
 
 ## RDF
 The Resource Description Framework (RDF) is a framework for representing information in the Web [[RDF1.1](http://www.w3.org/TR/rdf11-concepts/)], originally designed as a graph-based data model, where the core structure of the abstract syntax is a set of triples, each consisting of a subject, a predicate and an object.

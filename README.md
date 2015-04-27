@@ -22,6 +22,43 @@ This document contains design notes on individual components used by SoLiD. They
 
 SoLiD was designed from the ground up to be modular and openly extensible. It relies as much as possible on existing [W3C](http://www.w3.org/) standards.
 
+##TL;DR example of SoLiD in action
+This example is taken from W3C's [Social Web WG](http://www.w3.org/wiki/Socialwg/) user stories, where it is called ["user posts a note"](http://www.w3.org/wiki/Socialwg/Social_API/User_stories#User_posts_a_note):
+
+ 1. Eric writes a short note to be shared with his followers.
+ 2. After posting the note, he notices a spelling error. He edits the note and re-posts it.
+ 3. Later, Eric decides that the information in the note is incorrect. He deletes the note.
+
+Here is how SoLiD would handle the three steps, using *[curl](http://curl.haxx.se/)* as the client application:
+
+1) Eric writes a short note to be shared with his followers. The *Slug* header is optional but useful for controlling the URI namespace.
+```
+curl -H"Content-Type: text/turtle" -H"Slug: social-web-2015" -X POST --data "<> <http://www.w3.org/2004/02/skos/core#note> "Going to Social Web WG" ." https://user.example.org/notes/
+```
+
+The URI of the new note can be found in the *Location* header returned by the server: https://user.example.org/notes/social-web-2015
+
+2) After posting the note, he notices a spelling error. He edits the note and re-posts it. SoLiD handles updates in two different ways: PUT (overwrite) or PATCH with *sparql-update* content type.
+
+Using HTTP PUT:
+```
+curl -H"Content-Type: text/turtle" -X PUT --data "<> <http://www.w3.org/2004/02/skos/core#note> "Going to Social Web WG in Paris" ." https://user.example.org/notes/social-web-2015
+```
+
+or using HTTP PATCH with SPARQL:
+
+```
+curl -H"Content-Type: application/sparql-update" -X PATCH --data "DELETE DATA { <> <http://www.w3.org/2004/02/skos/core#note> "Going to Social WG" . }; INSERT DATA { <> <http://www.w3.org/2004/02/skos/core#note> "Going to Social Web WG in Paris" . } " https://user.example.org/notes/social-web-2015
+```
+
+3) Later, Eric decides that the information in the note is incorrect. He deletes the note.
+
+```
+curl -X DELETE https://user.example.org/notes/social-web-2015
+```
+
+As you might have noticed, all three actions have been performed through RESTful HTTP requests.
+
 ## RDF
 The Resource Description Framework (RDF) is a framework for representing information in the Web [[RDF1.1](http://www.w3.org/TR/rdf11-concepts/)], originally designed as a graph-based data model, where the core structure of the abstract syntax is a set of triples, each consisting of a subject, a predicate and an object.
 
@@ -205,6 +242,10 @@ HTTP/1.1 200 OK
   }
 }
 ```
+
+### Globbing
+
+@@TODO
 
 ### Writing/deleting data using SPARQL
 To write data, clients can send an HTTP PATCH request with a SPARQL payload to the resource in question. If the resource doesn't exist, it should be created through an LDP POST or through a PUT.

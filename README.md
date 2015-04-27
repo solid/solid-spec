@@ -29,7 +29,7 @@ This example is taken from W3C's [Social Web WG](http://www.w3.org/wiki/Socialwg
  2. After posting the note, he notices a spelling error. He edits the note and re-posts it.
  3. Later, Eric decides that the information in the note is incorrect. He deletes the note.
 
-Here is how SoLiD would handle the three steps, using *[curl](http://curl.haxx.se/)* as the client application:
+Here is how SoLiD would handle the three steps, using [curl](http://curl.haxx.se/) as the client application:
 
 1) Eric writes a short note to be shared with his followers. The *Slug* header is optional but useful for controlling the URI namespace.
 ```

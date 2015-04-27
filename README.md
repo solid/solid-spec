@@ -5,6 +5,7 @@
 ## Table of contents
 
  1. [Quick intro](#intro)
+ 2. [TL;DR example of SoLiD in action](#tldr-example-of-solid-in-action)
  2. [RDF](#rdf)
  3. [Reading and writing data using LDP](#reading-and-writing-data-using-ldp)
  4. [Reading and writing data using SPARQL](#reading-and-writing-data-using-sparql)

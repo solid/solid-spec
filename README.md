@@ -6,15 +6,15 @@
 
  1. [Quick intro](#intro)
  2. [TL;DR example of SoLiD in action](#tldr-example-of-solid-in-action)
- 2. [RDF](#rdf)
- 3. [Reading and writing data using LDP](#reading-and-writing-data-using-ldp)
- 4. [Reading and writing data using SPARQL](#reading-and-writing-data-using-sparql)
- 5. [CORS](#cors---cross-origin-resource-sharing)
- 6. [Live updates](#live-updates)
- 7. [Identity management](#identity-management-based-on-webid)
- 8. [Authentication](#authentication)
- 9. [Access control](#access-control)
- 10. [Software implementing SoLiD](#software-implementing-solid)
+ 3. [RDF](#rdf)
+ 4. [Reading and writing data using LDP](#reading-and-writing-data-using-ldp)
+ 5. [Reading and writing data using SPARQL](#reading-and-writing-data-using-sparql)
+ 6. [CORS](#cors---cross-origin-resource-sharing)
+ 7. [Live updates](#live-updates)
+ 8. [Identity management](#identity-management-based-on-webid)
+ 9. [Authentication](#authentication)
+ 10. [Access control](#access-control)
+ 11. [Software implementing SoLiD](#software-implementing-solid)
 
 
 ## Quick Intro

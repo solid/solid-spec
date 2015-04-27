@@ -4,7 +4,7 @@
 
 ## Table of contents
 
- 1. [Quick intro](#intro)
+ 1. [Quick intro](#quick-intro)
  2. [TL;DR example of SoLiD in action](#tldr-example-of-solid-in-action)
  3. [RDF](#rdf)
  4. [Reading and writing data using LDP](#reading-and-writing-data-using-ldp)

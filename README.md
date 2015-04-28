@@ -478,8 +478,8 @@ More information on Web Access Control can be found here: https://www.w3.org/wik
 # Software implementing SoLiD
 ## Servers
 
-Name | Maintained | LDP | Cors | WebID provider | WebID-TLS | WebID-RSA | WebID-Delegation | WebAccessControl   
------|------------|-----|------|----------------|-----------|-----------|------------------|-----------------
+Name | Maintained | LDP | Cors | WebID provider | WebID-TLS | WebID-RSA | WebID-Delegation | WAC   
+-----|------------|-----|------|----------------|-----------|-----------|------------------|----
 [rww-play](https://github.com/read-write-web/rww-play)|Yes|Basic Containers, file storage, SEARCH|Proxy|Yes|Yes|No|N/A|Yes
 [gold](https://github.com/linkeddata/gold)|Yes|Basic Containers, file storage|Proxy|Yes|Yes|Yes|Yes|Yes
 [ldphp](https://github.com/linkeddata/ldphp)|No|Basic Containers, file storage|Proxy|Yes|Yes|No|No|Yes

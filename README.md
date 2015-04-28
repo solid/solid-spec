@@ -478,13 +478,13 @@ More information on Web Access Control can be found here: https://www.w3.org/wik
 # Software implementing SoLiD
 ## Servers
 
-Name | Maintained | LDP | Cors | WebID provider | WebID-TLS | WebID-RSA | WebAccessControl   
------|------------|-----|------|----------------|-----------|-----------|-----------------
-[rww-play](https://github.com/read-write-web/rww-play)|Yes|Basic Containers, file storage, SEARCH|Proxy|Yes|Yes|No|Yes
-[gold](https://github.com/linkeddata/gold)|Yes|Basic Containers, file storage|Proxy|Yes|Yes|Yes|Yes
-[ldphp](https://github.com/linkeddata/ldphp)|No|Basic Containers, file storage|Proxy|Yes|Yes|No|Yes
-[ld-node](https://github.com/linkeddata/node-ldp-httpd)|Yes|In progress, file storage|N/A|Yes|Yes|No|Yes
-[meccano](https://github.com/Qatar-Computing-Research-Institute/qcri-crosscloudP/tree/meccano)|Yes|Basic Containers (adaptor), SPARQL store|No|No|No|No|Partial
+Name | Maintained | LDP | Cors | WebID provider | WebID-TLS | WebID-RSA | WebID-Delegation | WebAccessControl   
+-----|------------|-----|------|----------------|-----------|-----------|------------------|-----------------
+[rww-play](https://github.com/read-write-web/rww-play)|Yes|Basic Containers, file storage, SEARCH|Proxy|Yes|Yes|No|N/A|Yes
+[gold](https://github.com/linkeddata/gold)|Yes|Basic Containers, file storage|Proxy|Yes|Yes|Yes|Yes|Yes
+[ldphp](https://github.com/linkeddata/ldphp)|No|Basic Containers, file storage|Proxy|Yes|Yes|No|No|Yes
+[ld-node](https://github.com/linkeddata/node-ldp-httpd)|Yes|In progress, file storage|N/A|Yes|Yes|No|No|Yes
+[meccano](https://github.com/Qatar-Computing-Research-Institute/qcri-crosscloudP/tree/meccano)|Yes|Basic Containers (adaptor), SPARQL store|No|No|No|No|No|Partial
 
 ## Applications
  - Warp -- https://github.com/linkeddata/warp

@@ -5,7 +5,7 @@
 ## Table of contents
 
  1. [Quick intro](#quick-intro)
- 2. [TL;DR example of SoLiD in action](#brief-example-of-solid-in-action)
+ 2. [Brief example of SoLiD in action](#brief-example-of-solid-in-action)
  3. [RDF](#rdf)
  4. [Reading and writing data using LDP](#reading-and-writing-data-using-ldp)
  5. [Reading and writing data using SPARQL](#reading-and-writing-data-using-sparql)
@@ -17,13 +17,13 @@
  11. [Software implementing SoLiD](#software-implementing-solid)
 
 
-## Quick Intro
+## Quick intro
 
 SoLiD is a proposed set of conventions for building decentralized social applications on the Linked Data stack.  This document contains design notes on the individual components used, intended to be a guide for developers who plan to build servers or applications.
 
 SoLiD is modular and extensible. It relies as much as possible on existing [W3C](http://www.w3.org/) standards.
 
-## Brief Example of SoLiD in Action
+## Brief example of SoLiD in action
 
 This example is taken from W3C's [Social Web WG](http://www.w3.org/wiki/Socialwg/) user stories, where it is called ["user posts a note"](http://www.w3.org/wiki/Socialwg/Social_API/User_stories#User_posts_a_note):
 

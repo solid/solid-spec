@@ -256,9 +256,22 @@ HTTP/1.1 200 OK
 }
 ```
 
-### Globbing
+### Extensions to LDP
+We have found that in some cases, using the existing LDP features was not enough. For instace, to optimize certain applications we needed to aggregate all resources from a container and retrieve them with a single GET operation. We implemented this feature on the servers and decided to call it "globbing". Simiar to UNIX shell globbing, doing a GET on any URI which ends with a *\** will return an aggregate of all the resources that match the indicated pattern. For instance, if one would like to fetch all resources of a container in one request, they could do a GET on https://example.org/data/\*. The aggregation process is not recursive, therefore it will not apply to children containers.
 
-@@TODO
+Another useful feature that is not yet part of LDP deals with using HTTP PUT to create new resources. This feature is really useful when the clients wants to make sure it has absolute control over the URI namespace -- e.g. migrating from one pod to another. Although this feature is defined in HTTP1.1 [RFC2616](https://tools.ietf.org/html/rfc2616), we decided to improve it slightly by having servers create the full path to the resource, if it didn't exist before. For instance, a calendar app uses a URI pattern (structure) based on dates when storing new events (i.e. yyyy/mm/dd). Instead of performing several POST requests to create a month and a day container when switching to a new month, it could send the following request to create a new event resource called \textit{event1}:
+
+REQUEST:
+```
+PUT /2015/05/01/event1 HTTP/1.1\par
+Host: example.org
+```
+RESPONSE:
+```
+HTTP/1.1 201 Created
+```
+
+This request would then create a new resource called *event1*, as well as the missing month (i.e. 05) and day (i.e. 01) containers under /2015/.
 
 ### Writing/deleting data using SPARQL
 To write data, clients can send an HTTP PATCH request with a SPARQL payload to the resource in question. If the resource doesn't exist, it should be created through an LDP POST or through a PUT.

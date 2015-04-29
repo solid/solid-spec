@@ -122,10 +122,10 @@ HTTP/1.1 200 OK
 Accept-Patch: application/json, application/sparql-update
 Accept-Post: text/turtle, application/ld+json
 Access-Control-Allow-Credentials: true
-Access-Control-Allow-Methods: OPTIONS, HEAD, GET, PATCH, POST, PUT, MKCOL, DELETE, COPY, MOVE, LOCK, UNLOCK
+Access-Control-Allow-Methods: OPTIONS, HEAD, GET, PATCH, POST, PUT, DELETE
 Access-Control-Allow-Origin: *
 Access-Control-Expose-Headers: User, Triples, Location, Link, Vary, Last-Modified, Content-Length
-Allow: OPTIONS, HEAD, GET, PATCH, POST, PUT, MKCOL, DELETE, COPY, MOVE, LOCK, UNLOCK
+Allow: OPTIONS, HEAD, GET, PATCH, POST, PUT, DELETE
 ```
 
 ### Resources names and extensions

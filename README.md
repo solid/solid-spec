@@ -23,6 +23,15 @@ SoLiD is a proposed set of conventions for building decentralized social applica
 
 SoLiD is modular and extensible. It relies as much as possible on existing [W3C](http://www.w3.org/) standards.
 
+SoLiD applications are somewhat like multiuser applications where instances talk to each other through a shared filesystem, and the Web is that filesystem.
+
+Features:
+
+1. Servers are application-agnostic, so that new applications can be developed without needing to modify servers.  For example, even though LDP 1.0 contains nothing specific to "social", many of the SocialWG User Stories can be implemented using only **application logic**, with no need to change code on the server.  The design ideal is to keep a small standard data management core and extend it as necessary to support increasingly powerful classes of applications. 
+2. The basic protocol is REST, as refined by LDP with minor extensions.   New items are created in a *container* (which could be called a collection or directory) by sending them to the container URL with an HTTP POST or issuing an HTTP PUT within its URL space.  Items are updated with HTTP PUT or HTTP PATCH.  Items are removed with HTTP DELETE.  Items are found using HTTP GET and following links.   A GET on the container returns an enumeration of the items in the container.
+3. The data model is RDF.  This means the data can be transmitted in various syntaxes like Turtle, JSON-LD (JSON with a "context"), or RDFa (HTML attributes).  RDF is REST-friendly, using URLs everywhere, and it provides **decentralized extensibility**, so that a set of applications can cooperate in sharing a new kind of data without needing approval from any central authority.
+
+
 ## Brief example of SoLiD in action
 
 This example is taken from W3C's [Social Web WG](http://www.w3.org/wiki/Socialwg/) user stories, where it is called ["user posts a note"](http://www.w3.org/wiki/Socialwg/Social_API/User_stories#User_posts_a_note):

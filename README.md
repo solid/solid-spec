@@ -287,6 +287,8 @@ HTTP/1.1 201 Created
 
 This request would then create a new resource called *event1*, as well as the missing month (i.e. 05) and day (i.e. 01) containers under /2015/.
 
+To avoid accidental overwrites, SoLiD servers must support ETag checking through the use of [If-Match or If-None-Match](https://tools.ietf.org/html/rfc2616#section-14.24) HTTP headers.
+
 ### Writing/deleting data using SPARQL
 To write data, clients can send an HTTP PATCH request with a SPARQL payload to the resource in question. If the resource doesn't exist, it should be created through an LDP POST or through a PUT.
 

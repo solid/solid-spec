@@ -85,7 +85,7 @@ Link: <http://www.w3.org/ns/ldp#Resource>; rel="type"
 
 which on success would return:
 
-```http
+```
 HTTP/1.1 201 Created
 Location: https://kim.name/card
 Link: <card.acl>; rel=acl
@@ -99,7 +99,7 @@ The `<card.acl>` link allows Kim's software agent to find out who has access to 
 For those favoring JSON-LD, the client sends the following content
 which described a graph isomorphic to the one above:
 
-```http
+```
 POST / HTTP/1.1
 Host: kim.name
 Cookie: cryptohash:123cafebabe
@@ -133,7 +133,7 @@ Content-Type: application/ld+json
 
 and receives the following result:
 
-```http
+```
 HTTP/1.1 201 Created
 Location: https://kim.name/card
 Link: <card.acl>; rel=acl
@@ -151,7 +151,7 @@ She can do this either with a PUT which requires re-sending the full document as
 
 PUT is the easiest for the client, as it does not have to calculate a diff between the original version it has and the version it wishes to have. We use If-Match, to make sure we don't override someone elses content.
 
-```http
+```
 PUT /card HTTP/1.1
 Host: kim.name
 Cookie: cryptohash:123cafebabe
@@ -187,7 +187,7 @@ Content-Type: application/ld+json
   }
 }
 ```
-```http
+```
 HTTP/1.1 201 Created
 Location: https://kim.name/card
 Link: <card.acl>; rel=acl
@@ -196,7 +196,7 @@ ETag: "version0"
 
 #### update using PATCH with Sparql-Update
 
-```HTTP
+```
 PATCH /card HTTP/1.1
 Content-Type: application/sparql-update; utf-8
 If-Match: "version0"
@@ -224,7 +224,7 @@ One can also use the W3C Candidate Recommendation [LD Patch](http://www.w3.org/T
 
 Deleting a few triples can be done exactly the same way as above using PUT, so we won't repeat it here. Here is a shorter version using PATCH.
 
-```HTTP
+```
 PATCH /card HTTP/1.1
 Content-Type: application/sparql-update; utf-8
 If-Match: "version0"

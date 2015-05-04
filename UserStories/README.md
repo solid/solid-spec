@@ -19,3 +19,9 @@ A list of stories:
   1. Kim creates a personal profile with her name, avatar picture, and home town.
   2. Kim updates her profile to include her job title, phone number and company name.
   3. Kim reconsiders her personal privacy boundaries; she updates her profile to remove her phone number.
+* [Private Sharing](PrivateSharing.md)
+  1. Ian wants to share a file with Jane
+  2. Ian posts the file file to his site with it set to only show to Jane.
+  3. Jane receives a notice that Ian has shared a file with her.
+  4. Jane views the file and decides to leave a thank you comment on the file for Ian
+

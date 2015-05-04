@@ -1,5 +1,6 @@
 ## Private Sharing
 
+Originally put forward by Ben Roberts ([permalink](https://www.w3.org/wiki/Socialwg/Social_API/User_stories#Private_Sharing)):
 
 > 1. Ian wants to share a file with Jane
 > 2. Ian posts the file file to his site with it set to only show to Jane.

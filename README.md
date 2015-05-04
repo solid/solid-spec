@@ -492,6 +492,29 @@ HTTP/1.1 200 OK
 
 One important advantage of WebID-RSA over WebID-TLS is that the same keys can also be used to sign and encrypt data. The way client certificate management is currently implemented in browsers, it does not offer the means to access the certificate keys for purposes other than authentication.
 
+TODO: Instead of sending the WebID during the response, the client could directly send the URI of the public key that is need in order to verify the claim. For instance, Alice could list public keys in her own profile, using fragment identifiers (e.g. <#key1>):
+
+```
+....
+<#me> cert:key <#key1>, <#key2> .
+
+<#key1> a cert:RSAPublicKey;
+        cert:modulus "00cb24ed85d64d794b..."^^xsd:hexBinary;
+        cert:exponent 65537  .
+```
+
+The client would then send the following response:
+
+```
+GET /data/ HTTP/1.1
+Host: example.org
+Authorization: Digest keyuri="https://alice.example.org/card#key1", 
+                      nonce="securestring",
+                      sig="signatureOverUsernamePlusNonce"
+```
+
+The server would then be able to link the key that was used to sign the response to the user that owns it.
+
 ## Access Control
 ### Web Access Control
 Web Access Control (WAC) is a decentralized system that allows different users and groups various forms of access to resources where users and groups are identified by HTTP URIs. The system is similar to the access control system used within many file systems except that the documents controlled, the users and the groups are all identified by URIs. Users are identified by WebIDs. Groups of users are identified by the URI of a class of users which, if you look it up, returns a list of users in the class. This means a WebID hosted by any server can be a member of a group hosted some other server.

@@ -529,6 +529,8 @@ For example, the container `https://example.org/data/` will have a corresponding
 
 More information on Web Access Control can be found here: https://www.w3.org/wiki/WebAccessControl.
 
+@@TODO: add section on delegation
+
 # Software implementing SoLiD
 ## Servers
 

@@ -81,6 +81,8 @@ Note that all three actions have been performed through RESTful HTTP requests.
 
 In these example, data was sent to the server using text/turtle (which is mandated in LDP), but other content types (such as JSON-LD) could be used if implemented by servers.
 
+More examples of user stories can be found [here](https://github.com/linkeddata/SoLiD/tree/master/UserStories).
+
 ## RDF
 The Resource Description Framework (RDF) is a framework for representing information in the Web [[RDF1.1](http://www.w3.org/TR/rdf11-concepts/)], originally designed as a graph-based data model, where the core structure of the abstract syntax is a set of triples, each consisting of a subject, a predicate and an object.
 
@@ -490,6 +492,29 @@ HTTP/1.1 200 OK
 
 One important advantage of WebID-RSA over WebID-TLS is that the same keys can also be used to sign and encrypt data. The way client certificate management is currently implemented in browsers, it does not offer the means to access the certificate keys for purposes other than authentication.
 
+TODO: Instead of sending the WebID during the response, the client could directly send the URI of the public key that is need in order to verify the claim. For instance, Alice could list public keys in her own profile, using fragment identifiers (e.g. <#key1>):
+
+```
+....
+<#me> cert:key <#key1>, <#key2> .
+
+<#key1> a cert:RSAPublicKey;
+        cert:modulus "00cb24ed85d64d794b..."^^xsd:hexBinary;
+        cert:exponent 65537  .
+```
+
+The client would then send the following response:
+
+```
+GET /data/ HTTP/1.1
+Host: example.org
+Authorization: Digest keyuri="https://alice.example.org/card#key1", 
+                      nonce="securestring",
+                      sig="signatureOverUsernamePlusNonce"
+```
+
+The server would then be able to link the key that was used to sign the response to the user that owns it.
+
 ## Access Control
 ### Web Access Control
 Web Access Control (WAC) is a decentralized system that allows different users and groups various forms of access to resources where users and groups are identified by HTTP URIs. The system is similar to the access control system used within many file systems except that the documents controlled, the users and the groups are all identified by URIs. Users are identified by WebIDs. Groups of users are identified by the URI of a class of users which, if you look it up, returns a list of users in the class. This means a WebID hosted by any server can be a member of a group hosted some other server.
@@ -503,6 +528,8 @@ Similar to the metadata resource naming convention, SoLiD servers use a specific
 For example, the container `https://example.org/data/` will have a corresponding ACL resource with the URI: `https://example.org/data/.acl`. A resource `https://example.org/data/test` will have a corresponding ACL resource at `https://example.org/data/test.acl`
 
 More information on Web Access Control can be found here: https://www.w3.org/wiki/WebAccessControl.
+
+@@TODO: add section on delegation
 
 # Software implementing SoLiD
 ## Servers

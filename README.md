@@ -81,6 +81,8 @@ Note that all three actions have been performed through RESTful HTTP requests.
 
 In these example, data was sent to the server using text/turtle (which is mandated in LDP), but other content types (such as JSON-LD) could be used if implemented by servers.
 
+More examples of user stories can be found [here](https://github.com/linkeddata/SoLiD/tree/master/UserStories).
+
 ## RDF
 The Resource Description Framework (RDF) is a framework for representing information in the Web [[RDF1.1](http://www.w3.org/TR/rdf11-concepts/)], originally designed as a graph-based data model, where the core structure of the abstract syntax is a set of triples, each consisting of a subject, a predicate and an object.
 

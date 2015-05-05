@@ -53,74 +53,12 @@ Link: <http://www.w3.org/ns/ldp#Resource>; rel="type"
              ] .
 ```
 
+
 In order to be able to do command line curl demos, we will assume that
-Ian has saved his certificate an private key in the `cert.pem` file locally. (Of course it is not needed to do this in browsers...)
+Ian has saved his certificate an private key in the [`cert.pem`](Ian's ssl certificate) file locally. (Of course it is not needed to do this in browsers...) 
 
 The certificate public key is the one in the profile.
 
-```bash
-$ openssl x509 -in IanCert.pem -inform pem -text
-Certificate:
-    Data:
-        Version: 3 (0x2)
-        Serial Number:
-            01:49:f1:d4:3d:e6
-        Signature Algorithm: sha1WithRSAEncryption
-        Issuer: CN=WebID, O={}
-        Validity
-            Not Before: Nov 27 15:07:38 2014 GMT
-            Not After : Nov 24 15:17:38 2024 GMT
-        Subject: dnQualifier=tester@localhost.edu
-        Subject Public Key Info:
-            Public Key Algorithm: rsaEncryption
-            RSA Public Key: (2048 bit)
-                Modulus (2048 bit):
-                    00:b7:cb:16:af:0a:ee:c5:8a:4c:0c:05:e0:50:4a:
-                    33:43:82:a1:db:7a:8a:09:20:57:f9:7c:27:14:39:
-                    f7:ff:8c:fd:46:9b:61:59:34:fa:40:1b:4b:32:0b:
-                    75:6c:f0:17:e1:6c:8e:e0:d5:af:ce:ed:1a:54:39:
-                    07:38:72:0c:67:81:3b:76:5e:1b:f9:e3:10:80:9e:
-                    13:3b:7f:7c:2a:ca:34:e1:85:c3:bd:cd:42:fc:40:
-                    d8:47:72:ad:69:1f:36:b9:07:8c:8e:00:79:f6:40:
-                    89:ae:0a:dc:aa:80:d4:18:6c:f6:83:40:3d:64:85:
-                    e5:78:db:de:16:1a:82:b4:e3:46:50:cb:77:fd:27:
-                    4f:e8:4b:b7:ae:48:8a:32:36:f1:46:17:8c:f8:36:
-                    cc:70:1b:1d:3c:40:c0:d7:a8:e8:38:af:c2:09:e3:
-                    b5:c8:25:fa:97:02:01:7b:52:49:2f:4c:f4:bd:eb:
-                    08:97:26:e2:77:8e:b6:3b:88:54:c8:b3:66:b2:c5:
-                    42:5f:5d:ec:23:6c:02:c8:e7:60:b7:30:3a:df:b2:
-                    a9:4b:f8:35:c2:e2:89:01:ab:ec:a2:92:d7:ca:04:
-                    c1:ae:3c:37:7e:2d:2f:3e:01:1b:e7:68:68:d9:41:
-                    67:8a:18:c2:ab:f7:8f:98:f7:96:f4:93:f2:a9:46:
-                    cf:2d
-                Exponent: 65537 (0x10001)
-        X509v3 extensions:
-            X509v3 Subject Alternative Name: critical
-                URI: https://ian.name/card#me
-            X509v3 Key Usage: critical
-                Digital Signature, Non Repudiation, Key Encipherment, Key Agreement, Certificate Sign
-            X509v3 Basic Constraints: critical
-                CA:FALSE
-            Netscape Cert Type: 
-                SSL Client, S/MIME
-    Signature Algorithm: sha1WithRSAEncryption
-        95:da:39:18:00:a5:7a:16:4f:cd:d2:b8:21:97:0e:e5:c7:20:
-        c1:50:21:66:e3:63:31:cf:72:f0:5b:9f:8d:57:a3:98:4f:21:
-        0f:a7:1c:3e:a3:39:64:e7:e4:ec:29:48:f7:a6:d3:fb:9c:99:
-        44:a3:44:12:3d:06:57:62:9b:9d:30:9a:7c:3c:35:6d:59:e3:
-        6e:3e:7a:e7:86:44:64:1e:16:04:8d:69:d1:f2:c4:05:e6:9b:
-        7b:f2:a4:cf:48:da:78:06:78:ff:14:be:90:b2:f7:8a:5d:ac:
-        55:da:18:25:c8:45:f1:7b:3e:f2:ab:c5:1f:13:5f:3c:9d:16:
-        a1:a8:5e:8f:4b:0c:ec:f8:71:4a:b5:86:4f:db:cd:87:c1:99:
-        75:9b:ff:34:4f:dc:da:ed:61:14:95:85:d5:6f:b3:c5:68:90:
-        9a:9f:32:23:1f:19:00:25:8c:6e:88:42:de:ad:2d:94:41:7a:
-        c4:96:6d:9f:68:a3:2f:4c:6c:99:de:6d:de:66:0f:84:fc:87:
-        9c:59:a7:d1:78:3a:5d:8d:75:32:93:a1:34:0c:b8:30:0f:ec:
-        9b:32:cc:90:b7:13:3d:a4:1f:3b:67:9a:74:ac:27:00:ed:ce:
-        0d:32:9b:f4:37:b2:18:ba:c9:49:a6:97:0c:e6:9c:e4:e9:48:
-        00:8f:df:3f
------BEGIN CERTIFICATE-----
-```
 
 ### Ian posts the file 
 
@@ -252,3 +190,73 @@ At this point we have the following set of links:
 ### Jane views the file
 
 Jane reads her inbox at some point, and just does a normal GET on the `<https://ian.name/2014/financials> resource, using her certificate containing a WebID.
+
+## Notes
+
+### Ian's ssl certificate
+
+You need 
+
+```bash
+$ openssl x509 -in IanCert.pem -inform pem -text
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number:
+            01:49:f1:d4:3d:e6
+        Signature Algorithm: sha1WithRSAEncryption
+        Issuer: CN=WebID, O={}
+        Validity
+            Not Before: Nov 27 15:07:38 2014 GMT
+            Not After : Nov 24 15:17:38 2024 GMT
+        Subject: dnQualifier=tester@localhost.edu
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+            RSA Public Key: (2048 bit)
+                Modulus (2048 bit):
+                    00:b7:cb:16:af:0a:ee:c5:8a:4c:0c:05:e0:50:4a:
+                    33:43:82:a1:db:7a:8a:09:20:57:f9:7c:27:14:39:
+                    f7:ff:8c:fd:46:9b:61:59:34:fa:40:1b:4b:32:0b:
+                    75:6c:f0:17:e1:6c:8e:e0:d5:af:ce:ed:1a:54:39:
+                    07:38:72:0c:67:81:3b:76:5e:1b:f9:e3:10:80:9e:
+                    13:3b:7f:7c:2a:ca:34:e1:85:c3:bd:cd:42:fc:40:
+                    d8:47:72:ad:69:1f:36:b9:07:8c:8e:00:79:f6:40:
+                    89:ae:0a:dc:aa:80:d4:18:6c:f6:83:40:3d:64:85:
+                    e5:78:db:de:16:1a:82:b4:e3:46:50:cb:77:fd:27:
+                    4f:e8:4b:b7:ae:48:8a:32:36:f1:46:17:8c:f8:36:
+                    cc:70:1b:1d:3c:40:c0:d7:a8:e8:38:af:c2:09:e3:
+                    b5:c8:25:fa:97:02:01:7b:52:49:2f:4c:f4:bd:eb:
+                    08:97:26:e2:77:8e:b6:3b:88:54:c8:b3:66:b2:c5:
+                    42:5f:5d:ec:23:6c:02:c8:e7:60:b7:30:3a:df:b2:
+                    a9:4b:f8:35:c2:e2:89:01:ab:ec:a2:92:d7:ca:04:
+                    c1:ae:3c:37:7e:2d:2f:3e:01:1b:e7:68:68:d9:41:
+                    67:8a:18:c2:ab:f7:8f:98:f7:96:f4:93:f2:a9:46:
+                    cf:2d
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Subject Alternative Name: critical
+                URI: https://ian.name/card#me
+            X509v3 Key Usage: critical
+                Digital Signature, Non Repudiation, Key Encipherment, Key Agreement, Certificate Sign
+            X509v3 Basic Constraints: critical
+                CA:FALSE
+            Netscape Cert Type: 
+                SSL Client, S/MIME
+    Signature Algorithm: sha1WithRSAEncryption
+        95:da:39:18:00:a5:7a:16:4f:cd:d2:b8:21:97:0e:e5:c7:20:
+        c1:50:21:66:e3:63:31:cf:72:f0:5b:9f:8d:57:a3:98:4f:21:
+        0f:a7:1c:3e:a3:39:64:e7:e4:ec:29:48:f7:a6:d3:fb:9c:99:
+        44:a3:44:12:3d:06:57:62:9b:9d:30:9a:7c:3c:35:6d:59:e3:
+        6e:3e:7a:e7:86:44:64:1e:16:04:8d:69:d1:f2:c4:05:e6:9b:
+        7b:f2:a4:cf:48:da:78:06:78:ff:14:be:90:b2:f7:8a:5d:ac:
+        55:da:18:25:c8:45:f1:7b:3e:f2:ab:c5:1f:13:5f:3c:9d:16:
+        a1:a8:5e:8f:4b:0c:ec:f8:71:4a:b5:86:4f:db:cd:87:c1:99:
+        75:9b:ff:34:4f:dc:da:ed:61:14:95:85:d5:6f:b3:c5:68:90:
+        9a:9f:32:23:1f:19:00:25:8c:6e:88:42:de:ad:2d:94:41:7a:
+        c4:96:6d:9f:68:a3:2f:4c:6c:99:de:6d:de:66:0f:84:fc:87:
+        9c:59:a7:d1:78:3a:5d:8d:75:32:93:a1:34:0c:b8:30:0f:ec:
+        9b:32:cc:90:b7:13:3d:a4:1f:3b:67:9a:74:ac:27:00:ed:ce:
+        0d:32:9b:f4:37:b2:18:ba:c9:49:a6:97:0c:e6:9c:e4:e9:48:
+        00:8f:df:3f
+-----BEGIN CERTIFICATE-----
+```

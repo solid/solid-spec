@@ -7,9 +7,7 @@ Originally put forward by Ben Roberts ([permalink](https://www.w3.org/wiki/Socia
 > 3. Jane receives a notice that Ian has shared a file with her.
 > 4. Jane views the file and decides to leave a thank you comment on the file for Ian
 
-{>> Point 1 is just a desire. We cut point 2. into two parts: the first is uploading a file, and the second is limiting access. <<}
-{>> Replaced Jan with Jane, so that during aural communication the two
-names don't end up getting constantly confused <<}
+Point 1 is just a desire. We cut point 2. into two parts: the first is uploading a file, and the second is limiting access.
 
 ### Background
 

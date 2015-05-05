@@ -55,7 +55,7 @@ Link: <http://www.w3.org/ns/ldp#Resource>; rel="type"
 
 
 In order to be able to do command line curl demos, we will assume that
-Ian has saved his certificate an private key in the [`cert.pem`](Ian's ssl certificate) file locally. (Of course it is not needed to do this in browsers...) 
+Ian has saved his certificate an private key in the [`cert.pem`](#ians-ssl-certificate) file locally. (Of course it is not needed to do this in browsers...) 
 
 The certificate public key is the one in the profile.
 

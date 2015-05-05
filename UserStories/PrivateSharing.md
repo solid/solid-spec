@@ -191,7 +191,7 @@ Accept: text/turtle
 Content-Type: application/sparql-query; charset=UTF-8
 Content-Length: 123
 
-PREFIX as: <http://www.w3.org/ns/activitystreams#>
+PREFIX solid: <http://solid.info/notification/ping#>
 CONSTRUCT { <#me> as:ping ?where }
 WHERE { <#me> as:ping ?where }
 ```
@@ -201,7 +201,7 @@ If the server does not understand the query, it just returns the full document, 
 The response may in the best of case just be one short line
 
 ```Turtle
-@prefix as: <http://www.w3.org/ns/activitystreams#>
+@prefix solid: <http://solid.info/notification/ping#> .
 <#me> as:ping </pingInbox/> .
 ```
 
@@ -216,7 +216,7 @@ Host: jane.org:443
 Content-Type: text/turtle
 Content-Length: 145
 
-@prefix as: <http://www.w3.org/ns/activitystreams#>
+@prefix as: <http://www.w3.org/ns/activitystreams#> .
 [] as:Post ;
   as:published "2015-02-10T15:04:55Z"^^xsd:dateTime ;
   as:actor <https://ian.name/card#me> ;

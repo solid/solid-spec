@@ -48,7 +48,7 @@
 	<array>
 		<dict>
 			<key>Bounds</key>
-			<string>{{312.99366621302823, 1065.879075274865}, {45, 29}}</string>
+			<string>{{334.71355893547485, 1088.2124939004757}, {45, 29}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -69,7 +69,7 @@
 				<key>ID</key>
 				<integer>541</integer>
 				<key>Position</key>
-				<real>0.70929324626922607</real>
+				<real>0.68287933295964542</real>
 				<key>RotationType</key>
 				<integer>0</integer>
 			</dict>
@@ -105,15 +105,15 @@
 			<key>Head</key>
 			<dict>
 				<key>ID</key>
-				<integer>489</integer>
+				<integer>485</integer>
 			</dict>
 			<key>ID</key>
 			<integer>541</integer>
 			<key>Points</key>
 			<array>
-				<string>{548.89762005696525, 1097.5022067542452}</string>
-				<string>{348.01049726025013, 1088.4199475708588}</string>
-				<string>{319.03232606078996, 997.82300435303512}</string>
+				<string>{548.89018188494526, 1097.8687948797274}</string>
+				<string>{349.05346601025013, 1101.1308850708588}</string>
+				<string>{321.52734375, 1041.61328125}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -774,10 +774,14 @@
 				<key>ID</key>
 				<integer>512</integer>
 				<key>Position</key>
-				<real>0.70929322466512523</real>
+				<real>0.70929324626922607</real>
 				<key>RotationType</key>
 				<integer>0</integer>
 			</dict>
+			<key>Magnets</key>
+			<array>
+				<string>{-0.5, 0.25}</string>
+			</array>
 			<key>Style</key>
 			<dict>
 				<key>shadow</key>
@@ -1707,7 +1711,7 @@
 				<key>ID</key>
 				<integer>537</integer>
 				<key>Position</key>
-				<real>0.14626331520605959</real>
+				<real>0.14626331627368927</real>
 				<key>RotationType</key>
 				<integer>0</integer>
 			</dict>
@@ -1717,6 +1721,7 @@
 				<string>{0, -1}</string>
 				<string>{1, 0}</string>
 				<string>{-1, 0}</string>
+				<string>{-0.33730341409706699, 0.08360026363674411}</string>
 			</array>
 			<key>Shape</key>
 			<string>Cube</string>
@@ -2953,7 +2958,7 @@
 	<key>MasterSheets</key>
 	<array/>
 	<key>ModificationDate</key>
-	<string>2015-05-05 06:50:21 +0000</string>
+	<string>2015-05-05 22:31:04 +0000</string>
 	<key>Modifier</key>
 	<string>Henry Story</string>
 	<key>NotesVisible</key>
@@ -3031,7 +3036,7 @@
 		<key>Frame</key>
 		<string>{{0, 4}, {1440, 873}}</string>
 		<key>ShowInfo</key>
-		<true/>
+		<false/>
 		<key>Sidebar</key>
 		<false/>
 		<key>SidebarWidth</key>
@@ -3039,7 +3044,7 @@
 		<key>TopSlabHeight</key>
 		<real>250</real>
 		<key>VisibleRegion</key>
-		<string>{{200, 670}, {1142, 776}}</string>
+		<string>{{200, 670}, {1439, 776}}</string>
 		<key>Zoom</key>
 		<real>1</real>
 		<key>ZoomValues</key>

@@ -16,7 +16,7 @@ names don't end up getting constantly confused <<}
 This story has a privacy aspect so we will use [WebID+TLS authentication](http://www.w3.org/2005/Incubator/webid/spec/tls/) to illustrate it. Other authentication methods should also work with [Web Access Control](http://www.w3.org/2005/Incubator/webid/spec/), such as WebID which is easy, and others that need to be looked at.
 
 
-Ian has WebID <https://ian.name/card#me> with a public key.
+Ian has WebID `<https://ian.name/card#me>` with a public key.
 
 ```
 GET /card HTTP/1.1
@@ -33,7 +33,7 @@ ETag: "1417390950000|Success(922)"
 Last-Modified: Sun, 1 April 2015 23:42:30 GMT
 Content-Type: text/turtle
 Content-Length: 545
-Link: <.acl>; rel=acl
+Link: <card.acl>; rel=acl
 Link: <http://www.w3.org/ns/ldp#Resource>; rel="type"
 
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
@@ -55,7 +55,7 @@ Link: <http://www.w3.org/ns/ldp#Resource>; rel="type"
 
 
 In order to be able to do command line curl demos, we will assume that
-Ian has saved his certificate an private key in the [`cert.pem`](#ians-ssl-certificate) file locally. (Of course it is not needed to do this in browsers...) 
+Ian has saved his certificate and private key in the [`cert.pem`](#ians-ssl-certificate) file locally. (Of course it is not needed to do this in browsers...) 
 
 The certificate public key is the one in the profile.
 
@@ -66,7 +66,7 @@ Here curl makes the connection, and authenticates Ian with his Certificate. As a
 
 ```bash
 $ curl -X POST -k -i -H "Content-Type: text/turtle" \
-   --cert ../eg/IanCert:password \
+   --cert ../eg/cert.pem:password \
    -H "Slug: financials" \
    --data-binary @financials.ttl  https://ian.name/2014/   
 
@@ -94,7 +94,7 @@ $ curl -X GET -k -H "Content-Type: text/turtle" \
 
 [] acl:accessTo </2014/financials>, <>;
    acl:mode acl:Read, acl:Write;
-   acl:agent <card#me> .
+   acl:agent </card#me> .
 ```   
 
 ### Allow Access to Jane
@@ -120,7 +120,9 @@ After doing this Jane will be able to read the resource.
 
 ### Send notice to Jane
 
-Ian's software ( server or client - it does not matter ) somehow needs to find out how to ping Jane. They know Jane's WebID is `<https://jane.org/profile#me>`, so they can dereference the document at `<https://jane.org/profile>` for which they probably already have a cached version. If they don't have the full version but just want to find out what the relation they need is they can send the request
+Ian's software ( server or client - it does not matter ) somehow needs to find out how to ping Jane. They know Jane's WebID is `<https://jane.org/profile#me>`, so they can dereference the document at `<https://jane.org/profile>` for which they probably already have a cached version. If they don't have the full version but just want to find out what the relation they need is they can send the request. A simple GET on the profile will do.
+
+Given that we have shown the obvious way to query in other examples, we show here out of interest a potential optimisation that would send the query in the body of the GET (see [discussion on http-wg list](https://lists.w3.org/Archives/Public/ietf-http-wg/2015AprJun/0317.html) ). (The query could also be in a `Query` header.)
 
 ```
 GET /profile HTTP/1.1
@@ -134,9 +136,9 @@ CONSTRUCT { <#me> as:ping ?where }
 WHERE { <#me> as:ping ?where }
 ```
 
-If the server does not understand the query, it just returns the full document, which is may just take longer for the server to receive, if the remote resource is very long. ( see [discussion on http-wg list](https://lists.w3.org/Archives/Public/ietf-http-wg/2015AprJun/0317.html) ) . This still needs to be finalised by ldp and http-wg.
+If the server does not understand the query, it just returns the full document by default - that is what most servers will do actually do. This still needs to be finalised by ldp and http-wg. A more interesting type of query is probably the SPARQL "DESCRIBE" query which gives the minimal bounded graph around the URI.
 
-The response may in the best of case just be one short line
+The response may then in the best of case just be one short line:
 
 ```Turtle
 @prefix solid: <http://solid.info/notification/ping#> .

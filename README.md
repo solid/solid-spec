@@ -230,15 +230,14 @@ Another possible way of reading and writing data is to use SPARQL. Currently, ou
 
 ### Reading data using SPARQL
 
-To read (query) a resource, the client can send a SPARQL SELECT query through an HTTP GET request. The server will use the given resource as the default graph that is being queried. The resource can be an RDF document or even a container. The response will be serialized using `application/json` mime type.
+To read (query) a resource, the client can send a SPARQL SELECT through a form-encoded HTTP GET request. The server will use the given resource as the default graph that is being queried. The resource can be an RDF document or even a container. The response will be serialized using `application/json` mime type.
 
-For instance, the client can send the following form-encoded query:
+For instance, the client can send the following form-encoded query `SELECT * WHERE { ?s ?p ?o . }`:
 
 REQUEST:
 ```
-GET /data/ HTTP/1.1
+GET /data/?query=SELECT%20*%20WHERE%20%7B%20%3Fs%20%3Fp%20%3Fo%20.%20%7D HTTP/1.1
 Host: example.org
-Query: SELECT * WHERE { ?s ?p ?o . }
 ```
 RESPONSE:
 ```

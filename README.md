@@ -481,7 +481,7 @@ REQUEST:
 GET /data/ HTTP/1.1
 Host: example.org
 Authorization: Digest source="example.org",
-		      username="https://alice.example.org/card#me", 
+                      username="https://alice.example.org/card#me", 
                       nonce="securestring",
                       sig="signatureOverUsernamePlusNonce"
 ```

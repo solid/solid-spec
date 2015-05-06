@@ -471,16 +471,17 @@ Host: example.org
 RESPONSE:
 ```
 HTTP/1.1 401 Unauthorized
-WWW-Authenticate: WebID-RSA nonce="securestring"
+WWW-Authenticate: WebID-RSA source="example.org", nonce="securestring"
 ```
 
-Next, the client sets the username value to the user's WebID and signs the concatenated value of **WebID + nonce** before resending the request.
+Next, the client sets the username value to the user's WebID and signs the concatenated value of **source + username + nonce** before resending the request. It is important that clients return the proper source value they received from the server, in order to avoid main-in-the-middle attacks.
 
 REQUEST:
 ```
 GET /data/ HTTP/1.1
 Host: example.org
-Authorization: Digest username="https://alice.example.org/card#me", 
+Authorization: Digest source="example.org",
+		      username="https://alice.example.org/card#me", 
                       nonce="securestring",
                       sig="signatureOverUsernamePlusNonce"
 ```

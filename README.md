@@ -489,7 +489,7 @@ RESPONSE:
 HTTP/1.1 200 OK
 ```
 
-One important advantage of WebID-RSA over WebID-TLS is that the same keys can also be used to sign and encrypt data. The way client certificate management is currently implemented in browsers, it does not offer the means to access the certificate keys for purposes other than authentication.
+One important advantage of WebID-RSA over WebID-TLS is that keys can be generated on the fly to sign and encrypt data. The way client certificate management is currently implemented in browsers, it does not offer the means to access keys inside certificates, for purposes other than authentication.
 
 @@TODO: the server must send it's URI together with the token, otherwise a MitM can forward the claim to the client. Also, clients will also have to return the same server URI.
 

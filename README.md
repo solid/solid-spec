@@ -474,7 +474,7 @@ HTTP/1.1 401 Unauthorized
 WWW-Authenticate: WebID-RSA source="example.org", nonce="securestring"
 ```
 
-Next, the client sets the username value to the user's WebID and signs the concatenated value of **source + username + nonce** before resending the request. It is important that clients return the proper source value they received from the server, in order to avoid main-in-the-middle attacks.
+Next, the client sets the username value to the user's WebID and signs the concatenated value of **source + username + nonce** before resending the request. It is important that clients return the proper source value they received from the server, in order to avoid main-in-the-middle attacks. Also note that the server must send it's own URI together with the token, otherwise a MitM can forward the claim to the client; the server will also expect that clients return the same server URI.
 
 REQUEST:
 ```
@@ -483,7 +483,7 @@ Host: example.org
 Authorization: Digest source="example.org",
                       username="https://alice.example.org/card#me", 
                       nonce="securestring",
-                      sig="signatureOverUsernamePlusNonce"
+                      sig="signatureOverSourceUsernameNonce"
 ```
 RESPONSE:
 ```
@@ -492,9 +492,7 @@ HTTP/1.1 200 OK
 
 One important advantage of WebID-RSA over WebID-TLS is that keys can be generated on the fly to sign and encrypt data. The way client certificate management is currently implemented in browsers, it does not offer the means to access keys inside certificates, for purposes other than authentication.
 
-@@TODO: the server must send it's URI together with the token, otherwise a MitM can forward the claim to the client. Also, clients will also have to return the same server URI.
-
-@@TODO: Instead of sending the WebID during the response, the client could directly send the URI of the public key that is need in order to verify the claim. For instance, Alice could list public keys in her own profile, using fragment identifiers (e.g. <#key1>):
+Proposed improvement: Instead of sending the WebID during the response, the client could directly send the URI of the public key that is need in order to verify the claim. For instance, Alice could list public keys in her own profile, using fragment identifiers (e.g. <#key1>):
 
 ```
 ....
@@ -515,7 +513,7 @@ Authorization: Digest keyuri="https://alice.example.org/card#key1",
                       sig="signatureOverUsernamePlusNonce"
 ```
 
-The server would then be able to link the key that was used to sign the response to the user that owns it.
+The server would then be able to immediately identify and link the key that was used to sign the response to the user that owns it.
 
 ## Access Control
 ### Web Access Control

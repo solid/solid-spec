@@ -278,7 +278,7 @@ Another useful feature that is not yet part of LDP deals with using HTTP PUT to 
 
 REQUEST:
 ```
-PUT /2015/05/01/event1 HTTP/1.1\par
+PUT /2015/05/01/event1 HTTP/1.1
 Host: example.org
 ```
 RESPONSE:

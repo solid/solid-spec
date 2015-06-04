@@ -457,7 +457,7 @@ More information on WebID-TLS can be found here: http://www.w3.org/2005/Incubato
 ### WebID-RSA
 WebID-RSA is somehow similar to WebID-TLS, in that a public RSA key is published in the WebID profile, and the user will sign a token with the corresponding private key that matches the public key in the profile.
 
-The client receives a secure token from the server, which it signs and then sends back to the server. The implementation of WebID-RSA is somehow similar to [Digest access authentication](https://tools.ietf.org/html/rfc2617) in HTTP, in that it reuses the same headers.
+The client receives a secure token from the server, which it signs and then sends back to the server. The implementation of WebID-RSA is similar to [Digest access authentication](https://tools.ietf.org/html/rfc2617) in HTTP, in that it reuses the same headers.
 
 Here is a step by step example that covers the authentication handshake. 
 
@@ -480,10 +480,10 @@ REQUEST:
 ```
 GET /data/ HTTP/1.1
 Host: example.org
-Authorization: Digest source="example.org",
-                      username="https://alice.example.org/card#me", 
-                      nonce="securestring",
-                      sig="signatureOverSourceUsernameNonce"
+Authorization: WebID-RSA source="example.org",
+                         username="https://alice.example.org/card#me", 
+                         nonce="securestring",
+                         sig="signatureOverSourceUsernameNonce"
 ```
 RESPONSE:
 ```
@@ -508,9 +508,9 @@ The client would then send the following response:
 ```
 GET /data/ HTTP/1.1
 Host: example.org
-Authorization: Digest keyuri="https://alice.example.org/card#key1", 
-                      nonce="securestring",
-                      sig="signatureOverUsernamePlusNonce"
+Authorization: WebID-RSA keyuri="https://alice.example.org/card#key1", 
+                         nonce="securestring",
+                         sig="signatureOverUsernamePlusNonce"
 ```
 
 The server would then be able to immediately identify and link the key that was used to sign the response to the user that owns it.

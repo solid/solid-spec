@@ -12,9 +12,10 @@
  6. [CORS](#cors---cross-origin-resource-sharing)
  7. [Live updates](#live-updates)
  8. [Identity management](#identity-management-based-on-webid)
- 9. [Authentication](#authentication)
- 10. [Access control](#access-control)
- 11. [Software implementing SoLiD](#software-implementing-solid)
+ 9. [Personal data workspaces](#personal-data-workspaces)
+ 10. [Authentication](#authentication)
+ 11. [Access control](#access-control)
+ 12. [Software implementing SoLiD](#software-implementing-solid)
 
 
 ## Quick intro

@@ -454,10 +454,15 @@ In the WebID profile:
 
 To discover the user's workspaces, an app will follow its nose starting with the WebID profile document, to find all relations of type `http://www.w3.org/ns/pim/space#workspace` having the user's WebID as the subject. Of course, this means following the `http://www.w3.org/ns/pim/space#preferencesFile` relation to get to the preferences resource.
 
-In the preferences file:
-
+Here is an example of a preferences file:
 ```
+<>
+    a <http://www.w3.org/ns/pim/space#ConfigurationFile> ;
+    <http://purl.org/dc/terms/title> "Preferences file" .
+
 <https://user.example.org/profile/card#me>
+    a <http://xmlns.com/foaf/0.1/Person> ;
+    <http://www.w3.org/ns/pim/space#preferencesFile> <> ;
     <http://www.w3.org/ns/pim/space#workspace> <https://user.example.org/Public/>, <https://user.example.org/Private/>, <https://user.example.org/Work/>, <https://user.example.org/Family>, <https://user.example.org/Friends/>, <https://user.example.org/Preferences/> .
 ```
 

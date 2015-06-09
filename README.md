@@ -435,14 +435,30 @@ Upon account creation, a series of dedicated workspaces (i.e. LDP containers) ar
  * Friends
  * Preferences
 
-You can consider workspaces to be dedicated containers, which store application-specific data. For example, one of the reasons we decided to use this concept of workspaces is that complicated ACL logic can be set per workspace, and then all data inside the workspace will inherit the same policies.
+Please note that these workspace names are just placeholders and they do not reflect the ACL policies that come with them -- i.e. Public does not necesarily imply a read-all or write-all ACL policy. Time and effort should be dedicated to making sure that multiple languages are supported.
+
+You can consider workspaces to be basic containers, which store application-specific data. For example, one of the reasons we decided to use this concept of workspaces is that complicated ACL logic can be set per workspace, and then all data inside the workspace will inherit the same policies.
 
 ### Preferences document
-The *preferences* document is used to describe useful information about the user and the data server, which can later on be used by applications. This resource currently lists the workspaces that were just created. In the future it may contain user preferences such as a preferred language, date format, etc.
+The *preferences* document is a protected resource that extends the WebID profile and it is used to describe useful information about the user and the data server, which can later on be used by applications. This resource currently lists basic information such as the workspaces that were just created. In the future it may contain user preferences such as a preferred language, date format, etc.
 
-By default, the preferences resource will be created in the *Preferences* workspaces -- i.e. `https://user.example.org/Preferences/prefs`.
+By default, the preferences resource is created in the *Preferences* workspaces -- i.e. `https://user.example.org/Preferences/prefs` -- and a relation of type `http://www.w3.org/ns/pim/space#preferencesFile` is added to the WebID profile, which points to the preferences resource.
 
-A triple pointing to the preferences file will also be added to the user's WebID profile.
+In the WebID profile:
+
+```
+<https://user.example.org/profile/card#me>
+    <http://www.w3.org/ns/pim/space#preferencesFile> <https://user.example.org/profile/prefs> .
+```
+
+To discover the user's workspaces, an app will follow its nose starting with the WebID profile document, to find all relations of type `http://www.w3.org/ns/pim/space#workspace` having the user's WebID as the subject. Of course, this means following the `http://www.w3.org/ns/pim/space#preferencesFile` relation to get to the preferences resource.
+
+In the preferences file:
+
+```
+<https://user.example.org/profile/card#me>
+    <http://www.w3.org/ns/pim/space#workspace> <https://user.example.org/Public/>, <https://user.example.org/Private/>, <https://user.example.org/Work/>, <https://user.example.org/Family>, <https://user.example.org/Friends/>, <https://user.example.org/Preferences/> .
+```
 
 ## Authentication
 ### WebID-TLS

@@ -544,7 +544,7 @@ Similar to the metadata resource naming convention, SoLiD servers use a specific
 
 For example, the container `https://example.org/data/` will have a corresponding ACL resource with the URI: `https://example.org/data/.acl`. A resource `https://example.org/data/test` will have a corresponding ACL resource at `https://example.org/data/test.acl`
 
-WAC policies are applied to resources, instead of triples. This means policies can be set for LDPRs as well as for LDPCs. A special case is applied to LDPCs, where policies can be defined as "default" for everything in a container, meaning that all the members of that specific container will inherited them.
+WAC policies are applied to resources, instead of triples. This means that policies can be set for LDPRs as well as for LDPCs. A special case is applied to LDPCs, where policies can be defined as "default" for everything in a container, meaning that all the members of that specific container will inherited them.
 
 More information on Web Access Control can be found here: https://www.w3.org/wiki/WebAccessControl.
 

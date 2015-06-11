@@ -275,7 +275,7 @@ We have found that in some cases, using the existing LDP features was not enough
 
 #### HTTP PUT to create
 
-Another useful feature that is not yet part of LDP deals with using HTTP PUT to create new resources. This feature is really useful when the clients wants to make sure it has absolute control over the URI namespace -- e.g. migrating from one pod to another. Although this feature is defined in HTTP1.1 [RFC2616](https://tools.ietf.org/html/rfc2616), we decided to improve it slightly by having servers create the full path to the resource, if it didn't exist before. For instance, a calendar app uses a URI pattern (structure) based on dates when storing new events (i.e. yyyy/mm/dd). Instead of performing several POST requests to create a month and a day container when switching to a new month, it could send the following request to create a new event resource called \textit{event1}:
+Another useful feature that is not yet part of LDP deals with using HTTP PUT to create new resources. This feature is really useful when the clients wants to make sure it has absolute control over the URI namespace -- e.g. migrating from one pod to another. Although this feature is defined in HTTP1.1 [RFC2616](https://tools.ietf.org/html/rfc2616), we decided to improve it slightly by having servers create the full path to the resource, if it didn't exist before. For instance, a calendar app uses a URI pattern (structure) based on dates when storing new events (i.e. yyyy/mm/dd). Instead of performing several POST requests to create a month and a day container when switching to a new month, it could send the following request to create a new event resource called *event1*:
 
 REQUEST:
 ```

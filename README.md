@@ -474,6 +474,8 @@ Basically, WebID-TLS relies on matching a public key received from a client cert
 
 WebID-TLS is currently the preferred authentication mechanism in SoLiD. 
 
+***Important: Javascript clients must set the XHR flag `withCredentials` to true when making authenticated requests, in order to force browsers to send the client certificate. For example, Firefox will not send the client certificate unless this flag is set to true.***
+
 More information on WebID-TLS can be found here: http://www.w3.org/2005/Incubator/webid/spec/tls/.
 
 ### WebID-RSA

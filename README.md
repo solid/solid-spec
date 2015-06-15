@@ -203,7 +203,7 @@ An alternative, though not standard way of creating new resources is to use HTTP
 
 REQUEST:
 ```
-PUT / HTTP/1.1
+PUT /picture.jpg HTTP/1.1
 Host: example.org
 Content-Type: image/jpeg
 ...

@@ -271,7 +271,7 @@ HTTP/1.1 200 OK
 
 #### Globbing (inlining on GET)
 
-We have found that in some cases, using the existing LDP features was not enough. For instace, to optimize certain applications we needed to aggregate all resources from a container and retrieve them with a single GET operation. We implemented this feature on the servers and decided to call it "globbing". Simiar to UNIX shell globbing, doing a GET on any URI which ends with a * will return an aggregate of all the resources that match the indicated pattern. For instance, if one would like to fetch all resources of a container in one request, they could do a GET on https://example.org/data/*. The aggregation process is not recursive, therefore it will not apply to children containers.
+We have found that in some cases, using the existing LDP features was not enough. For instace, to optimize certain applications we needed to aggregate all resources from a container and retrieve them with a single GET operation. We implemented this feature on the servers and decided to call it "globbing". Similar to UNIX shell globbing, doing a GET on any URI which ends with a * will return an aggregate of all the resources that match the indicated pattern. For instance, if one would like to fetch all resources of a container in one request, they could do a GET on https://example.org/data/*. The aggregation process is not recursive, therefore it will not apply to children containers.
 
 #### HTTP PUT to create
 

@@ -58,7 +58,10 @@ The URL of the new note can be found in the *Location* header returned by the se
 
 Use HTTP PUT, when you just want to replace the data:
 ```
-curl -H"Content-Type: text/turtle" -X PUT --data ' @prefix as: <http://www.w3.org/ns/activitystreams#>. <> a as:Note; as:content "Going to Social Web WG in Paris".' https://eric.example.org/notes/social-web-2015
+curl -H"Content-Type: text/turtle" \
+     -X PUT \
+     --data ' @prefix as: <http://www.w3.org/ns/activitystreams#>. <> a as:Note; as:content "Going to Social Web WG in Paris".' \
+     https://eric.example.org/notes/social-web-2015
 ```
 
 Or you can use HTTP PATCH with SPARQL if you only want to change certain parts of the resource, leaving the others unchanged (perhaps because other applications are modifying them):

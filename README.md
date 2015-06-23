@@ -367,7 +367,25 @@ If a change occurs and the client is subscribed to that resource, it will receiv
 
 ```pub https://example.org/data/test```
 
-Here is a Javascript example on how to subscribe to live updates for our *test* resource at `https://example.org/data/test`:
+Subscribing to a container can also be really useful, since all CRUD operations (POST, PUT, PATCH, DELETE) performed on resources of that container will trigger a notification for the container URI. This makes synchronization between multiple apps really easy.
+
+For example, a client subscribes to the **data/** container:
+
+```sub https://example.org/data/```
+
+If another client deletes the resource **foo** inside **data/**:
+
+REQUEST:
+```
+DELETE /data/foo HTTP/1.1
+Host: example.org
+```
+
+Then the following notification message will be sent:
+
+```pub https://example.org/data/```
+
+Here is a Javascript example on how to subscribe to live updates for a *test* resource at `https://example.org/data/test`:
 
 ```
 var socket = new WebSocket('wss://example.org/');

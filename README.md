@@ -274,7 +274,61 @@ HTTP/1.1 200 OK
 
 #### Globbing (inlining on GET)
 
-We have found that in some cases, using the existing LDP features was not enough. For instace, to optimize certain applications we needed to aggregate all resources from a container and retrieve them with a single GET operation. We implemented this feature on the servers and decided to call it "globbing". Similar to UNIX shell globbing, doing a GET on any URI which ends with a * will return an aggregate of all the resources that match the indicated pattern. For instance, if one would like to fetch all resources of a container in one request, they could do a GET on https://example.org/data/*. The aggregation process is not recursive, therefore it will not apply to children containers.
+We have found that in some cases, using the existing LDP features was not enough. For instace, to optimize certain applications we needed to aggregate all resources from a container and retrieve them with a single GET operation. We implemented this feature on the servers and decided to call it "globbing". Similar to UNIX shell globbing, doing a GET on any URI which ends with a \* will return an aggregate view of all the resources that match the indicated pattern. 
+
+For example, let's assume that */data/res1* and */data/res2* are two resources containing one triple each, which defines their type as follows:
+
+For *res1*:
+```
+<> a <https://example.org/ns/type#One> .
+```
+
+For *res2*:
+```
+<> a <https://example.org/ns/type#Two> .
+```
+
+If one would like to fetch all resources of a container begining with **res** (e.g. /data/res1, /data/res2) in one request, they could do a GET on `/data/res*` as follows.
+
+REQUEST:
+```
+GET /data/res* HTTP/1.1
+Host: example.org
+```
+RESPONSE:
+```
+HTTP/1.1 200 OK
+
+<res1>
+    a <https://example.org/ns/type#One> .
+
+<res2>
+    a <https://example.org/ns/type#Two> .
+```
+
+Alternatively, one could ask the server to inline *all* resources of a container, which includes the triples corresponding to the container itself:
+
+REQUEST:
+```
+GET /data/* HTTP/1.1
+Host: example.org
+```
+RESPONSE:
+```
+HTTP/1.1 200 OK
+
+<>
+    a <http://www.w3.org/ns/ldp#BasicContainer> ;
+    <http://www.w3.org/ns/ldp#contains> <res1>, <res2> .
+
+<res1>
+    a <https://example.org/ns/type#One> .
+
+<res2>
+    a <https://example.org/ns/type#Two> .
+```
+
+Note: the aggregation process is not currently recursive, therefore it will not apply to children containers.
 
 #### HTTP PUT to create
 

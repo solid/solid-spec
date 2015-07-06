@@ -274,7 +274,7 @@ HTTP/1.1 200 OK
 
 #### Globbing (inlining on GET)
 
-We have found that in some cases, using the existing LDP features was not enough. For instace, to optimize certain applications we needed to aggregate all resources from a container and retrieve them with a single GET operation. We implemented this feature on the servers and decided to call it "globbing". Similar to UNIX shell globbing, doing a GET on any URI which ends with a \* will return an aggregate view of all the resources that match the indicated pattern. 
+We have found that in some cases, using the existing LDP features was not enough. For instace, to optimize certain applications we needed to aggregate all RDF resources from a container and retrieve them with a single GET operation. We implemented this feature on the servers and decided to call it "globbing". Similar to UNIX shell globbing, doing a GET on any URI which ends with a \* will return an aggregate view of all the resources that match the indicated pattern. 
 
 For example, let's assume that */data/res1* and */data/res2* are two resources containing one triple each, which defines their type as follows:
 

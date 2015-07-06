@@ -2,6 +2,10 @@
 
 [![Join the chat at https://gitter.im/linkeddata/SoLiD](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/linkeddata/SoLiD)
 
+
+**Disclaimer: this is a living spec. Expect it to change often!**
+
+
 ## Table of contents
 
  1. [Quick intro](#quick-intro)

@@ -230,7 +230,7 @@ Metadata resources are a "special" type of resources, which are not publicly lis
 ### Reading resources
 Resources can be commonly accessed (i.e. read) using HTTP GET requests. SoLiD servers are encouraged to perform content negotiation for RDF resources, depending on the value of the *Accept* header.
 
-Being LDP (BasicContainer) compliant, SoLiD servers MUST return a full listing of container contents when receiving requests for containers. For every resource in a container, a SoLiD server may include additional metadata, such as the time the resource was modified, the size of the resource, and more importantly any other RDF type specified for the resource in its metadata. You will notice in the example below that the resource ```<workspace/>``` also has the RDF type ```<http://www.w3.org/ns/pim/space#Workspace>```.
+Being LDP (BasicContainer) compliant, SoLiD servers MUST return a full listing of container contents when receiving requests for containers. For every resource in a container, a SoLiD server may include additional metadata, such as the time the resource was modified, the size of the resource, and more importantly any other RDF type specified for the resource in its metadata. You will notice in the example below that the ```<profile>``` resource has the extra RDF type ```<http://xmlns.com/foaf/0.1/PersonalProfileDocument>```, and also that the resource ```<workspace/>``` has the RDF type ```<http://www.w3.org/ns/pim/space#Workspace>```.
 
 Extra medata can be also be added, describing whether each resource in the container maps to a file or a directory on the server, using the [POSIX vocabulary](http://www.w3.org/ns/posix/stat#). Here is an example that reflects how our current server implementations handle such a request:
 
@@ -248,12 +248,12 @@ HTTP/1.1 200 OK
 
 <>
     a <http://www.w3.org/ns/ldp#BasicContainer>, <http://www.w3.org/ns/ldp#Container>, <http://www.w3.org/ns/posix/stat#Directory> ;
-    <http://www.w3.org/ns/ldp#contains> <file1>, <dir1/>, <workspace/> ;
+    <http://www.w3.org/ns/ldp#contains> <profile>, <dir1/>, <workspace/> ;
     <http://www.w3.org/ns/posix/stat#mtime> "1436281776" ;
     <http://www.w3.org/ns/posix/stat#size> "4096" .
     
-<file1>
-    a <http://www.w3.org/ns/posix/stat#File> ;
+<profile>
+    a <http://xmlns.com/foaf/0.1/PersonalProfileDocument>, <http://www.w3.org/ns/posix/stat#File> ;
     <http://www.w3.org/ns/posix/stat#mtime> "1434583075" ;
     <http://www.w3.org/ns/posix/stat#size> "780" .
     

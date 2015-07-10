@@ -248,7 +248,7 @@ HTTP/1.1 200 OK
 
 <>
     a <http://www.w3.org/ns/ldp#BasicContainer>, <http://www.w3.org/ns/ldp#Container>, <http://www.w3.org/ns/posix/stat#Directory> ;
-    <http://www.w3.org/ns/ldp#contains> <profile>, <dir1/>, <workspace/> ;
+    <http://www.w3.org/ns/ldp#contains> <profile>, <data/>, <workspace/> ;
     <http://www.w3.org/ns/posix/stat#mtime> "1436281776" ;
     <http://www.w3.org/ns/posix/stat#size> "4096" .
     
@@ -257,7 +257,7 @@ HTTP/1.1 200 OK
     <http://www.w3.org/ns/posix/stat#mtime> "1434583075" ;
     <http://www.w3.org/ns/posix/stat#size> "780" .
     
-<dir1/>
+<data/>
     a <http://www.w3.org/ns/ldp#BasicContainer>, <http://www.w3.org/ns/ldp#Container>, <http://www.w3.org/ns/posix/stat#Directory> ;
     <http://www.w3.org/ns/posix/stat#mtime> "1435064562" ;
     <http://www.w3.org/ns/posix/stat#size> "4096" .

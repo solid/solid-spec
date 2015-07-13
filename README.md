@@ -586,6 +586,29 @@ Here is an example of a preferences file:
     <http://www.w3.org/ns/pim/space#workspace> <https://user.example.org/Public/>, <https://user.example.org/Private/>, <https://user.example.org/Work/>, <https://user.example.org/Family>, <https://user.example.org/Friends/>, <https://user.example.org/Preferences/> .
 ```
 
+
+#### Finding out the identity currently used
+
+Regardless of the authentication mechanism that was used during an HTTP request, the server must always return a `User` header, which contains a URI representing the user's identity. For example, the `User` header may contain either an HTTP URI (i.e. the WebID of the user that was just authenticated), or a different URI (e.g. mailto:, dns:, tel:, etc.).
+
+The `User` header can also be used to verify that a user has successfully authenticated (if an HTTP URI what dereferences to a WebID profile is present), as well as to bootstrap the way apps personalize the user experience, since apps have an easy way of discovering the user's identity.
+
+Here is an example:
+
+REQUEST:
+```
+GET /data/ HTTP/1.1
+Host: example.org
+```
+
+RESPONSE:
+```
+HTTP/1.1 200 OK
+...
+User: https://alice.example.org/card#me
+```
+
+
 ## Authentication
 ### WebID-TLS
 The WebID-TLS protocol ([W3C draft](http://www.w3.org/2005/Incubator/webid/spec/tls/)) enables secure, efficient authentication on the Web. It enables users to authenticate onto any site by simply choosing one of the certificates proposed to them by their browser. These certificates can be created by any Web Site for any purpose. A user may have multiple client certificates, bound to one or multiple WebIDs.

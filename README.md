@@ -641,7 +641,7 @@ HTTP/1.1 401 Unauthorized
 WWW-Authenticate: WebID-RSA source="example.org", nonce="securestring"
 ```
 
-Next, the client sets the username value to the user's WebID and signs the concatenated value of **source + username + nonce** before resending the request. The signature must use the `PKCS1v15` message encoding with `SHA256`.
+Next, the client sets the username value to the user's WebID and signs the `SHA1` hash of the concatenated value of **source + username + nonce** before resending the request. The signature must use the `PKCS1v15` standard and it must be `base64` encoded.
 
 It is important that clients return the proper source value they received from the server, in order to avoid main-in-the-middle attacks. Also note that the server must send it's own URI (**source**) together with the token, otherwise a MitM can forward the claim to the client; the server will also expect that clients return the same server URI.
 

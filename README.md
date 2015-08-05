@@ -652,7 +652,7 @@ Host: example.org
 Authorization: WebID-RSA source="example.org",
                          username="https://alice.example.org/card#me", 
                          nonce="securestring",
-                         sig="base64(sig(SHA1(signatureOverSourceUsernameNonce)))"
+                         sig="base64(sig(SHA1(SourceUsernameNonce)))"
 ```
 RESPONSE:
 ```

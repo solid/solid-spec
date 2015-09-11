@@ -718,6 +718,7 @@ Name | Maintained | LDP | Cors | WebID provider | WebID-TLS | WebID-RSA | WebID-
  - Profile editor -- https://github.com/linkeddata/profile-editor
  - Cimba -- https://github.com/linkeddata/cimba
  - Meeting scheduler -- https://github.com/linkeddata/app-schedule
+ - Contacts manager (AngularJS, mobile friendly) -- https://github.com/linkeddata/contacts
  - Contacts manager -- https://github.com/mzereba/contacts
  - Todo list -- https://github.com/mzereba/todo
 

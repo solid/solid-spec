@@ -702,24 +702,7 @@ More information on Web Access Control can be found here: https://www.w3.org/wik
 
 @@TODO: add section on delegation
 
-# Software implementing SoLiD
-## Servers
+# Software implementing Solid
 
-Name | Maintained | LDP | Cors | WebID provider | WebID-TLS | WebID-RSA | WebID-Delegation | WAC   
------|------------|-----|------|----------------|-----------|-----------|------------------|----
-[rww-play](https://github.com/read-write-web/rww-play)|Yes|Basic Containers, file storage, SEARCH|Proxy|Yes|Yes|No|N/A|Yes
-[gold](https://github.com/linkeddata/gold)|Yes|Basic Containers, file storage|Proxy|Yes|Yes|Yes|Yes|Yes
-[ldphp](https://github.com/linkeddata/ldphp)|No|Basic Containers, file storage|Proxy|Yes|Yes|No|No|Yes
-[ldnode](https://github.com/linkeddata/ldnode)|Yes|In progress, file storage|N/A|No|Yes|No|No|Yes
-[meccano](https://github.com/Qatar-Computing-Research-Institute/qcri-crosscloudP/tree/meccano)|Yes|Basic Containers (adaptor), SPARQL store|No|No|No|No|No|Partial
-
-## Applications
- - Warp -- https://github.com/linkeddata/warp
- - Profile editor -- https://github.com/linkeddata/profile-editor
- - Cimba -- https://github.com/linkeddata/cimba
- - Meeting scheduler -- https://github.com/linkeddata/app-schedule
- - Contacts manager (AngularJS, mobile friendly) -- https://github.com/linkeddata/contacts
- - Contacts manager -- https://github.com/mzereba/contacts
- - Todo list -- https://github.com/mzereba/todo
-
-
+- See [solid/solid-tools](https://github.com/solid/solid-tools) for developer tools
+- See [solid/solid-apps](https://github.com/solid/solid-apps) for Apps built on Solid

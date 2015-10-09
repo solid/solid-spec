@@ -56,3 +56,8 @@ App configuration files contain all information related to an app.
 ### Ontologies
 
 * pim : http://www.w3.org/ns/pim/space#
+
+
+### Illustration
+
+![discovery illustration](assets/discovery.png "discovery illustration")

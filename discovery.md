@@ -1,10 +1,10 @@
-# SoLiD Discovery (Draft)
+# Solid Discovery (Draft)
 
-The following describes discovery in the SoLiD framework using HTTP link following aka "follow your nose".
+The following describes discovery in the Solid framework using HTTP link following aka "follow your nose".
 
 ### Starting point -- WebID
 
-The starting point of SoLiD discovery is a [WebID](http://www.w3.org/2005/Incubator/webid/spec/identity/) user profile, which is a hash based URI, typically denoting a (FOAF) Agent.  From this profile all of your storage can be found (discovery).
+The starting point of Solid discovery is a [WebID](http://www.w3.org/2005/Incubator/webid/spec/identity/) user profile, which is a hash based URI, typically denoting a (FOAF) Agent.  From this profile all of your storage can be found (discovery).
 
 ### Storage Discovery
 

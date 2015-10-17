@@ -9,7 +9,7 @@
 ## Table of contents
 
  1. [Quick intro](#quick-intro)
- 2. [Brief example of SoLiD in action](#brief-example-of-solid-in-action)
+ 2. [Brief example of Solid in action](#brief-example-of-solid-in-action)
  3. [RDF](#rdf)
  4. [Reading and writing data using LDP](#reading-and-writing-data-using-ldp)
  5. [Reading and writing data using SPARQL](#reading-and-writing-data-using-sparql)
@@ -19,16 +19,16 @@
  9. [Personal data workspaces](#personal-data-workspaces)
  10. [Authentication](#authentication)
  11. [Access control](#access-control)
- 12. [Software implementing SoLiD](#software-implementing-solid)
+ 12. [Software implementing Solid](#software-implementing-solid)
 
 
 ## Quick intro
 
-SoLiD is a proposed set of conventions for building decentralized social applications on the Linked Data stack.  This document contains design notes on the individual components used, intended to be a guide for developers who plan to build servers or applications.
+Solid is a proposed set of conventions for building decentralized social applications on the Linked Data stack.  This document contains design notes on the individual components used, intended to be a guide for developers who plan to build servers or applications.
 
-SoLiD is modular and extensible. It relies as much as possible on existing [W3C](http://www.w3.org/) standards.
+Solid is modular and extensible. It relies as much as possible on existing [W3C](http://www.w3.org/) standards.
 
-SoLiD applications are somewhat like multiuser applications where instances talk to each other through a shared filesystem, and the Web is that filesystem.
+Solid applications are somewhat like multiuser applications where instances talk to each other through a shared filesystem, and the Web is that filesystem.
 
 Features:
 
@@ -37,7 +37,7 @@ Features:
 3. The data model is RDF.  This means the data can be transmitted in various syntaxes like Turtle, JSON-LD (JSON with a "context"), or RDFa (HTML attributes).  RDF is REST-friendly, using URLs everywhere, and it provides **decentralized extensibility**, so that a set of applications can cooperate in sharing a new kind of data without needing approval from any central authority.
 
 
-## Brief example of SoLiD in action
+## Brief example of Solid in action
 
 This example is taken from W3C's [Social Web WG](http://www.w3.org/wiki/Socialwg/) user stories, where it is called ["user posts a note"](http://www.w3.org/wiki/Socialwg/Social_API/User_stories#User_posts_a_note):
 
@@ -45,7 +45,7 @@ This example is taken from W3C's [Social Web WG](http://www.w3.org/wiki/Socialwg
  2. After posting the note, he notices a spelling error. He edits the note and re-posts it.
  3. Later, Eric decides that the information in the note is incorrect. He deletes the note.
 
-Here is how SoLiD would handle the three steps, using [curl](http://curl.haxx.se/) as the client application:
+Here is how Solid would handle the three steps, using [curl](http://curl.haxx.se/) as the client application:
 
 1) Eric writes a short note to be shared with his followers. The *Slug* header is optional but useful for controlling the resulting URL.
 ```
@@ -58,7 +58,7 @@ curl -H"Content-Type: text/turtle" \
 
 The URL of the new note can be found in the *Location* header returned by the server.  In this example it is likely to be: https://eric.example.org/notes/social-web-2015
 
-2) After posting the note, he notices a spelling error. He edits the note and re-posts it. SoLiD servers can handle updates in two different ways: PUT (overwrite) or PATCH with *sparql-update* content type.
+2) After posting the note, he notices a spelling error. He edits the note and re-posts it. Solid servers can handle updates in two different ways: PUT (overwrite) or PATCH with *sparql-update* content type.
 
 Use HTTP PUT, when you just want to replace the data:
 ```
@@ -89,12 +89,12 @@ Note that all three actions have been performed through RESTful HTTP requests.
 
 In these example, data was sent to the server using text/turtle (which is mandated in LDP), but other content types (such as JSON-LD) could be used if implemented by servers.
 
-More examples of user stories can be found [here](https://github.com/linkeddata/SoLiD/tree/master/UserStories).
+More examples of user stories can be found [here](https://github.com/solid/solid-spec/tree/master/UserStories).
 
 ## RDF
 The Resource Description Framework (RDF) is a framework for representing information in the Web [[RDF1.1](http://www.w3.org/TR/rdf11-concepts/)], originally designed as a graph-based data model, where the core structure of the abstract syntax is a set of triples, each consisting of a subject, a predicate and an object.
 
-SoLiD uses several serialization syntaxes for storing and exchanging RDF such as [Turtle](http://www.w3.org/TR/turtle/) and [JSON-LD](http://www.w3.org/TR/json-ld/). When creating new RDF resources, the preferred **default** serialization is Turtle. SoLiD-compliant servers should implement content negotiation in order to handle different serialization formats.
+Solid uses several serialization syntaxes for storing and exchanging RDF such as [Turtle](http://www.w3.org/TR/turtle/) and [JSON-LD](http://www.w3.org/TR/json-ld/). When creating new RDF resources, the preferred **default** serialization is Turtle. Solid-compliant servers should implement content negotiation in order to handle different serialization formats.
 
 ## Reading and writing data using LDP
 To simplify data portability, we opted for a design that follows the classic POSIX standards. For instance, resources are stored directly on the file system instead of using a database. This allows people to read/write data both using desktop applications as well as Web-based ones, and also to share the same disk drive between different machines/servers.
@@ -148,7 +148,7 @@ Allow: OPTIONS, HEAD, GET, PATCH, POST, PUT, DELETE
 ```
 
 ### Resources names and extensions
-A very important aspect of SoLiD revolves around naming resources, and keep the namespaces consistent across both the Web and local file systems.
+A very important aspect of Solid revolves around naming resources, and keep the namespaces consistent across both the Web and local file systems.
 
 Our motivation is threefold:
 
@@ -221,16 +221,16 @@ HTTP/1.1 201 Created
 ```
 
 #### Handling metadata for non-RDF resources
-The metadata (i.e. extra RDF triples such as types, titles, comments, etc.) about non-RDF resources (e.g. containers, images, binaries, etc.) will be stored in a corresponding *meta* resources. SoLiD servers use a specific naming convention when referring to these meta resources. Basically, every non-RDF resource may have a corresponding metadata resource, with a name composed of the resource's name together with a **.meta** suffix.
+The metadata (i.e. extra RDF triples such as types, titles, comments, etc.) about non-RDF resources (e.g. containers, images, binaries, etc.) will be stored in a corresponding *meta* resources. Solid servers use a specific naming convention when referring to these meta resources. Basically, every non-RDF resource may have a corresponding metadata resource, with a name composed of the resource's name together with a **.meta** suffix.
 
 For example, the corresponding metadata resource for the newly created container will be accessible through this URI: `https://example.org/data/.meta`. Alternatively, the photo at `https://example.org/data/image.jpg` will have it's metadata stored in `https://example.org/data/image.jpg.meta`.
 
 Metadata resources are a "special" type of resources, which are not publicly listed by the server when browsing files (typically when doing a GET on an LDP container). However, they can still be modified by client apps using the methods described in this section. The corresponding metadata resources are advertised and can be discovered when doing HTTP GET/HEAD on regular resources, as mentioned before.
 
 ### Reading resources
-Resources can be commonly accessed (i.e. read) using HTTP GET requests. SoLiD servers are encouraged to perform content negotiation for RDF resources, depending on the value of the *Accept* header.
+Resources can be commonly accessed (i.e. read) using HTTP GET requests. Solid servers are encouraged to perform content negotiation for RDF resources, depending on the value of the *Accept* header.
 
-Being LDP (BasicContainer) compliant, SoLiD servers MUST return a full listing of container contents when receiving requests for containers. For every resource in a container, a SoLiD server may include additional metadata, such as the time the resource was modified, the size of the resource, and more importantly any other RDF type specified for the resource in its metadata. You will notice in the example below that the ```<profile>``` resource has the extra RDF type ```<http://xmlns.com/foaf/0.1/PersonalProfileDocument>```, and also that the resource ```<workspace/>``` has the RDF type ```<http://www.w3.org/ns/pim/space#Workspace>```.
+Being LDP (BasicContainer) compliant, Solid servers MUST return a full listing of container contents when receiving requests for containers. For every resource in a container, a Solid server may include additional metadata, such as the time the resource was modified, the size of the resource, and more importantly any other RDF type specified for the resource in its metadata. You will notice in the example below that the ```<profile>``` resource has the extra RDF type ```<http://xmlns.com/foaf/0.1/PersonalProfileDocument>```, and also that the resource ```<workspace/>``` has the RDF type ```<http://www.w3.org/ns/pim/space#Workspace>```.
 
 Extra medata can be also be added, describing whether each resource in the container maps to a file or a directory on the server, using the [POSIX vocabulary](http://www.w3.org/ns/posix/stat#). Here is an example that reflects how our current server implementations handle such a request:
 
@@ -275,7 +275,7 @@ HTTP/1.1 200 OK
 
 ## Reading and writing data using SPARQL
 
-Another possible way of reading and writing data is to use SPARQL. Currently, our SoLiD servers support a subset of [SPARQL 1.0](http://www.w3.org/TR/rdf-sparql-query/), where each resource is its own SPARQL endpoint, accepting basic SELECT, INSERT and DELETE statements.
+Another possible way of reading and writing data is to use SPARQL. Currently, our Solid servers support a subset of [SPARQL 1.0](http://www.w3.org/TR/rdf-sparql-query/), where each resource is its own SPARQL endpoint, accepting basic SELECT, INSERT and DELETE statements.
 
 ### Reading data using SPARQL
 
@@ -391,7 +391,7 @@ HTTP/1.1 201 Created
 
 This request would then create a new resource called *event1*, as well as the missing month (i.e. 05) and day (i.e. 01) containers under /2015/.
 
-To avoid accidental overwrites, SoLiD servers must support ETag checking through the use of [If-Match or If-None-Match](https://tools.ietf.org/html/rfc2616#section-14.24) HTTP headers.
+To avoid accidental overwrites, Solid servers must support ETag checking through the use of [If-Match or If-None-Match](https://tools.ietf.org/html/rfc2616#section-14.24) HTTP headers.
 
 ### Writing/deleting data using SPARQL
 To write data, clients can send an HTTP PATCH request with a SPARQL payload to the resource in question. If the resource doesn't exist, it should be created through an LDP POST or through a PUT.
@@ -415,7 +415,7 @@ HTTP/1.1 200 OK
 **IMPORTANT:** There is currently no support for blank nodes and RDF lists in our SPARQL patches.
 
 ## CORS - Cross Origin Resource Sharing
-There are two different ways CORS support must be implemented on SoLiD servers. First, when the request is sent through a browser that sets the Origin header. And second, when clients do not set an Origin header (e.g. curl or non-browser clients).
+There are two different ways CORS support must be implemented on Solid servers. First, when the request is sent through a browser that sets the Origin header. And second, when clients do not set an Origin header (e.g. curl or non-browser clients).
 
 When the Origin header is set:
 
@@ -503,12 +503,12 @@ socket.onmessage = function(msg) {
 @@@TODO 
 
 ## Identity management based on WebID
-Identity management as well as unique identifiers are the core of any social system. SoLiD uses [WebID](http://www.w3.org/2005/Incubator/webid/spec/identity/), an HTTP(S) URI, to uniquely refer to users (people or agents). The advantage of WebID is that the URI can be dereferenced to a WebID profile document, in order to reveal useful information about the user. Also, since WebID profiles can be hosted anywhere (including your basement server), users are no longer trapped inside Identity Provider Silos (e.g. Twitter, Facebook, Google+, etc.).
+Identity management as well as unique identifiers are the core of any social system. Solid uses [WebID](http://www.w3.org/2005/Incubator/webid/spec/identity/), an HTTP(S) URI, to uniquely refer to users (people or agents). The advantage of WebID is that the URI can be dereferenced to a WebID profile document, in order to reveal useful information about the user. Also, since WebID profiles can be hosted anywhere (including your basement server), users are no longer trapped inside Identity Provider Silos (e.g. Twitter, Facebook, Google+, etc.).
 
 ### Creating new accounts
 
 #### Client - server API
-SoLiD-compliant servers must implement a very simple API, indicating whether an account name is available or not on the server. Clients (e.g. the signup Web component) send an HTTP POST request containing the following JSON structure, where *accountName* contains the target account name (e.g. a preferred username):
+Solid-compliant servers must implement a very simple API, indicating whether an account name is available or not on the server. Clients (e.g. the signup Web component) send an HTTP POST request containing the following JSON structure, where *accountName* contains the target account name (e.g. a preferred username):
 
 ```
 {
@@ -615,7 +615,7 @@ The WebID-TLS protocol ([W3C draft](http://www.w3.org/2005/Incubator/webid/spec/
 
 Basically, WebID-TLS relies on matching a public key received from a client certificate, to the public key published in the WebID profile obtained by dereferencing the WebID included in the SubjectAlternativeName field of the client certificate. In other words, users must prove they own a public key they publish in their WebID profiles.
 
-WebID-TLS is currently the preferred authentication mechanism in SoLiD. 
+WebID-TLS is currently the preferred authentication mechanism in Solid. 
 
 ***Important: Javascript clients must set the XHR flag `withCredentials` to true when making authenticated requests, in order to force browsers to send the client certificate. For example, Firefox will not send the client certificate unless this flag is set to true.***
 
@@ -692,7 +692,7 @@ Web Access Control (WAC) is a decentralized system that allows different users a
 
 Same as for metadata resources, ACL resources are not publicly listed by the server when browsing files (typically when doing a GET on an LDP container). However, they can still be read/written by client apps using the above mentioned ways of writing data. The corresponding ACL resources are advertised and can be discovered when doing HTTP GET/HEAD on regular resources.
 
-Similar to the metadata resource naming convention, SoLiD servers use a specific naming convention for ACL resources. This convention relies on appending a **.acl** suffix to its corresponding resource.
+Similar to the metadata resource naming convention, Solid servers use a specific naming convention for ACL resources. This convention relies on appending a **.acl** suffix to its corresponding resource.
 
 For example, the container `https://example.org/data/` will have a corresponding ACL resource with the URI: `https://example.org/data/.acl`. A resource `https://example.org/data/test` will have a corresponding ACL resource at `https://example.org/data/test.acl`
 

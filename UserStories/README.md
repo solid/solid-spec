@@ -1,6 +1,6 @@
 ## User Stories
 
-To illustrate how SoLiD would work it helps to look at this in terms of the [UserStories published by the Social Web WG](https://www.w3.org/wiki/Socialwg/Social_API/User_stories).
+To illustrate how Solid would work it helps to look at this in terms of the [UserStories published by the Social Web WG](https://www.w3.org/wiki/Socialwg/Social_API/User_stories).
 
 For each user story we will  
 

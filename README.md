@@ -173,10 +173,10 @@ REQUEST:
 POST / HTTP/1.1
 Host: example.org
 Content-Type: text/turtle
+Link: <https://www.w3.org/ns/ldp#BasicContainer>; rel="type"
 Slug: data
 
-<> a <http://www.w3.org/ns/ldp#BasicContainer> ;
-   <http://purl.org/dc/terms/title> "Basic container" .
+<> <http://purl.org/dc/terms/title> "Basic container" .
 ```
 RESPONSE:
 ```
@@ -194,10 +194,10 @@ REQUEST:
 POST / HTTP/1.1
 Host: example.org
 Content-Type: text/turtle
+Link: <http://www.w3.org/ns/ldp#Resource>; rel="type"
 Slug: test
 
-<> a <http://www.w3.org/ns/ldp#Resource> ;
-   <http://purl.org/dc/terms/title> "This is a test file" .
+<> <http://purl.org/dc/terms/title> "This is a test file" .
 ```
 RESPONSE:
 ```

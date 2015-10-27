@@ -684,7 +684,7 @@ Authorization: WebID-RSA keyuri="https://alice.example.org/card#key1",
 
 The server would then be able to immediately identify and link the key that was used to sign the response to the user that owns it.
 
-### WebID Delagated Requests
+### WebID Delegated Requests
 A very interesting use case supported by Solid deals with the ability to delegate certain requests to an agent (robot) representing a Solid server. For example, instead of performing a lot of cross-origin requets in the browser, a user can opt to delegate some requests to their own server (as if using a proxy), thus avoiding some CORS issues.
 
 WebID delegated authentication implies at least three parties:

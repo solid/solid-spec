@@ -684,6 +684,53 @@ Authorization: WebID-RSA keyuri="https://alice.example.org/card#key1",
 
 The server would then be able to immediately identify and link the key that was used to sign the response to the user that owns it.
 
+### WebID Delagated Requests
+A very interesting use case supported by Solid deals with the ability to delegate certain requests to an agent (robot) representing a Solid server. For example, instead of performing a lot of cross-origin requets in the browser, a user can opt to delegate some requests to their own server (as if using a proxy), thus avoiding some CORS issues.
+
+WebID delegated authentication implies at least three parties:
+
+* the user who initiates the request (delegator) - https://alice.example.org/card#me
+* the server to which the request is delegated (delegatee) - https://alice.example.org/
+* the server hosting a target resource (data source server) - https://data-source.org/
+ 
+The delegator must indicate that it delegates the server agent (delegatee) to perform requests on his/her behalf. The server agent is identified by its own WebID -- i.e. `https://alice.example.org/agent#i`. The relationship between the delegator and the delegatee is expressed in RDF using the following predicate: `http://www.w3.org/ns/auth/acl#delegates`.
+
+This is an example of the triple Alice needs to add to her profile document:
+
+```
+<https://alice.example.org/card#me> <http://www.w3.org/ns/auth/acl#delegates> <https://alice.example.org/agent#i> .
+```
+
+A typical requests takes place according to the following workflow:
+
+```
+                <alice#me>                             <agent#i>
+[ Delegator ] <------------> [ Delegatee ] <----------------------------> [ Data source server ]
+                                              On-Behalf-Of: <alice#me>
+```
+
+1. Alice (the delegator) intends to request a *test* resource from the data source server. Instead of performing a direct cross-origin request, the client (application) sends the request to the delegatee server using a *proxy* URI:
+
+REQUEST:
+```
+GET /,proxy?uri=https%3A%2F%2Fdata-source.org%2Ftest HTTP/1.1
+Host: alice.example.org
+```
+
+2. The delegatee server then directly requests the resource from the `uri` value, making sure to identify itself as `https://alice.example.org/agent#i` by using its own credentials. The delegatee server also adds an extra HTTP header to the request, called `On-Behalf-Of`, which is used to indicate that the request is performed on behalf of another party.
+
+REQUEST:
+```
+GET /test HTTP/1.1
+Host: data-source.org
+On-Behalf-Of: https://alice.example.org/card#me
+```
+
+3. At this point, the server `data-source.org` dereferences the WebID found in the `On-Behalf-Of` header, and checks if the delegatee's WebID (i.e. `https://alice.example.org/agent#i`) that was used to identify the user behid this request matches one of the WebIDs listed in the `http://www.w3.org/ns/auth/acl#delegates` relation found in the delator's profile. If a match is found, the data source server may decide to treat the delegator as the real identity to be used for this request.
+
+***IMPORTANT:*** The reason why the delegatee must use its own identity (i.e. `https://alice.example.org/agent#i`) and credentials, is to avoid confusion as to who is actually performing the request. This is particularily important when applying access control policies, as we could imagine that certain resources may not be accessible for certain agents (delegatees).
+
+
 ## Access Control
 ### Web Access Control
 Web Access Control (WAC) is a decentralized system that allows different users and groups various forms of access to resources where users and groups are identified by HTTP URIs. The system is similar to the access control system used within many file systems except that the documents controlled, the users and the groups are all identified by URIs. Users are identified by WebIDs. Groups of users are identified by the URI of a class of users which, if you look it up, returns a list of users in the class. This means a WebID hosted by any server can be a member of a group hosted some other server.
@@ -699,8 +746,6 @@ For example, the container `https://example.org/data/` will have a corresponding
 WAC policies are applied to resources, instead of triples. This means that policies can be set for LDPRs as well as for LDPCs. A special case is applied to LDPCs, where policies can be defined as "default" for everything in a container, meaning that all the members of that specific container will inherited them.
 
 More information on Web Access Control can be found here: https://www.w3.org/wiki/WebAccessControl.
-
-@@TODO: add section on delegation
 
 # Software implementing Solid
 

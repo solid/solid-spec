@@ -48,6 +48,7 @@ This example is taken from W3C's [Social Web WG](http://www.w3.org/wiki/Socialwg
 Here is how Solid would handle the three steps, using [curl](http://curl.haxx.se/) as the client application:
 
 1) Eric writes a short note to be shared with his followers. The *Slug* header is optional but useful for controlling the resulting URL.
+
 ```
 curl -H"Content-Type: text/turtle" \
      -H"Slug: social-web-2015" \
@@ -61,6 +62,7 @@ The URL of the new note can be found in the *Location* header returned by the se
 2) After posting the note, he notices a spelling error. He edits the note and re-posts it. Solid servers can handle updates in two different ways: PUT (overwrite) or PATCH with *sparql-update* content type.
 
 Use HTTP PUT, when you just want to replace the data:
+
 ```
 curl -H"Content-Type: text/turtle" \
      -X PUT \
@@ -115,11 +117,14 @@ Our existing servers support the following HTTP methods for reading data:
 Returns a list of headers related to the resource in question. Among these headers, two very important Link headers contain pointers to corresponding ACL and metadata resources. More information on naming conventions for these resources can be found [here](#wac).
 
 REQUEST:
+
 ```
 HEAD /data/ HTTP/1.1
 Host: example.org
 ```
+
 RESPONSE:
+
 ```
 HTTP/1.1 200 OK
 ....
@@ -131,11 +136,14 @@ Link: <https://example.org/data/.meta>; rel="describedby"
 Returns a list of headers describing the server's capabilities.
 
 REQUEST:
+
 ```
 OPTIONS /data/ HTTP/1.1
 Host: example.org
 ```
+
 RESPONSE:
+
 ```
 HTTP/1.1 200 OK
 Accept-Patch: application/json, application/sparql-update
@@ -169,6 +177,7 @@ To create a new **basic container** resource, the Link header value must be set 
 For example, to create a basic container called **data** under https://example.org/, the client will need to send the following POST request, with the Content-Type header set to `text/turtle`:
 
 REQUEST:
+
 ```
 POST / HTTP/1.1
 Host: example.org
@@ -178,7 +187,9 @@ Slug: data
 
 <> <http://purl.org/dc/terms/title> "Basic container" .
 ```
+
 RESPONSE:
+
 ```
 HTTP/1.1 201 Created
 ```
@@ -190,6 +201,7 @@ To create a new resource, the Link header value must be set to the following val
 For example, to create a resource called **test** under https://example.org/data/, the client will need to send the following POST request, with the Content-Type header set to `text/turtle`:
 
 REQUEST:
+
 ```
 POST / HTTP/1.1
 Host: example.org
@@ -199,7 +211,9 @@ Slug: test
 
 <> <http://purl.org/dc/terms/title> "This is a test file" .
 ```
+
 RESPONSE:
+
 ```
 HTTP/1.1 201 Created
 ```
@@ -209,13 +223,16 @@ More examples can be found in the LDP [Primer document](http://www.w3.org/TR/ldp
 An alternative, though not standard way of creating new resources is to use HTTP PUT. Although HTTP PUT is commonly used to overwrite resources, this way is usually preferred when creating new non-RDF resources (i.e. using a mime type different than *text/turtle*).
 
 REQUEST:
+
 ```
 PUT /picture.jpg HTTP/1.1
 Host: example.org
 Content-Type: image/jpeg
 ...
 ```
+
 RESPONSE :
+
 ```
 HTTP/1.1 201 Created
 ```
@@ -235,12 +252,14 @@ Being LDP (BasicContainer) compliant, Solid servers MUST return a full listing o
 Extra medata can be also be added, describing whether each resource in the container maps to a file or a directory on the server, using the [POSIX vocabulary](http://www.w3.org/ns/posix/stat#). Here is an example that reflects how our current server implementations handle such a request:
 
 REQUEST:
+
 ```
 GET /
 Host: example.org
 ```
 
 RESPONSE:
+
 ```
 HTTP/1.1 200 OK
 
@@ -270,7 +289,6 @@ HTTP/1.1 200 OK
 
 
 
-
 **IMPORTANT:** a default **text/turtle** Content-Type will be used for requests for RDF resources or views (e.g. containers) that do not have an *Accept* header.
 
 ## Reading and writing data using SPARQL
@@ -284,11 +302,14 @@ To read (query) a resource, the client can send a SPARQL SELECT through a form-e
 For instance, the client can send the following form-encoded query `SELECT * WHERE { ?s ?p ?o . }`:
 
 REQUEST:
+
 ```
 GET /data/?query=SELECT%20*%20WHERE%20%7B%20%3Fs%20%3Fp%20%3Fo%20.%20%7D HTTP/1.1
 Host: example.org
 ```
+
 RESPONSE:
+
 ```
 HTTP/1.1 200 OK
 
@@ -324,11 +345,13 @@ We have found that in some cases, using the existing LDP features was not enough
 For example, let's assume that */data/res1* and */data/res2* are two resources containing one triple each, which defines their type as follows:
 
 For *res1*:
+
 ```
 <> a <https://example.org/ns/type#One> .
 ```
 
 For *res2*:
+
 ```
 <> a <https://example.org/ns/type#Two> .
 ```
@@ -336,11 +359,14 @@ For *res2*:
 If one would like to fetch all resources of a container begining with **res** (e.g. /data/res1, /data/res2) in one request, they could do a GET on `/data/res*` as follows.
 
 REQUEST:
+
 ```
 GET /data/res* HTTP/1.1
 Host: example.org
 ```
+
 RESPONSE:
+
 ```
 HTTP/1.1 200 OK
 
@@ -354,11 +380,14 @@ HTTP/1.1 200 OK
 Alternatively, one could ask the server to inline *all* resources of a container, which includes the triples corresponding to the container itself:
 
 REQUEST:
+
 ```
 GET /data/* HTTP/1.1
 Host: example.org
 ```
+
 RESPONSE:
+
 ```
 HTTP/1.1 200 OK
 
@@ -380,11 +409,14 @@ Note: the aggregation process is not currently recursive, therefore it will not 
 Another useful feature that is not yet part of LDP deals with using HTTP PUT to create new resources. This feature is really useful when the clients wants to make sure it has absolute control over the URI namespace -- e.g. migrating from one pod to another. Although this feature is defined in HTTP1.1 [RFC2616](https://tools.ietf.org/html/rfc2616), we decided to improve it slightly by having servers create the full path to the resource, if it didn't exist before. For instance, a calendar app uses a URI pattern (structure) based on dates when storing new events (i.e. yyyy/mm/dd). Instead of performing several POST requests to create a month and a day container when switching to a new month, it could send the following request to create a new event resource called *event1*:
 
 REQUEST:
+
 ```
 PUT /2015/05/01/event1 HTTP/1.1
 Host: example.org
 ```
+
 RESPONSE:
+
 ```
 HTTP/1.1 201 Created
 ```
@@ -399,6 +431,7 @@ To write data, clients can send an HTTP PATCH request with a SPARQL payload to t
 For instance, to update the *title* of the container from the previous example, the client would have to send a DELETE statement, followed by an INSERT statement. Multiple statements  (delimited by a **;**) can be sent in the same PATCH request.
 
 REQUEST:
+
 ```
 PATCH /data/ HTTP/1.1
 Host: example.org
@@ -407,7 +440,9 @@ Content-Type: application/sparql-update
 DELETE DATA { <> <http://purl.org/dc/terms/title> "Basic container" };
 INSERT DATA { <> <http://purl.org/dc/terms/title> "My data container" }
 ```
+
 RESPONSE:
+
 ```
 HTTP/1.1 200 OK
 ```
@@ -447,11 +482,14 @@ The PubSub system is very basic. Clients only need to open a websocket connectio
 The websocket server URI is the same for any resource located on a given data space (same hostname). To discover the URI of the websocket server, clients can send an HTTP OPTIONS. The server will then include an **Updates-Via** header in the response:
 
 REQUEST:
+
 ```
 OPTIONS /data/test HTTP/1.1
 Host: example.org
 ```
+
 RESPONSE:
+
 ```
 HTTP/1.1 200 OK
 ...
@@ -475,6 +513,7 @@ For example, a client subscribes to the **data/** container:
 If another client deletes the resource **foo** inside **data/**:
 
 REQUEST:
+
 ```
 DELETE /data/foo HTTP/1.1
 Host: example.org
@@ -507,7 +546,7 @@ Identity management as well as unique identifiers are the core of any social sys
 
 ### Creating new accounts
 
-#### Client - server API
+#### ~~Client - server API~~ [Deprecated]
 Solid-compliant servers must implement a very simple API, indicating whether an account name is available or not on the server. Clients (e.g. the signup Web component) send an HTTP POST request containing the following JSON structure, where *accountName* contains the target account name (e.g. a preferred username):
 
 ```
@@ -531,36 +570,83 @@ The server response has to contain the following JSON structure:
 			}
 }
 ```
+#### Checking if an account exists
+Before creating new accounts, client applications must be able to check whether or not an account exists. To do that, clients only need to send a `HEAD` request to the account root URI. For example, let's assume the user *Alice* wants to create an account on `example.org`, using the username `alice`. The client will perform a `HEAD` request to the `alice.example.org` subdomain.
 
-**Attention!** Because creating client certificates requires the &lt;KEYGEN&gt; HTML element, which does not work with AJAX requests, the client must submit a form to the *formURI* it receives from the server. This restriction means that a predefined set of form element names must be respected on the server. Here is a list of form element names  (case sensitive!) that are sent by the signup component:
+REQUEST:
 
- * `spkac` - SPKAC containing the public key generated by the KEYGEN element
- * `username` - account user name
- * `name` - user's full name
- * `email` - user's email address
- * `img` - user's picture URL
+```
+HEAD / HTTP/1.1
+Host: alice.example.org
+```
 
-Finally, if the *status* indicates success, and the *available* flag is set to *true*, then the form containing user details can be submitted, using the URI provided by the server (i.e. the value of *formuri*).
+RESPONSE:
 
-The value of *loginURI* is used to indicate where the app can fake a WebID-TLS login, in order to find the user's WebID.
+```
+HTTP/1.1 200 OK
+```
 
-Once the WebID certificate is installed in the browser, the user is presented with a button that finishes setting up the account when clicked. At the end, the user ends up with a series of default workspaces, access control policies (ACLs) for them, and also a *preferences* document (file).
+If the HTTP status code returned is `200`, then it means an account with that name exists already.
 
-### Personal data workspaces
+If the status code returned is `404`, it means that the account is available.
+
+#### Client-side triggering of account creation
+Once the client application has verified that the account is available, it can now proceed to create it. To do so, it must submit a form (or emulate it) to the *account URI* it previously checked (e.g. alice.example.org), containing at least the following form parameter names:
+
+ * `username` (required) - the account name that will be used as the subdomain -- i.e. `alice`
+ * `email` (optional) - the email of the user, which may be used for account recovery and/or account validation
+
+Once submitted, the server will take charge of creating the necessary workspaces, setting the access control policies and creating the user's WebID profile document.
+
+#### WebID profile document
+The WebID profile document should be the first resource created by the server after receiving a request for a new account. The reason is that other resources such as the `preferencesFile` document will be linked to from the profile document as soon as they are created.
+
+The profile document follows the structure and schema described by the [WebID specification document](http://www.w3.org/2005/Incubator/webid/spec/identity/#publishing-the-webid-profile-document). A bare profile document only needs to contain a minimum number of relations, such as the one pointing to the `preferencesFile` and to the `inbox` (notifications) container. During account creation, the user may provide a full name or a profile picture, but those profile elements are not mandatory, and can be added in a future request (i.e. through a PATCH).
+
+A typical (bare) profile document (i.e. `https://alice.example.org/profile/card`) will look as follows:
+
+```
+<>
+    a <http://xmlns.com/foaf/0.1/PersonalProfileDocument> ;
+    <http://xmlns.com/foaf/0.1/maker> <#me> ;
+    <http://xmlns.com/foaf/0.1/primaryTopic> <#me> .
+
+<#me>
+    a <http://xmlns.com/foaf/0.1/Person> ;
+    <http://www.w3.org/ns/pim/space#preferencesFile> <../Preferences/prefs.ttl> ;
+    <http://www.w3.org/ns/pim/space#storage> <../> ;
+    <http://www.w3.org/ns/solid/terms#inbox> <../Inbox/> .
+```
+
+#### Linking the account URI to the user's WebID
+An optional, but recommended step in the account creation workflow is to link the account (i.e. `https://alice.example.org/`) to the account owner's WebID.
+
+To do that, the server may add a triple to the root container's meta file (i.e. `/.meta`), in which it adds the following triple:
+
+```
+<profile/card#me>
+    <http://xmlns.com/foaf/0.1/account> <> .
+```
+
+
+#### Personal data workspaces
 Upon account creation, a series of dedicated workspaces (i.e. LDP containers) are created in the user's data space, together with their corresponding ACL resources. At the moment, the list contains the following workspaces:
 
- * Public
- * Private
- * Work
- * Family
- * Friends
+ * Applications
+ * Inbox
  * Preferences
+ * Private
+ * profile
+ * Public
+ * Shared
+ * Work
 
-Please note that these workspace names are just placeholders and they do not reflect the ACL policies that come with them -- i.e. Public does not necesarily imply a read-all or write-all ACL policy. Time and effort should be dedicated to making sure that multiple languages are supported.
 
-You can consider workspaces to be basic containers, which store application-specific data. For example, one of the reasons we decided to use this concept of workspaces is that complicated ACL logic can be set per workspace, and then all data inside the workspace will inherit the same policies.
+Please note that these workspace names are just placeholders and they do not reflect the ACL policies that come with them -- i.e. Public does not necesarily imply a read-all or write-all ACL policy. Time and effort should be dedicated to making sure that multiple languages ([i18n](http://www.w3.org/International/questions/qa-i18n)) are supported.
 
-### Preferences document
+Workspaces are considered to be basic containers, which store application-specific data. For example, one of the reasons we decided to use this concept of workspaces is that complicated ACL logic can be set per workspace, and then all data inside the workspace will inherit the same policies.
+
+#### Preferences document
 The *preferences* document is a protected resource that extends the WebID profile and it is used to describe useful information about the user and the data server, which can later on be used by applications. This resource currently lists basic information such as the workspaces that were just created. In the future it may contain user preferences such as a preferred language, date format, etc.
 
 By default, the preferences resource is created in the *Preferences* workspaces -- i.e. `https://user.example.org/Preferences/prefs` -- and a relation of type `http://www.w3.org/ns/pim/space#preferencesFile` is added to the WebID profile, which points to the preferences resource.
@@ -575,17 +661,58 @@ In the WebID profile:
 To discover the user's workspaces, an app will follow its nose starting with the WebID profile document, to find all relations of type `http://www.w3.org/ns/pim/space#workspace` having the user's WebID as the subject. Of course, this means following the `http://www.w3.org/ns/pim/space#preferencesFile` relation to get to the preferences resource.
 
 Here is an example of a preferences file:
+
 ```
 <>
     a <http://www.w3.org/ns/pim/space#ConfigurationFile> ;
     <http://purl.org/dc/terms/title> "Preferences file" .
 
-<https://user.example.org/profile/card#me>
+<../Applications/>
+    <http://purl.org/dc/terms/title> "Applications workspace" ;
+    a <http://www.w3.org/ns/pim/space#PreferencesWorkspace>, <http://www.w3.org/ns/pim/space#Workspace> .
+
+<../Inbox/>
+    <http://purl.org/dc/terms/title> "Inbox" ;
+    a <http://www.w3.org/ns/pim/space#Workspace> .
+
+<.>
+    <http://purl.org/dc/terms/title> "Preferences workspace" ;
+    a <http://www.w3.org/ns/pim/space#Workspace> .
+
+<../Private/>
+    <http://purl.org/dc/terms/title> "Private workspace" ;
+    a <http://www.w3.org/ns/pim/space#PrivateWorkspace>, <http://www.w3.org/ns/pim/space#Workspace> .
+
+<../Public/>
+    <http://purl.org/dc/terms/title> "Public workspace" ;
+    a <http://www.w3.org/ns/pim/space#PublicWorkspace>, <http://www.w3.org/ns/pim/space#Workspace> .
+
+<../Shared/>
+    <http://purl.org/dc/terms/title> "Shared workspace" ;
+    a <http://www.w3.org/ns/pim/space#SharedWorkspace>, <http://www.w3.org/ns/pim/space#Workspace> .
+
+<../Work/>
+    <http://purl.org/dc/terms/title> "Work workspace" ;
+    a <http://www.w3.org/ns/pim/space#Workspace> .
+
+<../profile/card#me>
     a <http://xmlns.com/foaf/0.1/Person> ;
     <http://www.w3.org/ns/pim/space#preferencesFile> <> ;
-    <http://www.w3.org/ns/pim/space#workspace> <https://user.example.org/Public/>, <https://user.example.org/Private/>, <https://user.example.org/Work/>, <https://user.example.org/Family>, <https://user.example.org/Friends/>, <https://user.example.org/Preferences/> .
+    <http://www.w3.org/ns/pim/space#workspace> <../Applications/>, <../Inbox/>, <.>, <../Private/>, <../Public/>, <../Shared/>, <../Work/> .
 ```
 
+#### Issuing the client certificate
+**Attention!** Because creating client certificates requires the &lt;KEYGEN&gt; HTML element, which does not work with AJAX requests, the client must submit a form to the **account host URI** -- i.e. `https://user.example.org/`. This restriction means that a predefined set of form element names must be respected on the server. Here is minumum list of form element names (case sensitive!) that **MUST** be sent by signup applications, in order to achieve interoperability:
+
+ * `spkac` - contains the *certificate signing request* (CSR) generated by the KEYGEN element
+ * `webid` - the WebID of the user
+ * `name` - the name (CN) that will be used in the certificate
+
+The server will update the user's profile by adding a representation of the public key (as modulus and exponent) it obtained from the certificate, according to the [WebID-TLS specification](http://www.w3.org/2005/Incubator/webid/spec/tls/#vocabulary).
+
+**IMPORTANT** Servers should only return the certificate
+
+Unfortunately, there is currently no browser API to discover whether or not a certificate was properly installed in the browser.
 
 #### Finding out the identity currently used
 
@@ -596,12 +723,14 @@ The `User` header can also be used to verify that a user has successfully authen
 Here is an example:
 
 REQUEST:
+
 ```
 GET /data/ HTTP/1.1
 Host: example.org
 ```
 
 RESPONSE:
+
 ```
 HTTP/1.1 200 OK
 ...
@@ -631,11 +760,14 @@ Here is a step by step example that covers the authentication handshake.
 First, the client attempts to access a protected resource at `https://example.org/data/`.
 
 REQUEST:
+
 ```
 GET /data/ HTTP/1.1
 Host: example.org
 ```
+
 RESPONSE:
+
 ```
 HTTP/1.1 401 Unauthorized
 WWW-Authenticate: WebID-RSA source="example.org", nonce="securestring"
@@ -646,6 +778,7 @@ Next, the client sets the username value to the user's WebID and signs the `SHA1
 It is important that clients return the proper source value they received from the server, in order to avoid main-in-the-middle attacks. Also note that the server must send it's own URI (**source**) together with the token, otherwise a MitM can forward the claim to the client; the server will also expect that clients return the same server URI.
 
 REQUEST:
+
 ```
 GET /data/ HTTP/1.1
 Host: example.org
@@ -654,7 +787,9 @@ Authorization: WebID-RSA source="example.org",
                          nonce="securestring",
                          sig="base64(sig(SHA1(SourceUsernameNonce)))"
 ```
+
 RESPONSE:
+
 ```
 HTTP/1.1 200 OK
 ```
@@ -712,6 +847,7 @@ A typical requests takes place according to the following workflow:
 1. Alice (the delegator) intends to request a *test* resource from the data source server. Instead of performing a direct cross-origin request, the client (application) sends the request to the delegatee server using a *proxy* URI:
 
 REQUEST:
+
 ```
 GET /,proxy?uri=https%3A%2F%2Fdata-source.org%2Ftest HTTP/1.1
 Host: alice.example.org
@@ -720,6 +856,7 @@ Host: alice.example.org
 2. The delegatee server then directly requests the resource from the `uri` value, making sure to identify itself as `https://alice.example.org/agent#i` by using its own credentials. The delegatee server also adds an extra HTTP header to the request, called `On-Behalf-Of`, which is used to indicate that the request is performed on behalf of another party.
 
 REQUEST:
+
 ```
 GET /test HTTP/1.1
 Host: data-source.org

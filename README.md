@@ -596,6 +596,8 @@ Once the client application has verified that the account is available, it can n
  * `username` (required) - the account name that will be used as the subdomain -- i.e. `alice`
  * `email` (optional) - the email of the user, which may be used for account recovery and/or account validation
 
+**IMPORTANT** At this point, the server should also automatically consider the user to be authenticated, and issue a cookie. This will allow the user to properly manage the following steps that may require authentication.
+
 Once submitted, the server will take charge of creating the necessary workspaces, setting the access control policies and creating the user's WebID profile document.
 
 #### WebID profile document
@@ -710,7 +712,11 @@ Here is an example of a preferences file:
 
 The server will update the user's profile by adding a representation of the public key (as modulus and exponent) it obtained from the certificate, according to the [WebID-TLS specification](http://www.w3.org/2005/Incubator/webid/spec/tls/#vocabulary).
 
-**IMPORTANT** Servers should only return the certificate
+**IMPORTANT** Servers should only return the certificate in the response, while also setting the Content-Type header to the proper mime type value (as seen below), otherwise the certificate will fail to install in the browser.
+
+```
+Content-Type: application/x-x509-user-cert
+```
 
 Unfortunately, there is currently no browser API to discover whether or not a certificate was properly installed in the browser.
 

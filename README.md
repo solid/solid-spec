@@ -23,6 +23,18 @@ The [LDP specification](http://www.w3.org/TR/ldp/) defines a set of rules for HT
 
 To find out how LDP works, you can take a look at the examples in the LDP [Primer document](http://www.w3.org/TR/ldp-primer/).
 
+### Table of contents
+
+1. [Profiles](#profiles)
+2. [Reading](#reading)
+3. [Subscribing](#subscribing)
+4. [Mentioning](#mentioning)
+5. [Creating content](#creating-content)
+6. [Authentication](#authentication)
+7. [Implementations](#implementations)
+8. [Example](#example)
+9. [Server Considerations](#server-considerations)
+
 ## Profiles
 
 Identity management as well as unique identifiers are the core of any social system. Solid uses [WebID](http://www.w3.org/2005/Incubator/webid/spec/identity/), an HTTP(S) URI, to uniquely refer to users (people or agents). The advantage of WebID is that the URI can be dereferenced to a WebID profile document, in order to reveal useful information about the user. Also, since WebID profiles can be hosted anywhere (including your basement server), users are no longer trapped inside Identity Provider Silos (e.g. Twitter, Facebook, Google+, etc.).
@@ -771,7 +783,7 @@ On-Behalf-Of: https://alice.example.org/card#me
 
 **IMPORTANT:** The reason why the delegatee must use its own identity (i.e. `https://alice.example.org/agent#i`) and credentials, is to avoid confusion as to who is actually performing the request. This is particularily important when applying access control policies, as we could imagine that certain resources may not be accessible for certain agents (delegatees).
 
-# Software implementing Solid
+## Implementations
 
 - See [solid/solid-tools](https://github.com/solid/solid-tools) for developer tools
 - See [solid/solid-apps](https://github.com/solid/solid-apps) for Apps built on Solid

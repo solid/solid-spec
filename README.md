@@ -15,7 +15,7 @@
  5. [Reading and writing data using SPARQL](#reading-and-writing-data-using-sparql)
  6. [CORS](#cors---cross-origin-resource-sharing)
  7. [Live updates](#live-updates)
- 8. [Identity management](#identity-management-based-on-webid)
+ 8. [Account management](#account-management)
  9. [Personal data workspaces](#personal-data-workspaces)
  10. [Authentication](#authentication)
  11. [Access control](#access-control)
@@ -541,8 +541,8 @@ socket.onmessage = function(msg) {
 
 @@@TODO 
 
-## Identity management based on WebID
-Identity management as well as unique identifiers are the core of any social system. Solid uses [WebID](http://www.w3.org/2005/Incubator/webid/spec/identity/), an HTTP(S) URI, to uniquely refer to users (people or agents). The advantage of WebID is that the URI can be dereferenced to a WebID profile document, in order to reveal useful information about the user. Also, since WebID profiles can be hosted anywhere (including your basement server), users are no longer trapped inside Identity Provider Silos (e.g. Twitter, Facebook, Google+, etc.).
+## Account management
+Account and identity management, as well as unique identifiers are the core of any social system. Solid uses [WebID](http://www.w3.org/2005/Incubator/webid/spec/identity/), an HTTP(S) URI, to uniquely refer to users (people or agents). The advantage of WebID is that the URI can be dereferenced to a WebID profile document, in order to reveal useful information about the user. Also, since WebID profiles can be hosted anywhere (including your basement server), users are no longer trapped inside Identity Provider Silos (e.g. Twitter, Facebook, Google+, etc.).
 
 ### Creating new accounts
 

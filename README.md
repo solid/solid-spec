@@ -571,7 +571,7 @@ The server response has to contain the following JSON structure:
 }
 ```
 #### Checking if an account exists
-Before creating new accounts, client applications must be able to check whether or not an account exists. To do that, clients only need to send a `HEAD` request to the account root URI. For example, let's assume the user *Alice* wants to create an account on `example.org`, using the username `alice`. The client will perform a `HEAD` request to the `alice.example.org` subdomain.
+Before creating new accounts, client applications must be able to check whether or not an account exists. To do that, clients only need to send a `HEAD` request to the account root URI. For example, let's assume the user *Alice* wants to create an account on `example.org`, using the username `alice`. The client will then attempt to send a `HEAD` request to the `alice.example.org` subdomain.
 
 REQUEST:
 
@@ -591,7 +591,7 @@ If the HTTP status code returned is `200`, then it means an account with that na
 If the status code returned is `404`, it means that the account is available.
 
 #### Client-side triggering of account creation
-Once the client application has verified that the account is available, it can now proceed to create it. To do so, it must submit a form (or emulate it) to the *account URI* it previously checked (e.g. alice.example.org), containing at least the following form parameter names:
+Once the client application has verified that the account is available, it can now proceed to create it. To do so, it must submit a form (or emulate it using Javascript) to the *account URI* it previously checked (e.g. alice.example.org) **or** to a specific endpoint on that server (e.g. example.org/signup), containing at least the following form parameter names:
 
  * `username` (required) - the account name that will be used as the subdomain -- i.e. `alice`
  * `email` (optional) - the email of the user, which may be used for account recovery and/or account validation

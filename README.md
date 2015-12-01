@@ -33,7 +33,7 @@ To find out how LDP works, you can take a look at the examples in the LDP [Prime
 5. [Authentication](#authentication)
 6. [Implementations](#implementations)
 7. [Example](#example)
-8. [Server Considerations](#server-considerations)
+8. [Other Considerations](#other-considerations)
 
 ## Profiles
 
@@ -837,7 +837,7 @@ In these example, data was sent to the server using text/turtle (which is mandat
 
 More examples of user stories can be found [here](https://github.com/solid/solid-spec/tree/master/UserStories).
 
-## Server considerations
+## Other Considerations
 
 ### CORS - Cross Origin Resource Sharing
 

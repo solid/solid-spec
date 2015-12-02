@@ -241,7 +241,7 @@ HTTP/1.1 200 OK
 User: https://alice.example.org/card#me
 ```
 
-### Access Control
+## Access Control
 
 Web Access Control (WAC) is a decentralized system that allows different users and groups various forms of access to resources where users and groups are identified by HTTP URIs. The system is similar to the access control system used within many file systems except that the documents controlled, the users and the groups are all identified by URIs. Users are identified by WebIDs. Groups of users are identified by the URI of a class of users which, if you look it up, returns a list of users in the class. This means a WebID hosted by any server can be a member of a group hosted some other server.
 

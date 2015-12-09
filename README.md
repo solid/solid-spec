@@ -618,6 +618,8 @@ This request would then create a new resource called *event1*, as well as the mi
 
 To avoid accidental overwrites, Solid servers must support ETag checking through the use of [If-Match or If-None-Match](https://tools.ietf.org/html/rfc2616#section-14.24) HTTP headers.
 
+**IMPORTANT:** Using PUT to create containers is not supported, because the behavior of PUT (overwrite) is not well defined for containers. You *MUST* use POST (as defined by LDP) to create containers alone.
+
 #### Alternative: Using SPARQL
 
 To write data, clients can send an HTTP PATCH request with a SPARQL payload to the resource in question. If the resource doesn't exist, it should be created through an LDP POST or through a PUT.

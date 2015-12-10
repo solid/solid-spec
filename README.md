@@ -531,7 +531,7 @@ LDP also offers a mechanism through which clients can provide a preferred name f
 ### Creating containers (directories)
 
 To create a new **basic container** resource, the Link header value must be set to the following value:
-`Link: <https://www.w3.org/ns/ldp#BasicContainer>; rel="type"`
+`Link: <http://www.w3.org/ns/ldp#BasicContainer>; rel="type"`
 
 For example, to create a basic container called **data** under https://example.org/, the client will need to send the following POST request, with the Content-Type header set to `text/turtle`:
 
@@ -541,7 +541,7 @@ REQUEST:
 POST / HTTP/1.1
 Host: example.org
 Content-Type: text/turtle
-Link: <https://www.w3.org/ns/ldp#BasicContainer>; rel="type"
+Link: <http://www.w3.org/ns/ldp#BasicContainer>; rel="type"
 Slug: data
 
 <> <http://purl.org/dc/terms/title> "Basic container" .

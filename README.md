@@ -2,71 +2,93 @@
 [![](https://img.shields.io/badge/project-Solid-7C4DFF.svg?style=flat-square)](https://github.com/solid/solid)
 [![Join the chat at https://gitter.im/solid/solid-spec](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/solid/solid-spec)
 
-
 **Disclaimer: this is a living spec. Expect it to change often!**
 
+## Project Overview
 
-## Overview
+**Solid** is a proposed set of conventions and tools for building *decentralized
+social applications* based on [Linked Data](http://www.w3.org/DesignIssues/LinkedData.html)
+principles. Solid is modular and extensible. It relies as much as possible on
+existing [W3C](http://www.w3.org/) standards and protocols.
 
-Solid is a proposed set of conventions for building decentralized social
-applications on the [Linked Data Platform (LDP)](http://www.w3.org/TR/ldp/)
-stack (which is based on general [Linked Data
-principles](http://www.w3.org/DesignIssues/LinkedData.html)). This document
-contains design notes on the individual components used, intended to be a guide
-for developers who plan to build servers or applications.
+Specifically, Solid is:
 
-Solid is modular and extensible. It relies as much as possible on existing
-[W3C](http://www.w3.org/) standards.
+* A tech stack -- a set of complementary [standards](#solid-platform-notes) and
+  [data formats/vocabularies](https://github.com/solid/vocab) that together
+  provide capabilities that are currently available only through centralized
+  social media services (think Facebook/Twitter/LinkedIn/many others), such as
+  *identity*, *authentication and login*, *authorization and permission lists*,
+  *contact management*, *messaging and notifications*, *feed aggregation and
+  subscription*, *comments and discussions*, and more.
+* A **[Specifications document](https://github.com/solid/solid-spec)**
+  (that's this repo here) that describes a REST API that extends those existing
+  standards, contains design notes on the individual components used, and is
+  intended as a guide for developers who plan to build servers or applications.
+* A set of [servers](https://github.com/solid/solid-platform#servers) that
+  implement this specification.
+* A [test suite](https://github.com/solid/solid-tests) for testing and validating
+  Solid implementations.
+* An ecosystem of [social apps](https://github.com/solid/solid-apps),
+  [identity providers](https://github.com/solid/solid-idp-list) and helper
+  libraries (such as [solid.js](https://github.com/solid/solid.js)) that run on
+  the Solid platform.
+* A community providing documentation,
+  [tutorials](https://github.com/solid/solid-tutorials) and
+  [talks/presentations](https://github.com/solid/talks).
+
+## Table of contents
+
+1. [Platform Notes](#solid-platform-notes)
+2. [Profiles](#profiles)
+3. [Reading](#reading)
+4. [Subscribing](#subscribing)
+5. [Creating content](#creating-content)
+6. [Authentication](#authentication)
+7. [Implementations](#implementations)
+8. [Example](#example)
+9. [Other Considerations](#other-considerations)
+
+## Solid Platform Notes
 
 Solid applications are somewhat like multiuser applications where instances talk
 to each other through a shared filesystem, and the Web is that filesystem.
 
 Features:
 
-1. Servers are application-agnostic, so that new applications can be developed
-  without needing to modify servers. For example, even though [LDP
-  1.0](http://www.w3.org/TR/ldp/) contains nothing specific to "social", many of
-  the [W3C Social Work Group](http://www.w3.org/Social/WG)'s [User Stories](http://www.w3.org/wiki/Socialwg/Social_syntax/User_Stories)
-  can be implemented using only **application logic**, with no need to change code
-  on the server. The design ideal is to keep a small standard data management core
+1. The [LDP specification](http://www.w3.org/TR/ldp/) defines a set of rules for
+  HTTP operations on Web resources, some based on [RDF](http://www.w3.org/RDF/),
+  to provide an architecture for reading and writing Linked Data on the Web. The
+  most important feature of LDP is that it provides us with a standard way of
+  RESTfully writing resources (documents) on the Web, without having to rely on
+  less flexible conventions (APIs) based around sending form-encoded data using
+  POST. For more insight into LDP, take a look at the examples in the LDP
+  [Primer document](http://www.w3.org/TR/ldp-primer/).
+
+2. Solid's basic protocol is REST, as refined by LDP with minor extensions. New
+  items are created in a *container* (which could be called a collection or
+  directory) by sending them to the container URL with an HTTP POST or issuing
+  an HTTP PUT within its URL space. Items are updated with HTTP PUT or HTTP
+  PATCH. Items are removed with HTTP DELETE. Items are found using HTTP GET and
+  following links. A GET on the container returns an enumeration of the items in
+  the container.
+
+3. Servers are application-agnostic, so that new applications can be developed
+  without needing to modify servers. For example, even though the [LDP
+  1.0](http://www.w3.org/TR/ldp/) specs contains nothing specific to
+  "social", many of the [W3C Social Work Group](http://www.w3.org/Social/WG)'s
+  [User Stories](http://www.w3.org/wiki/Socialwg/Social_syntax/User_Stories) can
+  be implemented using only **application logic**, with no need to change code on
+  the server. The design ideal is to keep a small standard data management core
   and extend it as necessary to support increasingly powerful classes of
   applications.
 
-2. The basic protocol is REST, as refined by LDP with minor extensions. New items
-  are created in a *container* (which could be called a collection or directory)
-  by sending them to the container URL with an HTTP POST or issuing an HTTP PUT
-  within its URL space. Items are updated with HTTP PUT or HTTP PATCH. Items are
-  removed with HTTP DELETE. Items are found using HTTP GET and following links.
-  A GET on the container returns an enumeration of the items in the container.
-
-3. The data model is RDF. This means the data can be transmitted in various
+4. The data model is RDF. This means the data can be transmitted in various
   syntaxes like [Turtle](http://www.w3.org/TR/turtle/),
   [JSON-LD](http://www.w3.org/TR/json-ld/) (JSON with a "context"), or
   [RDFa](http://www.w3.org/TR/rdfa-primer/) (HTML attributes). RDF is
   REST-friendly, using URLs everywhere, and it provides **decentralized
   extensibility**, so that a set of applications can cooperate in sharing a new
   kind of data without needing approval from any central authority.
-
-The [LDP specification](http://www.w3.org/TR/ldp/) defines a set of rules for
-HTTP operations on Web resources, some based on RDF, to provide an architecture
-for reading and writing Linked Data on the Web. The most important feature of
-LDP is that it provides us with a standard way of RESTfully writing resources
-(documents) on the Web, without having to rely on less flexible conventions
-(APIs) based around sending form-encoded data using POST.
-
-To find out how LDP works, you can take a look at the examples in the LDP
-[Primer document](http://www.w3.org/TR/ldp-primer/).
-
-### Table of contents
-
-1. [Profiles](#profiles)
-2. [Reading](#reading)
-3. [Subscribing](#subscribing)
-4. [Creating content](#creating-content)
-5. [Authentication](#authentication)
-6. [Implementations](#implementations)
-7. [Example](#example)
-8. [Other Considerations](#other-considerations)
 
 ## Profiles
 

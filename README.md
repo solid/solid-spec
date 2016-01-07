@@ -107,7 +107,7 @@ The Solid platform uses the following standards.
   The authentication sequence is done using the
   [HTTP over TLS](https://tools.ietf.org/html/rfc2818) protocol. Unlike normal
   HTTPS use cases, WebID-TLS is done without referring to
-  [Certificate Authority][https://en.wikipedia.org/wiki/Certificate_authority]
+  [Certificate Authority](https://en.wikipedia.org/wiki/Certificate_authority)
   hierarchies, and instead encourages host server-signed (or self-signed)
   certificates.
 

@@ -37,3 +37,9 @@ In `defaultForNew`, ACL permissions are inherited from the most significant ACL.
 #### Cons
 - Users may lose access to their resource by creating an ACL file that does not contain themselves.
 - Changing permissions recursively to a folder will require changing permission on each subfolder's ACL
+
+--
+
+## References
+
+[1] [Grunbacher, A. POSIX Access Control Lists on Linux. 2003.](https://www.usenix.org/legacy/events/usenix03/tech/freenix03/full_papers/gruenbacher/gruenbacher.pdf)

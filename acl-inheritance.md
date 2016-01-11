@@ -5,7 +5,7 @@ This document explores two different types of permission inheritance for Web Acc
 ## Explicit vs inherited permissions
 In WAC, permissions can be defined explicitly or inherited from parent containers. Explicit access control entries are described via `acl:accessTo` in the ACL file of the resource. Inherited permissions are defined in parent containers via `acl:defaultForNew`, whose possible interpretations are described in this document. The predicate `defaultForNew` can only be used in containers ACLs.
 
-The need for inherited ACL comes from two key needs:
+The need for inherited ACL comes from two main issues:
 
   - Avoid having an ACL file for each resource. For example, changing permissions for a folder would mean change individual children resource's ACL.
   - Define Access Control for resources that do not exist yet.
@@ -13,7 +13,7 @@ The need for inherited ACL comes from two key needs:
 
 ## Different inherited permissions
 
-There are two key implementations to consider: `default` and `defaultForNew`. The key differences between those are: (1) whether permissions are defined by the __most significant__ ACL entry or are cumulative, hence (2) the permission check algorithm's direction of the walk through the resource path.
+There are two relevant implementations to consider: `default` and `defaultForNew`. The key differences between those are: (1) whether permissions are defined by the __most significant__ ACL entry or are cumulative, hence (2) the permission check algorithm's direction of the walk through the resource path.
 
 ### Strategy 1) `default`
 
@@ -35,5 +35,5 @@ In `defaultForNew`, ACL permissions are inherited from the most significant ACL.
 - It can have private subfolders within shared folders
 
 #### Cons
-- Users may lose access to his resource by creating an ACL file that does not contain themselves.
+- Users may lose access to their resource by creating an ACL file that does not contain themselves.
 - Changing permissions recursively to a folder will require changing permission on each subfolder's ACL

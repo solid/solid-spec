@@ -1,6 +1,6 @@
 # ACL
 
-This document explores two different types of permission inheritance for Web Access Control, [WAC](http://www.w3.org/wiki/WebAccessControl): `default` and `defaultForNew`.
+This document explores two different types of permission inheritance for Web Access Control, [WAC](http://www.w3.org/wiki/WebAccessControl): `default` and `defaultForNew`. `Gold` and `Ldnode` currently implements `defaultForNew`.
 
 ## Explicit vs inherited permissions
 In WAC, permissions can be defined explicitly or inherited from parent containers. Explicit access control entries are described via `acl:accessTo` in the ACL file of the resource. Inherited permissions are defined in parent containers via `acl:defaultForNew`, whose possible interpretations are described in this document. The predicate `defaultForNew` can only be used in containers ACLs.

@@ -11,7 +11,7 @@ The need for inherited ACL comes from two main issues:
   - Define Access Control for resources that do not exist yet.
 
 
-## Different inherited permissions
+## Different inheritance strategies
 
 There are two relevant implementations to consider: `default` and `defaultForNew`. The key differences between those are: (1) whether permissions are defined by the __most significant__ ACL entry or are cumulative, hence (2) the permission check algorithm's direction of the walk through the resource path.
 

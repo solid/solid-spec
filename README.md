@@ -12,7 +12,7 @@ conventions and tools for building *decentralized social applications* based on
 is modular and extensible. It relies as much as possible on existing
 [W3C](http://www.w3.org/) standards and protocols.
 
-Specifically, Solid is:
+Specifically, [Solid](https://github.com/solid/solid) is:
 
 * A tech stack -- a set of complementary [standards](#standards-used) and
   [data formats/vocabularies](https://github.com/solid/vocab) that together
@@ -36,6 +36,24 @@ Specifically, Solid is:
 * A community providing documentation,
   [tutorials](https://github.com/solid/solid-tutorials) and
   [talks/presentations](https://github.com/solid/talks).
+
+## Solid Project Workflow
+
+To contribute to Solid development, and to bring up issues or feature requests,
+please use the following workflow:
+
+1. Have a question or a feature request or a concern about the Solid framework,
+  or on one of its servers? **Open an issue on
+  [solid/solid](https://github.com/solid)**.
+
+2. Have an issue with the *Solid spec* specifically? **Open an issue on
+  [solid/solid](https://github.com/solid) anyway.** And then, as a result of
+  discussion, if it's agreed that it is actually a Spec issue, it will be moved
+  to `solid-spec`.
+
+3. The individual [solid/solid](https://github.com/solid) issues can coordinate
+  and track component/dependent issues on the various affected Solid servers,
+  apps, and so on.
 
 ## Table of contents
 

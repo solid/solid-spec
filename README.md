@@ -6,10 +6,11 @@
 
 ## Project Overview
 
-Solid (derived from "**so**cial **li**nked **d**ata") is a proposed set of
-conventions and tools for building *decentralized social applications* based on
-[Linked Data](http://www.w3.org/DesignIssues/LinkedData.html) principles. Solid
-is modular and extensible. It relies as much as possible on existing
+[Solid](https://github.com/solid/solid) (derived from "**so**cial **li**nked
+**d**ata") is a proposed set of conventions and tools for building
+*decentralized social applications* based on [Linked
+Data](http://www.w3.org/DesignIssues/LinkedData.html) principles. Solid is
+modular and extensible. It relies as much as possible on existing
 [W3C](http://www.w3.org/) standards and protocols.
 
 Specifically, [Solid](https://github.com/solid/solid) is:
@@ -33,8 +34,9 @@ Specifically, [Solid](https://github.com/solid/solid) is:
   [identity providers](https://github.com/solid/solid-idp-list) and helper
   libraries (such as [solid.js](https://github.com/solid/solid.js)) that run on
   the Solid platform.
-* A community providing documentation,
-  [tutorials](https://github.com/solid/solid-tutorials) and
+* A community providing documentation, discussion (see the
+  [solid gitter channel](https://gitter.im/solid/solid)),
+  [tutorials](https://github.com/solid/solid#tutorials) and
   [talks/presentations](https://github.com/solid/talks).
 
 ## Solid Project Workflow

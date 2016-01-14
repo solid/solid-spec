@@ -63,6 +63,7 @@ please use the following workflow:
 * [Standards Used](#standards-used)
 * [Platform Notes](#solid-platform-notes)
 * [Profiles](#profiles)
+* [Authorization and Access Control](#web-access-control)
 * [Reading](#reading)
 * [Subscribing](#subscribing)
 * [Creating content](#creating-content)

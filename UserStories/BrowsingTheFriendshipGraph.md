@@ -12,11 +12,11 @@
 
 The Linked Data People graph extends to several million organic user profiles over hundreds of multiple domains.  If facebook is included (they are producers of linked data via turtle) it extends to over 1.4 billion profiles.  
 
-Facebook profiles generally require an OAuth token to use the API, this enables access control and viewing priveledges.  SoLiD in general uses WebAccessControl and ACL's to achieve the same thing, but implementors may choose which approach they wish to take.
+Facebook profiles generally require an OAuth token to use the API, this enables access control and viewing priveledges.  Solid in general uses WebAccessControl and ACL's to achieve the same thing, but implementors may choose which approach they wish to take.
 
-In SoLiD people are denoted by an HTTP URI.  Normally, as a best practice the URI contains a fragment identifier (#).  This is to help software disambiguate between an HTTP document and the person it talks about, in much the same way that a passport contains information about a person but a passport ID is the ID of that document, not the person.
+In Solid people are denoted by an HTTP URI.  Normally, as a best practice the URI contains a fragment identifier (#).  This is to help software disambiguate between an HTTP document and the person it talks about, in much the same way that a passport contains information about a person but a passport ID is the ID of that document, not the person.
 
-SoLiD's implementation is based on the W3C REC RDF, and in general uses the WebID spec, and FOAF vocabulary, but is not limited to either.
+Solid's implementation is based on the W3C REC RDF, and in general uses the WebID spec, and FOAF vocabulary, but is not limited to either.
 
 Friendship connections are open ended, but normally based on the foaf : knows predicate, to indicate one person knows another.  In practice, over the past 10+ years of foaf, knows has loosely been associated with friends, as assumed by software, but this could change in future, with consensus.
 

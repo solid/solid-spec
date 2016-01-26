@@ -104,21 +104,24 @@ And then in there thngs like
 ```
 ### By application
 
-A list of 
+A list (public or private) of 
 ```
   <#me>  space:AppIndex  <byType>.
 ```
 And then in there thngs like
 ```
- <#r1>  a solid:AppRegistration;
+ <#r5>  a solid:AppRegistration;
   solid:forApp  ghld:app-shedule
-  solid:instanceIndex </polls/list.ttl>.
+  solid:instanceIndex </polls/list.ttl>.  
   
 ```
-and then in </polls/list.ttl> things like
+and then in /polls/list.ttl things like
 
 ```
-TBD
+<#i345> a solid:Instance;
+  solid:forApp  ghld:app-shedule;
+  dc:created 2012-12-09;
+  solid:instance </polls/list3/congig#this>;
 ```
 
 ### Timeline

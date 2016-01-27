@@ -119,26 +119,3 @@ space:storage <.> .
 <http://www.w3.org/ns/pim/space#storage> <../> ;
 ```
 
-#### App Configuration Workspace - OLD
-
-* Starting Point: WebID or preferencesFile
-* Type: [pim : workspace](http://www.w3.org/ns/pim/space#workspace)
-
-The app configuration workspace is a container of many different app
-configurations. It is also possible to use the "glob * " function, for
-convenience, to get all configurations of various apps that are in use.
-
-#### App configuration Files
-
-* Starting Point: App Configuration Workspace
-* Type: [pim : ConfigurationFile](http://www.w3.org/ns/pim/space#configurationFile)
-
-App configuration files contain all information related to an app.
-
-### Ontologies
-
-* pim : http://www.w3.org/ns/pim/space#
-
-### Illustration
-
-![discovery illustration](assets/discovery.png "discovery illustration")

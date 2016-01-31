@@ -17,17 +17,20 @@ There are two relevant implementations to consider: `default` and `defaultForNew
 
 ### Strategy 1) `monotonic`
 
-In `monotonic`, ACL permissions are cumulative (inherited from the ancestors) and the permission check algorithm sums permissions from left-to-right. The path is explored from root, `/` to the end, or inany direction, as the permission is the union of all the permissions from each ACL file. The search can stop when any ACL file is which gives permission.
+In `monotonic`, ACL permissions are cumulative (inherited from the ancestors) and the permission check algorithm sums permissions over the path. The path is explored in any direction, as the permission is the union of all the permissions from each ACL file. The search can stop when any ACL file is which gives permission.
 
 #### Pro
+- Not as fast as defaultForNew but can be 
 - Simple hierarchical permission (e.g. everything in `/shared` is shared)
 - Can be fast as it only has to find one ACL file to give the permission it needs
-- An invariant is that an ACL cnnnot be overruled, 
+- Monotonic: Once a user or any agent knows the ACL it can apply it as a rule. An ACL is a first class fact. It can be digitally signed, transported, and used to demand access at a later date, etc.  Monotonicness is useful.
 
 #### Cons
-- It is slower than `default`, since all the path must be taken into consideration.  @@@ No, not necessaryily,as the search stops the moment it finds success.
-- It can't have private subfolders within shared folders. Given that permissions cannot be reverted (with the current WAC specification), a subfolder cannot be private in a shared folder. ((A possible solution is NOT include Windows' `DENY` or `DENY all` in the WAC specification. These entries would take precedence to the other (_allow_) permissions).   This system is monotonic.
+- It is slower than `defaultFor new`, but the search stops the moment it finds success.
+- It can't have private subfolders within shared folders. Given that permissions cannot be reverted (with the current WAC specification), a subfolder cannot be private in a shared folder.    This system is monotonic.
 - User has to be aware of the permissions given to the parent folders
+
+((A possible solution is NOT include Windows' `DENY` or `DENY all` in the WAC specification, where these entries would take precedence to the other (_allow_) permissions)  That would not  be monotonic.
 
 ### Strategy 2) `default`
 

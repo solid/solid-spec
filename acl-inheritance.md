@@ -21,14 +21,14 @@ In `monotonic`, ACL permissions are cumulative (inherited from the ancestors) an
 
 #### Pro
 - Not as fast as defaultForNew but can be 
-- Simple hierarchical permission (e.g. everything in `/shared` is shared) (bblfish: does that mean that a resource cannot unlink from a previous permission?)
+- Simple hierarchical permission (e.g. everything in `/shared` is shared) 
 - Can be fast as it only has to find one ACL file to give the permission it needs
 - Monotonic: Once a user or any agent knows the ACL it can apply it as a rule. An ACL is a first class fact. It can be digitally signed, transported, and used to demand access at a later date, etc.  Monotonicness is useful.
 
 #### Cons
 - It is slower than `defaultFor new`, but the search stops the moment it finds success.
 - It can't have private subfolders within shared folders. Given that permissions cannot be reverted (with the current WAC specification), a subfolder cannot be private in a shared folder.    This system is monotonic.
-- User has to be aware of the permissions given to the parent folders (bblfish: why not use `wac:include`?)
+- User has to be aware of the permissions given to the parent folders 
 
 ((A possible solution is NOT include Windows' `DENY` or `DENY all` in the WAC specification, where these entries would take precedence to the other (_allow_) permissions)  That would not  be monotonic.
 
@@ -58,7 +58,7 @@ In `defaultForNew`, ACL permissions are inherited from the whole path as in 'mon
 
 ### Strategy 4) resource centric
 
-Note by bblfish: this may be related to the previous points but I can't tell for sure, as there are a lot of words that are not defined clearly enough for me. Also see wiki page [regexes in ACLs](https://github.com/solid/solid/wiki/Regexes-in-ACLs)
+Also see wiki page [regexes in ACLs](https://github.com/solid/solid/wiki/Regexes-in-ACLs).
 
 [rww-play](https://github.com/read-write-web/rww-play) takes a resource centric view of acls. Any resource `<doc>`'s acl link relation (given by the http header `Link: <doc.acl>; rel="acl"`) specifies the acl starting point for that resource. This must be the case as that is the only way a client can find out about an acl for a resource. The client and the server must therefore start from that acl and follow any [wac:include](http://www.w3.org/ns/auth/acl#include) relations which should be logically mergeable monotonically to create the complete acl for that resource. Given that these mergers happen monotonically the server can stop at any moment it finds an acl that gives the user permission, in the knowledge that any other acl included cannot undo the statement added.
 Note: if it can be shown that ACLs can be inconsistent, then a SoLiD server may want to check the consistency of these acls before allowing a write to succeed.

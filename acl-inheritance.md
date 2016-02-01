@@ -21,14 +21,14 @@ In `monotonic`, ACL permissions are cumulative (inherited from the ancestors) an
 
 #### Pro
 - Not as fast as defaultForNew but can be 
-- Simple hierarchical permission (e.g. everything in `/shared` is shared)
+- Simple hierarchical permission (e.g. everything in `/shared` is shared) (bblfish: does that mean that a resource cannot unlink from a previous permission?)
 - Can be fast as it only has to find one ACL file to give the permission it needs
 - Monotonic: Once a user or any agent knows the ACL it can apply it as a rule. An ACL is a first class fact. It can be digitally signed, transported, and used to demand access at a later date, etc.  Monotonicness is useful.
 
 #### Cons
 - It is slower than `defaultFor new`, but the search stops the moment it finds success.
 - It can't have private subfolders within shared folders. Given that permissions cannot be reverted (with the current WAC specification), a subfolder cannot be private in a shared folder.    This system is monotonic.
-- User has to be aware of the permissions given to the parent folders
+- User has to be aware of the permissions given to the parent folders (bblfish: why not use `wac:include`?)
 
 ((A possible solution is NOT include Windows' `DENY` or `DENY all` in the WAC specification, where these entries would take precedence to the other (_allow_) permissions)  That would not  be monotonic.
 
@@ -45,15 +45,63 @@ In `defaultLocal`, ACL permissions are inherited from the most local ACL file wh
 
 ### Strategy 3) `defaultForNew`
 
-In `defaultForNew`, ACL permissions are inherited from the whole path as in 'momotonic', but done from the end of the path top the root. With this method, however, whenever a file dopes not have a local ACL, one is generated for it, so that in future the search will hit it immediately.
+In `defaultForNew`, ACL permissions are inherited from the whole path as in 'monotonic', but done from the end of the path top the root. With this method, however, whenever a file does not have a local ACL, one is generated for it, so that in future the search will hit it immediately.
 
 #### Pro
 - Fast
 
 #### Cons
-- Generates a storage reuirement for all the ACL files, which is a pain, especialy in a fiel space shared with other systems.
+- Generates a storage requirement for all the ACL files, which is a pain, especialy in a fiel space shared with other systems.
 - Users may lose access to their resource by creating an ACL file that does not contain themselves.
 - Changing permissions recursively to a folder will require changing permission on each subfolder's ACL
+ 
+
+### Strategy 4) resource centric
+
+Note by bblfish: this may be related to the previous points but I can't tell for sure, as there are a lot of words that are not defined clearly enough for me. Also see wiki page [regexes in ACLs](https://github.com/solid/solid/wiki/Regexes-in-ACLs)
+
+[rww-play](https://github.com/read-write-web/rww-play) takes a resource centric view of acls. Any resource `<doc>`'s acl link relation (given by the http header `Link: <doc.acl>; rel="acl"`) specifies the acl starting point for that resource. This must be the case as that is the only way a client can find out about an acl for a resource. The client and the server must therefore start from that acl and follow any [wac:include](http://www.w3.org/ns/auth/acl#include) relations which should be logically mergeable monotonically to create the complete acl for that resource. Given that these mergers happen monotonically the server can stop at any moment it finds an acl that gives the user permission, in the knowledge that any other acl included cannot undo the statement added.
+Note: if it can be shown that ACLs can be inconsistent, then a SoLiD server may want to check the consistency of these acls before allowing a write to succeed.
+
+Given the above, here is one way for a container to deal with defaults for new resources that works by reference using a 
+relation `wac:defaultInclude` that points from an acl file to another one that will be included by default in any new resource created.
+
+This would work like this. Consider an `ldp:Container` named `</container/>`'s whose acl file `</container/.acl>`  includes the statement
+
+```Turtle
+<.> wac:defaultInclude <default.acl> .
+```
+
+On creation of a new resource eg, by `POST`ing some content to `</container/>` with Slug "cat", thereby creating a new resource `</container/cat>` and the associated `</container/cat.acl>` the server on finding the above wac:defaultInclude statement in the container's acl will add the statement:
+
+```
+<> wac:include <default.acl> .
+```
+
+in the created resource's acl.
+
+#### Pro
+ * If somone wants to change the all the resources that have a certain default, they can do so just by changing `<default.acl>`. 
+ * If someone wants a particular resource to not have the defaults, they can just remove the `wac:include` triple.
+ * Reduces storage requirements
+ * Is very maintainable
+ * Is monotonic 
+ * client and server verification mechanisms follow the same discovery process
+
+#### Cons
+  * verifying an ACL will often require fetching one new default acl, but that is local so it should be very fast.
+  * this does require some form of regular expression (e.g. a simple version based on globbing such as `"/*.acl"`) as the `wac:include`ed `default.acl` needs to make statements about sets of resources such as 
+```Turtle
+ [] acl:accessToClass [ acl:regex "https://jack.example/.*[.]acl" ];
+   acl:mode acl:Read;
+   acl:agentClass foaf:Agent .
+```
+
+#### Issue 
+
+It does mean that on a naive reading of `wac:regex` some acls will not actually be true of all files specified in the regular expression, as they are only valid if the resource's acl includes them using `wac:include`. Perhaps there is a way of thinking of the `acl:regex` relation in way that does not create such false statements. Perhaps it should be read as defining the subclass of resources that fit the given pattern _and_ that whose acls are linked to via a set of `wac:include`s to the resource that contains the regular expression. On this reading one cannot deduce that `https://jack.example/cat.acl` is readable by everyone only from the acl shown in the cons section above. One also needs to know:
+ * that `<https://jack.example/cat.acl>` exists
+ * that `<https://jack.example/cat.acl>` has an `acl` link header to a resource that through a chain of `wac:include`s refers back to `<default.acl>`
 
 --
 

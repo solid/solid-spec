@@ -97,11 +97,47 @@ in the created resource's acl.
    acl:agentClass foaf:Agent .
 ```
 
-#### Issue 
+#### Issues
+
+##### Truth
 
 It does mean that on a naive reading of `wac:regex` some acls will not actually be true of all files specified in the regular expression, as they are only valid if the resource's acl includes them using `wac:include`. Perhaps there is a way of thinking of the `acl:regex` relation in way that does not create such false statements. Perhaps it should be read as defining the subclass of resources that fit the given pattern _and_ that whose acls are linked to via a set of `wac:include`s to the resource that contains the regular expression. On this reading one cannot deduce that `https://jack.example/cat.acl` is readable by everyone only from the acl shown in the cons section above. One also needs to know:
  * that `<https://jack.example/cat.acl>` exists
  * that `<https://jack.example/cat.acl>` has an `acl` link header to a resource that through a chain of `wac:include`s refers back to `<default.acl>`
+
+#### Better Pattern Languages
+
+The problems with full regexes are:
+
+* one needs to know the full url of the resource
+* different languages have different implementations of regexes
+* they can be turing complete 
+
+This should not stop one. Regexes are already standardised by the W3C in RDF via the [POWDER spec](https://www.w3.org/TR/powder-dr/), which also provided simpler less powerful vocabularies to enable use cases that did not require the full regex power. So one could invent a simple regular expression based on globbing such as `"/*"` for all resources in a folder, or `"/**"` for all resources in a folder and sub-folders.  This could look like the following:
+
+```Turtle
+[] acl:accessToClass [ acl:urlPattern [  acl:base <.>; acl:match "*.acl" ]];
+   acl:mode acl:Read;
+   acl:agentClass foaf:Agent .
+```
+
+This should be read as saying that everybody can read all resources that match the pattern "*.acl" in the current directory, and for which this is an acl through wac:include chain from the resource's acl. (in this case this is a rule on acls)
+
+To allow all files to be readable and writeable by the owner in this folder and sub-folders one could use
+
+```Turtle
+[] acl:accessToClass [ acl:urlPattern [  acl:base <.>; acl:match "**" ]];
+   acl:mode acl:Read, acl:Write;
+   acl:agent </card#i> .
+```
+
+assuming of course the user's WebID is `</card#i>` . 
+Note again that the `acl:urlPattern` gives a class that is larger than the class of resources for which this is true, as the only resources for which that rule is valid are those whose acls link to the acl in which this is written.
+
+
+
+The advantage of such a pattern language is that it allows the pattern to be relative to a resource, and so to be written out even for a client that does not know the full url of the resource.
+
 
 --
 

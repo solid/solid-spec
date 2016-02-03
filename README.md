@@ -132,8 +132,9 @@ The Solid platform uses the following standards.
   hierarchies, and instead encourages host server-signed (or self-signed)
   certificates.
 
-* In Solid, certificate creation is typically done in the browser using the HTML5
-  [keygen element](http://www.w3.org/TR/html5/forms.html#the-keygen-element),
+* In Solid, certificate creation is typically done in the browser using the
+  HTML5 [keygen
+  element](http://www.w3.org/TR/html5/forms.html#the-keygen-element),
   to provide a one-step creation and certificate publication user experience.
 
 * Authorization and access lists are done using
@@ -204,8 +205,8 @@ document as soon as they are created.
 The profile document follows the structure and schema described by the
 [WebID spec](http://www.w3.org/2005/Incubator/webid/spec/identity/#publishing-the-webid-profile-document).
 A bare profile document only needs to contain a minimum number of RDF relations,
-such as the one pointing to the `preferencesFile` and to the `inbox`
-(notifications) container. During account creation, the user may provide a full
+such as the ones pointing to the [Default Containers](#default-containers).
+During account creation, the user may provide a full
 name or a profile picture, but those profile elements are not mandatory, and can
 be added in a future request (i.e. through a PATCH).
 
@@ -220,9 +221,8 @@ A typical (bare) profile document (i.e.
 
 <#me>
     a <http://xmlns.com/foaf/0.1/Person> ;
-    <http://www.w3.org/ns/pim/space#preferencesFile> <../Preferences/prefs.ttl> ;
     <http://www.w3.org/ns/pim/space#storage> <../> ;
-    <http://www.w3.org/ns/solid/terms#inbox> <../Inbox/> .
+    <http://www.w3.org/ns/pim/space#preferencesFile> <../settings/preferences.ttl> ;
 ```
 
 ### Linking the account URI to the user's WebID
@@ -238,133 +238,72 @@ To do that, the server may add a triple to the root container's meta file (i.e.
     <http://xmlns.com/foaf/0.1/account> <> .
 ```
 
-### Personal data workspaces
+### Default Containers
 
-Upon account creation, a series of dedicated workspaces (implemented as LDP
-Containers) are created in the user's data space, together with their
-corresponding ACL resources. At the moment, the list contains the following
-workspaces:
+Upon account creation, a series of default LDP Containers are initialized in the
+user's data space, along with their corresponding ACL resources. The
+particulars are left up to server implementers, but the recommended list is as
+follows.
 
- * Applications
- * Inbox
- * Preferences
- * Private
- * profile
- * Public
- * Shared
- * Work
-
-Please note that these workspace names are just placeholders and they do not
-reflect the ACL policies that come with them -- i.e. `Public` does not necessarily
-imply a read-all or write-all ACL policy. Time and effort should be dedicated to
-making sure that multiple languages
-([i18n](http://www.w3.org/International/questions/qa-i18n)) are supported.
-
-Workspaces are considered to be [Basic
-Containers](http://www.w3.org/TR/2015/REC-ldp-20150226/#ldpbc) (in the LDP
-sense), which store application-specific data. For example, one of the reasons
-we decided to use this concept of workspaces is that complicated ACL logic can
-be set per workspace, and then all data inside the workspace will inherit the
-same policies.
-
-### Preferences document
-
-The *preferences* document is a protected resource that extends the WebID
-profile and it is used to describe useful information about the user and the
-data server, which can later on be used by applications. This resource currently
-lists basic information such as the workspaces that were just created. In the
-future it may contain user preferences such as a preferred language, date
-format, etc.
-
-By default, the preferences resource is created in the `Preferences` workspaces
-(`https://user.example.org/Preferences/prefs`), and a relation of type
-`http://www.w3.org/ns/pim/space#preferencesFile` is added to the WebID profile,
-which points to the preferences resource.
-
-In the WebID profile:
-
-```
-<https://user.example.org/profile/card#me>
-    <http://www.w3.org/ns/pim/space#preferencesFile> <https://user.example.org/profile/prefs> .
-```
-
-To discover the user's workspaces, an app will follow its nose starting with the
-WebID profile document, to find all relations of type
-`http://www.w3.org/ns/pim/space#workspace` having the user's WebID as the
-subject. Of course, this means following the
-`http://www.w3.org/ns/pim/space#preferencesFile` relation to get to the
-preferences resource.
-
-Here is an example of a preferences file:
+##### `/profile/` (Profile)
+The container which will house the WebID profile document and its
+various components/linked docs. **Default ACL:** read-public.
+The Profile container is discoverable from the WebID -- a user pastes in a WebID
+URL (for example, `https://accountname.databox.me/profile/card#me`), which
+de-references to a profile document containing, among other things:
 
 ```
 <>
-    a <http://www.w3.org/ns/pim/space#ConfigurationFile> ;
-    <http://purl.org/dc/terms/title> "Preferences file" .
-
-<../Applications/>
-    <http://purl.org/dc/terms/title> "Applications workspace" ;
-    a <http://www.w3.org/ns/pim/space#PreferencesWorkspace>, <http://www.w3.org/ns/pim/space#Workspace> .
-
-<../Inbox/>
-    <http://purl.org/dc/terms/title> "Inbox" ;
-    a <http://www.w3.org/ns/pim/space#Workspace> .
-
-<.>
-    <http://purl.org/dc/terms/title> "Preferences workspace" ;
-    a <http://www.w3.org/ns/pim/space#Workspace> .
-
-<../Private/>
-    <http://purl.org/dc/terms/title> "Private workspace" ;
-    a <http://www.w3.org/ns/pim/space#PrivateWorkspace>, <http://www.w3.org/ns/pim/space#Workspace> .
-
-<../Public/>
-    <http://purl.org/dc/terms/title> "Public workspace" ;
-    a <http://www.w3.org/ns/pim/space#PublicWorkspace>, <http://www.w3.org/ns/pim/space#Workspace> .
-
-<../Shared/>
-    <http://purl.org/dc/terms/title> "Shared workspace" ;
-    a <http://www.w3.org/ns/pim/space#SharedWorkspace>, <http://www.w3.org/ns/pim/space#Workspace> .
-
-<../Work/>
-    <http://purl.org/dc/terms/title> "Work workspace" ;
-    a <http://www.w3.org/ns/pim/space#Workspace> .
-
-<../profile/card#me>
-    a <http://xmlns.com/foaf/0.1/Person> ;
-    <http://www.w3.org/ns/pim/space#preferencesFile> <> ;
-    <http://www.w3.org/ns/pim/space#workspace> <../Applications/>, <../Inbox/>, <.>, <../Private/>, <../Public/>, <../Shared/>, <../Work/> .
+    a <http://xmlns.com/foaf/0.1/PersonalProfileDocument> ;
+    <http://xmlns.com/foaf/0.1/maker> <#me> ;
+    <http://xmlns.com/foaf/0.1/primaryTopic> <#me> .
 ```
 
+##### `/` (root)
+The root/default container for the account. **Default ACL:** private
+(owner only). Discoverable from profile via [pim :
+space#storage](http://www.w3.org/ns/pim/space#storage) property.
+Discoverable via:
+
+```
+<#me>
+    <http://www.w3.org/ns/pim/space#storage> <../> ;
+```
+
+##### `/settings/` (Settings)
+
+This is a private, protected container that houses User preferences and settings
+(such as preferred language, date format and time zone, etc), the content Type
+Registry, and app preferences and configs. **Default ACL:** private (owner
+only). Note that individual resources *within* the Settings container may be
+public (that is, override the default ACL).
+
+Discoverable from profile via [pim :
+space#preferencesFile](http://www.w3.org/ns/pim/space#preferencesFile) property.
+
+```
+<#me>
+    <http://www.w3.org/ns/pim/space#preferencesFile> <../settings/preferences.ttl> ;
+```
+
+##### `/inbox/` (Inbox)
+
+A container to serve as a default primary channel for
+notifications. Note that this is complementary (and not necessarily replacing)
+app-specific notification inboxes such as the one used by
+[Dokieli](https://github.com/linkeddata/dokieli).
+**Default ACL:** append-only by public, read by owner.
+
+Discoverable from profile via
+[solid-terms](https://github.com/solid/vocab/blob/master/solid-terms.ttl)#Inbox
+property.
+
+```
+<#me>
+    <http://www.w3.org/ns/solid/terms#inbox> <../inbox/> ;
+```
 
 ### Creating new accounts
-
-<!---
-#### ~~Client - server API~~ [Deprecated]
-Solid-compliant servers must implement a very simple API, indicating whether an account name is available or not on the server. Clients (e.g. the signup Web component) send an HTTP POST request containing the following JSON structure, where *accountName* contains the target account name (e.g. a preferred username):
-
-```
-{
-	method:		 "accountStatus",
-	accountName: "alice"
-}
-```
-
-The server response has to contain the following JSON structure:
-
-```
-{
-	method:   "accountStatus",
-	status:	  "success",
-	formURI:  "https://example.org/api/spkac",
-	loginURI: "https://example.org/",
-	response: {
-				accountURL: "https://user.example.org/",
-				available:	 true
-			}
-}
-```
--->
 
 Before creating new accounts, client applications must be able to check whether
 or not an account exists. To do that, clients only need to send a `HEAD` request
@@ -632,16 +571,6 @@ HTTP/1.1 200 OK
     a <http://xmlns.com/foaf/0.1/PersonalProfileDocument>, <http://www.w3.org/ns/posix/stat#File> ;
     <http://www.w3.org/ns/posix/stat#mtime> "1434583075" ;
     <http://www.w3.org/ns/posix/stat#size> "780" .
-
-<data/>
-    a <http://www.w3.org/ns/ldp#BasicContainer>, <http://www.w3.org/ns/ldp#Container>, <http://www.w3.org/ns/posix/stat#Directory> ;
-    <http://www.w3.org/ns/posix/stat#mtime> "1435064562" ;
-    <http://www.w3.org/ns/posix/stat#size> "4096" .
-
-<workspace/>
-    a <http://www.w3.org/ns/pim/space#Workspace>, <http://www.w3.org/ns/ldp#BasicContainer>, <http://www.w3.org/ns/ldp#Container>, <http://www.w3.org/ns/posix/stat#Directory> ;
-    <http://www.w3.org/ns/posix/stat#mtime> "1435064562" ;
-    <http://www.w3.org/ns/posix/stat#size> "4096" .
 ```
 
 #### Globbing (inlining on GET)

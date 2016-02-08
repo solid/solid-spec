@@ -425,9 +425,10 @@ server to have access to documents on it.
 ACL resources are not publicly listed by the server when browsing files 
 (typically when doing a GET on an LDP container). However, they can still be 
 read/written by client apps using the above mentioned ways of writing data. 
-An ACL resource is advertised through a **Link** header and can be discovered 
-when doing HTTP GET/HEAD on regular resources. The naming of an ACL resource is 
-arbitrary and may change from one server implementation to another.
+An ACL resource is advertised through a **Link** header having **rel="acl"** and 
+can be discovered when doing HTTP GET/HEAD on regular resources. The naming of 
+an ACL resource is arbitrary and may change from one server implementation to 
+another.
 
 For example, the container `https://example.org/data/` may have a corresponding
 ACL resource with the URI: `https://example.org/data/.acl`. A resource
@@ -529,10 +530,10 @@ The metadata resource is a "special" type of resource, which is not publicly
 listed by the server when browsing files (typically when doing a GET on an LDP
 container). However, it can still be modified by client apps using the methods
 described in this section. The corresponding metadata resource is advertised 
-through a **Link** header that can be discovered when doing HTTP GET/HEAD on 
-regular resource, as mentioned before in case of ACLs. The naming of a *meta* 
-resource is also arbitrary and may change from one server implementation to 
-another.
+through a **Link** header having **rel="describedby"**, which can be discovered 
+when doing HTTP GET/HEAD on regular resource, as mentioned before in case of ACLs. 
+The naming of a *meta* resource is also arbitrary and may change from one server 
+implementation to another.
 
 For example, the corresponding metadata resource for a container called */data/*
 may be accessible through this URI: `https://example.org/data/.meta`.

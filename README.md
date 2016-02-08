@@ -422,20 +422,30 @@ member of a group hosted some other server.
 **IMPORTANT:** Users do not need to have an account (i.e. WebID) on a given
 server to have access to documents on it.
 
-Same as for [metadata resources](#metadata), ACL resources are not publicly
-listed by the server when browsing files (typically when doing a GET on an LDP
-container). However, they can still be read/written by client apps using the
-above mentioned ways of writing data. The corresponding ACL resources are
-advertised and can be discovered when doing HTTP GET/HEAD on regular resources.
+ACL resources are not publicly listed by the server when browsing files 
+(typically when doing a GET on an LDP container). However, they can still be 
+read/written by client apps using the above mentioned ways of writing data. 
+An ACL resource is advertised through a **Link** header and can be discovered 
+when doing HTTP GET/HEAD on regular resources. The naming of an ACL resource is 
+arbitrary and may change from one server implementation to another.
 
-Similar to the metadata resource naming convention, Solid servers use a specific
-naming convention for ACL resources. This convention relies on appending a
-`.acl` suffix to its corresponding resource.
-
-For example, the container `https://example.org/data/` will have a corresponding
+For example, the container `https://example.org/data/` may have a corresponding
 ACL resource with the URI: `https://example.org/data/.acl`. A resource
-`https://example.org/data/test` will have a corresponding ACL resource at
-`https://example.org/data/test.acl`
+`https://example.org/data/test` may have a corresponding ACL resource at
+`https://example.org/data/test.acl`. The following is an example of a typical 
+request.
+
+
+REQUEST:
+```
+GET /data/ HTTP/1.1
+Host: example.org
+```
+
+RESPONSE:
+```
+Link: <https://example.org/data/.acl>; rel="acl"
+```
 
 WAC policies are applied to resources, instead of RDF triples. This means that
 policies can be set for [LDPRs](http://www.w3.org/TR/ldp/#ldpr) as well as for
@@ -513,22 +523,34 @@ Link: <https://example.org/data/.meta>; rel="describedby"
 
 The metadata (extra RDF triples such as types, titles, comments, and so on)
 about non-RDF resources (e.g. containers, images, binaries, etc.) will be stored
-in a corresponding *meta* resources. Solid servers use a specific naming
-convention when referring to these meta resources. Basically, every non-RDF
-resource may have a corresponding metadata resource, with a name composed of the
-resource's name together with a `.meta` suffix.
+in a corresponding *meta* resource.
 
-For example, the corresponding metadata resource for the newly created container
-will be accessible through this URI: `https://example.org/data/.meta`.
-Alternatively, the photo at `https://example.org/data/image.jpg` will have it's
-metadata stored in `https://example.org/data/image.jpg.meta`.
-
-Metadata resources are a "special" type of resources, which are not publicly
+The metadata resource is a "special" type of resource, which is not publicly
 listed by the server when browsing files (typically when doing a GET on an LDP
-container). However, they can still be modified by client apps using the methods
-described in this section. The corresponding metadata resources are advertised
-and can be discovered when doing HTTP GET/HEAD on regular resources, as
-mentioned before.
+container). However, it can still be modified by client apps using the methods
+described in this section. The corresponding metadata resource is advertised 
+through a **Link** header that can be discovered when doing HTTP GET/HEAD on 
+regular resource, as mentioned before in case of ACLs. The naming of a *meta* 
+resource is also arbitrary and may change from one server implementation to 
+another.
+
+For example, the corresponding metadata resource for a container called */data/*
+may be accessible through this URI: `https://example.org/data/.meta`.
+Alternatively, the photo at `https://example.org/data/image.jpg` may have it's
+metadata stored in `https://example.org/data/image.jpg.meta`. The following is an 
+example of a typical request.
+
+
+REQUEST:
+```
+GET /data/ HTTP/1.1
+Host: example.org
+```
+
+RESPONSE:
+```
+Link: <https://example.org/data/.meta>; rel="describedby"
+```
 
 ### Streams
 

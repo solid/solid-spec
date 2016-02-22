@@ -1,6 +1,8 @@
 ##### v0.5.0
 
-- Replace Workspaces concept, standardize default account Containers
+- Replace Workspaces concept, provide recommendations for
+  [Default Containers](https://github.com/solid/solid-spec#default-containers)
+  on account creation.
 - Move various proposal docs to
   [solid/solid](https://github.com/solid/solid/tree/master/proposals)
 

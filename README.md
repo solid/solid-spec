@@ -4,6 +4,8 @@
 
 **Disclaimer: this is a living spec. Expect it to change often!**
 
+**Current Spec version:** `v.0.5.0` (see [CHANGELOG.md](CHANGELOG.md))
+
 ## Project Overview
 
 [Solid](https://github.com/solid/solid) (derived from "**so**cial **li**nked
@@ -422,18 +424,18 @@ member of a group hosted some other server.
 **IMPORTANT:** Users do not need to have an account (i.e. WebID) on a given
 server to have access to documents on it.
 
-ACL resources are not publicly listed by the server when browsing files 
-(typically when doing a GET on an LDP container). However, they can still be 
-read/written by client apps using the above mentioned ways of writing data. 
-An ACL resource is advertised through a **Link** header having **rel="acl"** and 
-can be discovered when doing HTTP GET/HEAD on regular resources. The naming of 
-an ACL resource is arbitrary and may change from one server implementation to 
+ACL resources are not publicly listed by the server when browsing files
+(typically when doing a GET on an LDP container). However, they can still be
+read/written by client apps using the above mentioned ways of writing data.
+An ACL resource is advertised through a **Link** header having **rel="acl"** and
+can be discovered when doing HTTP GET/HEAD on regular resources. The naming of
+an ACL resource is arbitrary and may change from one server implementation to
 another.
 
 For example, the container `https://example.org/data/` may have a corresponding
 ACL resource with the URI: `https://example.org/data/.acl`. A resource
 `https://example.org/data/test` may have a corresponding ACL resource at
-`https://example.org/data/test.acl`. The following is an example of a typical 
+`https://example.org/data/test.acl`. The following is an example of a typical
 request.
 
 
@@ -529,16 +531,16 @@ in a corresponding *meta* resource.
 The metadata resource is a "special" type of resource, which is not publicly
 listed by the server when browsing files (typically when doing a GET on an LDP
 container). However, it can still be modified by client apps using the methods
-described in this section. The corresponding metadata resource is advertised 
-through a **Link** header having **rel="describedby"**, which can be discovered 
-when doing HTTP GET/HEAD on regular resource, as mentioned before in case of ACLs. 
-The naming of a *meta* resource is also arbitrary and may change from one server 
+described in this section. The corresponding metadata resource is advertised
+through a **Link** header having **rel="describedby"**, which can be discovered
+when doing HTTP GET/HEAD on regular resource, as mentioned before in case of ACLs.
+The naming of a *meta* resource is also arbitrary and may change from one server
 implementation to another.
 
 For example, the corresponding metadata resource for a container called */data/*
 may be accessible through this URI: `https://example.org/data/.meta`.
 Alternatively, the photo at `https://example.org/data/image.jpg` may have it's
-metadata stored in `https://example.org/data/image.jpg.meta`. The following is an 
+metadata stored in `https://example.org/data/image.jpg.meta`. The following is an
 example of a typical request.
 
 

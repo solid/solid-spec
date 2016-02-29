@@ -69,7 +69,7 @@ devices, and software applications.
 ### WebID Profile Documents
 
 A WebID URI, when dereferenced, yields a WebID Profile Document in a
-Linked Data format ([Turtle]((http://www.w3.org/TR/turtle/) by default, but
+Linked Data format ([Turtle](http://www.w3.org/TR/turtle/) by default, but
 often available as JSON-LD or HTML+RDFa). Parsing this document provides a
 client application with useful information, such as the user's name and
 profile image, links to user preferences and related documents, and lists of

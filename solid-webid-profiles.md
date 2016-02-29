@@ -238,7 +238,6 @@ resources. For example:
 <#me>
     a foaf:Person ;
     <http://www.w3.org/ns/solid/terms#typeIndex>
-        </settings/publicTypeIndex.ttl> ;
-    <http://www.w3.org/ns/solid/terms#typeIndex>
-        </settings/privateTypeIndex.ttl> ;
+        </settings/publicTypeIndex.ttl> ,
+        </settings/privateTypeIndex.ttl> .
 ```

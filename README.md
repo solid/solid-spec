@@ -4,7 +4,7 @@
 
 **Disclaimer: this is a living spec. Expect it to change often!**
 
-**Current Spec version:** `v.0.5.0` (see [CHANGELOG.md](CHANGELOG.md))
+**Current Spec version:** `v.0.6.0` (see [CHANGELOG.md](CHANGELOG.md))
 
 ## Table of contents
 

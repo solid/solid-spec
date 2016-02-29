@@ -4,12 +4,14 @@
 
 **Disclaimer: this is a living spec. Expect it to change often!**
 
-**Current Spec version:** `v.0.5.0` (see [CHANGELOG.md](CHANGELOG.md))
+**Current Spec version:** `v.0.6.0` (see [CHANGELOG.md](CHANGELOG.md))
 
 ## Table of contents
 
 * [Overview](#overview)
+* [Identity](#identity)
 * [Profiles](#profiles)
+  * [WebID Profile Documents](#webid-profile-documents)
 * [Authorization and Access Control](#web-access-control)
 * [Reading](#reading)
 * [Subscribing](#subscribing)
@@ -39,57 +41,42 @@ See Also:
 * [Platform Notes](https://github.com/solid/solid#solid-platform-notes)
 * [Solid Project directory](https://github.com/solid/solid#project-directory)
 
+## Identity
+
+Solid uses [WebID](http://www.w3.org/2005/Incubator/webid/spec/identity/) URIs
+as universal usernames or actor identifiers. Frequently referred to simply as  
+*WebIDs*, these URIs form the basis of most other Solid-related technologies,
+such as authentication, authorization, access control, user profiles, discovery
+of user preferences and server capabilities, and more.
+
+WebIDs provide globally unique decentralized identifiers, enable cross-service
+federated signin, prevent service provider lock-in, and give users control over
+their own identity. *The WebID URI's primary function is to point to the
+location of a public [WebID Profile document](#profiles) (see below).*
+
+**Example WebIDs:** `https://alice.databox.com/profile/card#me` or
+`http://somepersonalsite.com/#webid`
+
 ## Profiles
 
-Identity management as well as unique identifiers are the core of any social
-system. Solid uses
-[WebID](http://www.w3.org/2005/Incubator/webid/spec/identity/), an HTTP(S) URI,
-to uniquely refer to users (people or agents). The advantage of WebID is that
-the URI can be dereferenced to a WebID profile document, in order to reveal
-useful information about the user. Also, since WebID profiles can be hosted
-anywhere (including your basement server), users are no longer trapped inside
-Identity Provider Silos (Twitter, Facebook, Google+, etc.).
+Solid uses WebID Profile Documents for management of user identity and security
+credentials (such as public keys), and user preferences discovery.
 
-The WebID profile document should be the first resource created by the server
-after receiving a request for a new account. The reason is that other resources
-such as the `preferencesFile` document will be linked to from the profile
-document as soon as they are created.
+Although here we mostly refer to them in the context of user profiles,
+other types of actors use these profiles as well, such as groups, organizations,
+devices, and software applications.
 
-The profile document follows the structure and schema described by the
-[WebID spec](http://www.w3.org/2005/Incubator/webid/spec/identity/#publishing-the-webid-profile-document).
-A bare profile document only needs to contain a minimum number of RDF relations,
-such as the ones pointing to the [Default Containers](#default-containers).
-During account creation, the user may provide a full
-name or a profile picture, but those profile elements are not mandatory, and can
-be added in a future request (i.e. through a PATCH).
+### WebID Profile Documents
 
-A typical (bare) profile document (i.e.
-`https://alice.example.org/profile/card`) will look as follows:
+A WebID URI, when dereferenced, yields a WebID Profile Document in a
+Linked Data format ([Turtle]((http://www.w3.org/TR/turtle/) by default, but
+often available as JSON-LD or HTML+RDFa). Parsing this document provides a
+client application with useful information, such as the user's name and
+profile image, links to user preferences and related documents, and lists of
+public key certificates or other relevant identity credentials.
 
-```
-<>
-    a <http://xmlns.com/foaf/0.1/PersonalProfileDocument> ;
-    <http://xmlns.com/foaf/0.1/maker> <#me> ;
-    <http://xmlns.com/foaf/0.1/primaryTopic> <#me> .
-
-<#me>
-    a <http://xmlns.com/foaf/0.1/Person> ;
-    <http://www.w3.org/ns/pim/space#storage> <../> ;
-    <http://www.w3.org/ns/pim/space#preferencesFile> <../settings/preferences.ttl> ;
-```
-
-### Linking the account URI to the user's WebID
-
-An optional, but recommended step in the account creation workflow is to link
-the account (i.e. `https://alice.example.org/`) to the account owner's WebID.
-
-To do that, the server may add a triple to the root container's meta file (i.e.
-`/.meta`), in which it adds the following triple:
-
-```
-<profile/card#me>
-    <http://xmlns.com/foaf/0.1/account> <> .
-```
+**See component spec:
+  [Solid WebID Profiles Specification](solid-webid-profiles.md)**
 
 ### Default Containers
 

@@ -1,3 +1,10 @@
+##### v0.6.0
+
+- Move overview-type sections to `solid/solid` (see
+  [PR #85](https://github.com/solid/solid-spec/pull/85))
+- Extract and expand the explanation of WebID Profiles to
+  [their own section](solid-webid-profiles.md)
+
 ##### v0.5.0
 
 - Replace Workspaces concept, provide recommendations for

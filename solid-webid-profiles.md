@@ -205,7 +205,7 @@ A Solid WebID Profile SHOULD contain a link to one or more Solid Containers
 that act as Storage (a space for apps to read and write data).
 
 Example link to Root Storage (gets created
-[by default](README.md#default-containers) on account creation):
+[by default](recommendations-server.md#default-containers) on account creation):
 
 ```
 # ...
@@ -217,7 +217,8 @@ Example link to Root Storage (gets created
 ### Inbox Discovery
 
 A Solid WebID Profile MAY contain a link to the Solid Inbox container (gets
-created [by default](README.md#default-containers) on account creation).
+created [by default](recommendations-server.md#default-containers) on account
+creation).
 Example:
 
 ```

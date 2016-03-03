@@ -198,7 +198,6 @@ Example profile with a public key certificate (created by LDNode):
 Solid WebID Profile documents MAY contain the following links, to support
 the discovery of resources that are of interest to client side applications.
 
-
 ### Storage Discovery
 
 A Solid WebID Profile SHOULD contain a link to one or more Solid Containers
@@ -219,6 +218,9 @@ Example link to Root Storage (gets created
 A Solid WebID Profile MAY contain a link to the Solid Inbox container (gets
 created [by default](recommendations-server.md#default-containers) on account
 creation).
+
+If an inbox link exists, there MUST be only one Inbox for the profile.
+
 Example:
 
 ```
@@ -230,9 +232,14 @@ Example:
 
 ### Type Registry Index Discovery
 
-A Solid WebID Profile MAY contain one or more links to [Type Registry
+A Solid WebID Profile SHOULD contain one or more links to [Type Registry
 Index](https://github.com/solid/solid/blob/master/proposals/data-discovery.md)
-resources. For example:
+resources.
+
+If links to type indexes exist, there MUST be only *one link each* to a private
+and a public type registry index file, respectively.
+
+For example:
 
 ```
 # ...

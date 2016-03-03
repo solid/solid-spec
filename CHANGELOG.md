@@ -1,3 +1,7 @@
+##### v0.6.1
+
+- Extract the rest of the sections into component specs.
+
 ##### v0.6.0
 
 - Move overview-type sections to `solid/solid` (see

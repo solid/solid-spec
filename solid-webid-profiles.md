@@ -14,6 +14,7 @@ versioned as a whole.
     * [Recommendation for User Names in
       Profiles](#recommendation-for-user-names-in-profiles)
 * [Public and Private Profiles](#public-and-private-profiles)
+    * [Extended Profile](#extended-profile)
 * [Public Key Certificates](#public-key-certificates)
 * [Account Resource Discovery](#account-resource-discovery)
     * [Storage Discovery](#storage-discovery)
@@ -239,13 +240,23 @@ resources.
 If links to type indexes exist, there MUST be only *one link each* to a private
 and a public type registry index file, respectively.
 
-For example:
+For example, a link to the Listed Type Index in the main profile document:
 
 ```
 # ...
 <#me>
     a foaf:Person ;
-    <http://www.w3.org/ns/solid/terms#typeIndex>
-        </settings/publicTypeIndex.ttl> ,
+    <http://www.w3.org/ns/solid/terms#publicTypeIndex>
+        </settings/publicTypeIndex.ttl> .
+```
+
+And an example corresponding link to the Unlisted Type Index, in a private
+resources of the Extended Profile, such as the Preferences file
+(in `/settings/prefs.ttl`):
+
+```
+# ...
+<#me>
+    <http://www.w3.org/ns/solid/terms#privateTypeIndex>
         </settings/privateTypeIndex.ttl> .
 ```

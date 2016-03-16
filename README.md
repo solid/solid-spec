@@ -227,9 +227,8 @@ various social web applications that are part of the ecosystem.
 ### Notifications
 
 API recommendations for implementing Solid-compatible Notifications are
-currently being discussed.
-See [solid/PR #56](https://github.com/solid/solid/pull/58) for the in-progress
-Inbox/Notifications proposal.
+currently being discussed at [solid/proposals/Solid Inboxes and
+Notifications](https://github.com/solid/solid/blob/master/proposals/notifications.md).
 
 ### Friends Lists, Followers and Following
 

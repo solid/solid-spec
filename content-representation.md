@@ -53,14 +53,14 @@ section](README.md#authorization-and-access-control).
 
 REQUEST:
 
-```
+```http
 HEAD /data/ HTTP/1.1
 Host: example.org
 ```
 
 RESPONSE:
 
-```
+```http
 HTTP/1.1 200 OK
 ....
 Link: <https://example.org/data/.acl>; rel="acl"
@@ -90,12 +90,12 @@ example of a typical request.
 
 
 REQUEST:
-```
+```http
 GET /data/ HTTP/1.1
 Host: example.org
 ```
 
 RESPONSE:
-```
+```http
 Link: <https://example.org/data/.meta>; rel="describedby"
 ```

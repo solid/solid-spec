@@ -49,7 +49,7 @@ WebID Profile Document:
 
 Here's an example of a minimum valid profile, in Turtle (`text/turtle`) format:
 
-```
+```ttl
 @prefix foaf: <http://xmlns.com/foaf/0.1/>.
 <https://alice.databox.com/profile/card>
     a foaf:PersonalProfileDocument ;
@@ -97,7 +97,7 @@ statements:
 3. A profile SHOULD point to the root storage location using `pim:storage`
   (so that applications will know where to read and write their data).
 
-```
+```ttl
 @prefix foaf: <http://xmlns.com/foaf/0.1/>.
 <https://alice.databox.com/profile/card>
     a foaf:PersonalProfileDocument ;
@@ -165,7 +165,7 @@ subject via `cert:key` predicates.
 
 Example profile with a public key certificate (created by LDNode):
 
-```
+```ttl
 @prefix foaf: <http://xmlns.com/foaf/0.1/>.
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
 @prefix cert: <http://www.w3.org/ns/auth/cert#>.
@@ -207,7 +207,7 @@ that act as Storage (a space for apps to read and write data).
 Example link to Root Storage (gets created
 [by default](recommendations-server.md#default-containers) on account creation):
 
-```
+```ttl
 # ...
 <#me>
     a foaf:Person ;
@@ -224,7 +224,7 @@ If an inbox link exists, there MUST be only one Inbox for the profile.
 
 Example:
 
-```
+```ttl
 # ...
 <#me>
     a foaf:Person ;
@@ -242,7 +242,7 @@ and a public type registry index file, respectively.
 
 For example, a link to the Listed Type Index in the main profile document:
 
-```
+```ttl
 # ...
 <#me>
     a foaf:Person ;
@@ -254,7 +254,7 @@ And an example corresponding link to the Unlisted Type Index, in a private
 resources of the Extended Profile, such as the Preferences file
 (in `/settings/prefs.ttl`):
 
-```
+```ttl
 # ...
 <#me>
     <http://www.w3.org/ns/solid/terms#privateTypeIndex>

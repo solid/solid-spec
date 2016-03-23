@@ -22,7 +22,7 @@ Here is how Solid would handle the three steps, using
 1) Eric writes a short note to be shared with his followers. The `Slug` header
 is optional but useful for controlling the resulting URL.
 
-```
+```sh
 curl -H"Content-Type: text/turtle" \
      -H"Slug: social-web-2015" \
      -X POST \
@@ -41,7 +41,7 @@ re-posts it. Solid servers can handle updates in two different ways: a PUT
 
 Use HTTP PUT, when you just want to replace the data:
 
-```
+```sh
 curl -H"Content-Type: text/turtle" \
      -X PUT \
      --data ' @prefix as: <http://www.w3.org/ns/activitystreams#>. <> a as:Note; as:content "Going to Social Web WG in Paris".' \
@@ -52,7 +52,7 @@ Or you can use HTTP PATCH with SPARQL if you only want to change certain parts
 of the resource, leaving the others unchanged (perhaps because other
 applications are modifying them):
 
-```
+```sh
 curl -H"Content-Type: application/sparql-update" \
      -X PATCH \
      --data 'DELETE DATA {<> <http://www.w3.org/ns/activitystreams#content> "Going to Social Web WG" .}; INSERT DATA {<> <http://www.w3.org/ns/activitystreams#content> "Going to Social Web WG in Paris" .} ' \
@@ -65,7 +65,7 @@ changing any data.
 3) Later, Eric decides that the information in the note is incorrect. He deletes
   the note.
 
-```
+```sh
 curl -X DELETE https://eric.example.org/notes/social-web-2015
 ```
 

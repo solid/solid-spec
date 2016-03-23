@@ -33,16 +33,17 @@ how our current server implementations handle such a request:
 
 REQUEST:
 
-```
+```http
 GET /
 Host: example.org
 ```
 
 RESPONSE:
 
-```
+```http
 HTTP/1.1 200 OK
-
+```
+```ttl
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 
 <>
@@ -73,13 +74,13 @@ containing one triple each, which defines their type as follows:
 
 For *res1*:
 
-```
+```ttl
 <> a <https://example.org/ns/type#One> .
 ```
 
 For *res2*:
 
-```
+```ttl
 <> a <https://example.org/ns/type#Two> .
 ```
 
@@ -89,16 +90,17 @@ If one would like to fetch all resources of a container beginning with `res`
 
 REQUEST:
 
-```
+```http
 GET /data/res* HTTP/1.1
 Host: example.org
 ```
 
 RESPONSE:
 
-```
+```http
 HTTP/1.1 200 OK
-
+```
+```ttl
 <res1>
     a <https://example.org/ns/type#One> .
 
@@ -111,16 +113,17 @@ container, which includes the triples corresponding to the container itself:
 
 REQUEST:
 
-```
+```http
 GET /data/* HTTP/1.1
 Host: example.org
 ```
 
 RESPONSE:
 
-```
+```http
 HTTP/1.1 200 OK
-
+```
+```ttl
 <>
     a <http://www.w3.org/ns/ldp#BasicContainer> ;
     <http://www.w3.org/ns/ldp#contains> <res1>, <res2> .
@@ -152,16 +155,17 @@ WHERE { ?s ?p ?o . }`:
 
 REQUEST:
 
-```
+```http
 GET /data/?query=SELECT%20*%20WHERE%20%7B%20%3Fs%20%3Fp%20%3Fo%20.%20%7D HTTP/1.1
 Host: example.org
 ```
 
 RESPONSE:
 
-```
+```http
 HTTP/1.1 200 OK
-
+```
+```json
 {
   "head": {
     "vars": [ "s", "p", "o" ]
@@ -208,19 +212,20 @@ with the Content-Type header set to `text/turtle`:
 
 REQUEST:
 
-```
+```http
 POST / HTTP/1.1
 Host: example.org
 Content-Type: text/turtle
 Link: <http://www.w3.org/ns/ldp#BasicContainer>; rel="type"
 Slug: data
-
+```
+```ttl
 <> <http://purl.org/dc/terms/title> "Basic container" .
 ```
 
 RESPONSE:
 
-```
+```http
 HTTP/1.1 201 Created
 ```
 
@@ -236,19 +241,20 @@ request, with the Content-Type header set to `text/turtle`:
 
 REQUEST:
 
-```
+```http
 POST / HTTP/1.1
 Host: example.org
 Content-Type: text/turtle
 Link: <http://www.w3.org/ns/ldp#Resource>; rel="type"
 Slug: test
-
+```
+```ttl
 <> <http://purl.org/dc/terms/title> "This is a test file" .
 ```
 
 RESPONSE:
 
-```
+```http
 HTTP/1.1 201 Created
 ```
 
@@ -263,7 +269,7 @@ different than `text/turtle`).
 
 REQUEST:
 
-```
+```http
 PUT /picture.jpg HTTP/1.1
 Host: example.org
 Content-Type: image/jpeg
@@ -272,7 +278,7 @@ Content-Type: image/jpeg
 
 RESPONSE :
 
-```
+```http
 HTTP/1.1 201 Created
 ```
 
@@ -292,14 +298,14 @@ to create a new event resource called `event1`:
 
 REQUEST:
 
-```
+```http
 PUT /2015/05/01/event1 HTTP/1.1
 Host: example.org
 ```
 
 RESPONSE:
 
-```
+```http
 HTTP/1.1 201 Created
 ```
 
@@ -328,18 +334,19 @@ PATCH request.
 
 REQUEST:
 
-```
+```http
 PATCH /data/ HTTP/1.1
 Host: example.org
 Content-Type: application/sparql-update
-
+```
+```sparql
 DELETE DATA { <> <http://purl.org/dc/terms/title> "Basic container" };
 INSERT DATA { <> <http://purl.org/dc/terms/title> "My data container" }
 ```
 
 RESPONSE:
 
-```
+```http
 HTTP/1.1 200 OK
 ```
 
@@ -352,14 +359,14 @@ Returns a list of headers describing the server's capabilities.
 
 REQUEST:
 
-```
+```http
 OPTIONS /data/ HTTP/1.1
 Host: example.org
 ```
 
 RESPONSE:
 
-```
+```http
 HTTP/1.1 200 OK
 Accept-Patch: application/json, application/sparql-update
 Accept-Post: text/turtle, application/ld+json

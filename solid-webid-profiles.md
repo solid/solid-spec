@@ -140,7 +140,7 @@ across several RDF documents:
 
 * `/profile/card` - their primary (public-readable) WebID Profile.
   Which would contain a `space:preferencesFile` link to:
-* `/settings/prefs.ttl` - a private (only the user has read/write access)
+* `/settings/preferences` - a private (only the user has read/write access)
   Preferences file which contains further profile-related statements.
 
 ### Extended Profile
@@ -247,16 +247,16 @@ For example, a link to the Listed Type Index in the main profile document:
 <#me>
     a foaf:Person ;
     <http://www.w3.org/ns/solid/terms#publicTypeIndex>
-        </settings/publicTypeIndex.ttl> .
+        </settings/publicTypeIndex> .
 ```
 
 And an example corresponding link to the Unlisted Type Index, in a private
 resources of the Extended Profile, such as the Preferences file
-(in `/settings/prefs.ttl`):
+(in `/settings/preferences`):
 
 ```ttl
 # ...
 <#me>
     <http://www.w3.org/ns/solid/terms#privateTypeIndex>
-        </settings/privateTypeIndex.ttl> .
+        </settings/privateTypeIndex> .
 ```

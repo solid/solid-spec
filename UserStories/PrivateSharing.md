@@ -16,12 +16,12 @@ This story has a privacy aspect so we will use [WebID+TLS authentication](http:/
 
 Ian has WebID `<https://ian.name/card#me>` with a public key.
 
-```
+```http
 GET /card HTTP/1.1
 Host: ian.name:443
 Accept: text/turtle, application/ld+json
 ```
-```
+```http
 HTTP/1.1 200 Ok
 Accept-Patch: application/sparql-update
 Access-Control-Allow-Origin: *
@@ -33,14 +33,15 @@ Content-Type: text/turtle
 Content-Length: 545
 Link: <card.acl>; rel=acl
 Link: <http://www.w3.org/ns/ldp#Resource>; rel="type"
-
+```
+```ttl
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix cert: <http://www.w3.org/ns/auth/cert#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <card> a foaf:PersonalProfileDocument;
    foaf:primaryTopic <card#me> .
-   
+
 <card#me> a foaf:Person ;
      foaf:name "Ian;
      foaf:knows <https://jane.org/profile#me> ;
@@ -53,21 +54,22 @@ Link: <http://www.w3.org/ns/ldp#Resource>; rel="type"
 
 
 In order to be able to do command line curl demos, we will assume that
-Ian has saved his certificate and private key in the [`cert.pem`](#ians-ssl-certificate) file locally. (Of course it is not needed to do this in browsers...) 
+Ian has saved his certificate and private key in the [`cert.pem`](#ians-ssl-certificate) file locally. (Of course it is not needed to do this in browsers...)
 
 The certificate public key is the one in the profile.
 
 
-### Ian posts the file 
+### Ian posts the file
 
 Here curl makes the connection, and authenticates Ian with his Certificate. As a result the content is created.
 
-```bash
+```sh
 $ curl -X POST -k -i -H "Content-Type: text/turtle" \
    --cert ../eg/cert.pem:password \
    -H "Slug: financials" \
    --data-binary @financials.ttl  https://ian.name/2014/   
-
+```
+```http
 HTTP/1.1 201 Created
 Accept-Patch: application/sparql-update
 Access-Control-Allow-Origin: *
@@ -82,13 +84,14 @@ Link: <financials.acl>; rel=acl
 
 So the `<financials>` resource is created in the LDP container `</2014/>` . Let us imagine that the `<financials.acl>` resource indeed limits it currently to only be viewed by the owner Ian.
 
-```
+```sh
 $ curl -X GET -k -H "Content-Type: text/turtle" \
    --cert ../eg/IanCert:password \
    https://ian.name/2014/financials.acl
-   
-@prefix acl: <http://www.w3.org/ns/auth/acl#> . 
-@prefix foaf: <http://xmlns.com/foaf/0.1/> . 
+```
+```ttl
+@prefix acl: <http://www.w3.org/ns/auth/acl#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
 
 [] acl:accessTo </2014/financials>, <>;
    acl:mode acl:Read, acl:Write;
@@ -97,17 +100,18 @@ $ curl -X GET -k -H "Content-Type: text/turtle" \
 
 ### Allow Access to Jane
 
-To allow access to the resource to Jan, Ian must send the following 
+To allow access to the resource to Jan, Ian must send the following
 PATCH, using his certificate as he is the only one authorised to patch the resource.
 
-```
+```http
 PATCH /2014/financials.acl HTTP/1.1
 Host: ian.name:443
 Content-Type: application/sparql-update; utf-8
 Content-Length: 120
-
+```
+```sparql
 Prefix acl: <http://www.w3.org/ns/auth/acl#> .
-INSERT DATA { 
+INSERT DATA {
 [] acl:accessTo </2014/financials>;
    acl:mode acl:Read;   
    acl:agent <https://jane.org/profile#me> .
@@ -122,13 +126,14 @@ Ian's software ( server or client - it does not matter ) somehow needs to find o
 
 Given that we have shown the obvious way to query in other examples, we show here out of interest a potential optimisation that would send the query in the body of the GET (see [discussion on http-wg list](https://lists.w3.org/Archives/Public/ietf-http-wg/2015AprJun/0317.html) ). (The query could also be in a `Query` header.)
 
-```
+```http
 GET /profile HTTP/1.1
 Host: jane.org:443
 Accept: text/turtle
 Content-Type: application/sparql-query; charset=UTF-8
 Content-Length: 123
-
+```
+```sparql
 PREFIX solid: <http://solid.info/notification/ping#>
 CONSTRUCT { <#me> as:ping ?where }
 WHERE { <#me> as:ping ?where }
@@ -138,22 +143,23 @@ If the server does not understand the query, it just returns the full document b
 
 The response may then in the best of case just be one short line:
 
-```Turtle
+```ttl
 @prefix solid: <http://solid.info/notification/ping#> .
 <#me> as:ping </pingInbox/> .
 ```
 
-### Send a notice 
+### Send a notice
 
-To send a notice the agent could send an activity stream event to the 
+To send a notice the agent could send an activity stream event to the
 `<https://jane.org/pingInbox/>` ldp:BasicContainer .
 
-```
+```http
 POST /pingInbox/ HTTP/1.1
 Host: jane.org:443
 Content-Type: text/turtle
 Content-Length: 145
-
+```
+```ttl
 @prefix as: <http://www.w3.org/ns/activitystreams#> .
 [] as:Post ;
   as:published "2015-02-10T15:04:55Z"^^xsd:dateTime ;
@@ -166,7 +172,7 @@ Content-Length: 145
 
 And the server responds with a 201 created:
 
-```
+```http
 HTTP/1.1 201 Created
 Accept-Patch: application/sparql-update
 Access-Control-Allow-Origin: *
@@ -180,12 +186,12 @@ Link: <ping20.wac>; rel=acl
 
 The acl is in `</pingInbox/ping20.wac>` and it may say that the resource is only readable by the owner of the `</pingInbox/>` container and the sender of the resource in R/W.
 
-{>> we need to find a way to have an ACL that automatically adds the 
+{>> we need to find a way to have an ACL that automatically adds the
  author of the ACL to the authorisation <<} .
- 
+
 At this point we have the following set of links:
 
-![relations between docs, acls, and WebIDs](img/PrivateSharing.png) 
+![relations between docs, acls, and WebIDs](img/PrivateSharing.png)
 
 ### Jane views the file
 
@@ -195,9 +201,9 @@ Jane reads her inbox at some point, and just does a normal GET on the `<https://
 
 ### Ian's ssl certificate
 
-You need 
+You need
 
-```bash
+```sh
 $ openssl x509 -in IanCert.pem -inform pem -text
 Certificate:
     Data:
@@ -240,7 +246,7 @@ Certificate:
                 Digital Signature, Non Repudiation, Key Encipherment, Key Agreement, Certificate Sign
             X509v3 Basic Constraints: critical
                 CA:FALSE
-            Netscape Cert Type: 
+            Netscape Cert Type:
                 SSL Client, S/MIME
     Signature Algorithm: sha1WithRSAEncryption
         95:da:39:18:00:a5:7a:16:4f:cd:d2:b8:21:97:0e:e5:c7:20:

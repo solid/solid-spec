@@ -21,14 +21,14 @@ Here is an example:
 
 REQUEST:
 
-```
+```http
 GET /data/ HTTP/1.1
 Host: example.org
 ```
 
 RESPONSE:
 
-```
+```http
 HTTP/1.1 200 OK
 ...
 User: https://alice.example.org/card#me
@@ -49,14 +49,14 @@ perform a `HEAD` request to the `alice.example.org` subdomain.
 
 REQUEST:
 
-```
+```http
 HEAD / HTTP/1.1
 Host: alice.example.org
 ```
 
 RESPONSE:
 
-```
+```http
 HTTP/1.1 200 OK
 ```
 
@@ -106,7 +106,7 @@ to the [WebID-TLS specification](http://www.w3.org/2005/Incubator/webid/spec/tls
 also setting the Content-Type header to the proper mime type value (as seen
 below), otherwise the certificate will fail to install in the browser.
 
-```
+```http
 Content-Type: application/x-x509-user-cert
 ```
 

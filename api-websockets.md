@@ -21,14 +21,14 @@ the response:
 
 REQUEST:
 
-```
+```http
 OPTIONS /data/test HTTP/1.1
 Host: example.org
 ```
 
 RESPONSE:
 
-```
+```http
 HTTP/1.1 200 OK
 ...
 Updates-Via: wss://example.org/
@@ -64,7 +64,7 @@ If another client deletes the resource `foo` inside `data/`:
 
 REQUEST:
 
-```
+```http
 DELETE /data/foo HTTP/1.1
 Host: example.org
 ```
@@ -78,7 +78,7 @@ pub https://example.org/data/
 Here is a Javascript example on how to subscribe to live updates for a `test`
 resource at `https://example.org/data/test`:
 
-```javascript
+```js
 var socket = new WebSocket('wss://example.org/');
 socket.onopen = function() {
 	this.send('sub https://example.org/data/test');

@@ -33,13 +33,13 @@ request.
 
 
 REQUEST:
-```
+```http
 GET /data/ HTTP/1.1
 Host: example.org
 ```
 
 RESPONSE:
-```
+```http
 Link: <https://example.org/data/.acl>; rel="acl"
 ```
 

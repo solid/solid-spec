@@ -18,7 +18,7 @@ The Profile container is discoverable from the WebID -- a user pastes in a WebID
 URL (for example, `https://accountname.databox.me/profile/card#me`), which
 de-references to a profile document containing, among other things:
 
-```
+```ttl
 <>
     a <http://xmlns.com/foaf/0.1/PersonalProfileDocument> ;
     <http://xmlns.com/foaf/0.1/maker> <#me> ;
@@ -31,7 +31,7 @@ The root/default container for the account. **Default ACL:** private
 space#storage](http://www.w3.org/ns/pim/space#storage) property.
 Discoverable via:
 
-```
+```ttl
 <#me>
     <http://www.w3.org/ns/pim/space#storage> <../> ;
 ```
@@ -47,7 +47,7 @@ public (that is, override the default ACL).
 Discoverable from profile via [pim :
 space#preferencesFile](http://www.w3.org/ns/pim/space#preferencesFile) property.
 
-```
+```ttl
 <#me>
     <http://www.w3.org/ns/pim/space#preferencesFile> <../settings/preferences.ttl> ;
 ```
@@ -64,7 +64,7 @@ Discoverable from profile via
 [solid-terms](https://github.com/solid/vocab/blob/master/solid-terms.ttl)#Inbox
 property.
 
-```
+```ttl
 <#me>
     <http://www.w3.org/ns/solid/terms#inbox> <../inbox/> ;
 ```
@@ -90,9 +90,9 @@ clients).
 3. The server responds to the request and sets the value of the request `Origin`
   header to the CORS header in the HTTP response:
 
-    ```
-    Access-Control-Allow-Origin: https://app.org
-    ```
+```http
+Access-Control-Allow-Origin: https://app.org
+```
 
 **2)** Without an `Origin` header:
 
@@ -106,9 +106,9 @@ clients).
 3. The server responds to the request and sets a default "all" value for the
   `Access-Control-Allow-Origin` header in the HTTP response:
 
-    ```
+```http
 Access-Control-Allow-Origin: *
-    ```
+```
 
 The star character (`*`) signifies "allow all". If you want to learn more about
 CORS, please visit this page: http://enable-cors.org/

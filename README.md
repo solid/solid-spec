@@ -169,8 +169,8 @@ authorization for all its resources.
 
 ### Web Access Control
 
-[Web Access Control (WAC)](https://www.w3.org/wiki/WebAccessControl) is a
-decentralized system that allows different users and groups various forms of
+[Web Access Control (WAC)](https://github.com/solid/web-access-control-spec) is
+a decentralized system that allows different users and groups various forms of
 access to resources where users and groups are identified by HTTP URIs. The
 system is similar to the access control system used within many file systems
 except that the documents controlled, the users, and the groups, are all
@@ -182,7 +182,8 @@ member of a group hosted some other server.
 Users do not need to have an account (i.e. WebID) on a given server to have
 access to documents on it.
 
-**See component spec: [Solid WAC Specification](authz-solid-wac.md)**
+**See component spec:
+[Solid WAC Specification](https://github.com/solid/web-access-control-spec)**
 
 ## Content Representation
 

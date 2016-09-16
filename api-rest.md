@@ -142,7 +142,7 @@ apply to children containers.
 
 Another possible way of reading and writing data is to use SPARQL. Currently,
 our Solid servers support a subset of [SPARQL
-1.0](http://www.w3.org/TR/rdf-sparql-query/), where each resource is its own
+1.1](https://www.w3.org/TR/sparql11-overview/), where each resource is its own
 SPARQL endpoint, accepting basic SELECT, INSERT and DELETE statements.
 
 To read (query) a resource, the client can send a SPARQL `SELECT` through a

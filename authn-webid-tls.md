@@ -11,7 +11,7 @@ them by their browser. These certificates can be created by any Web Site for any
 purpose. A user may have multiple client certificates, bound to one or multiple
 WebIDs.
 
-Basically, WebID-TLS relies on matching a public key received from a client
+Basically, WebID-TLS relies on matching a private key received from a client
 certificate, to the public key published in the WebID profile obtained by
 dereferencing the WebID included in the `SubjectAlternativeName` field of the
 client certificate. In other words, users must prove they own a public key they

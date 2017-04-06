@@ -6,30 +6,30 @@
 
 **Current Spec version:** `v.0.6.1` (see [CHANGELOG.md](CHANGELOG.md))
 
-## Table of contents
+## Table of Contents
 
 1. [Overview](#overview)
 2. [Identity](#identity)
 3. [Profiles](#profiles)
-  * [WebID Profile Documents](#webid-profile-documents)
+    * [WebID Profile Documents](#webid-profile-documents)
 4. [Authentication](#authentication)
-  * [Primary Authentication](#primary-authentication)
-    * [WebID-TLS](#webid-tls)
-    * [Alternative Authentication
-        Mechanisms](#alternative-authentication-mechanisms)
-  * [Secondary Authentication: Account
-      Recovery](#secondary-authentication-account-recovery)
+    * [Primary Authentication](#primary-authentication)
+      * [WebID-TLS](#webid-tls)
+      * [Alternative Authentication
+          Mechanisms](#alternative-authentication-mechanisms)
+    * [Secondary Authentication: Account
+        Recovery](#secondary-authentication-account-recovery)
 5. [Authorization and Access Control](#authorization-and-access-control)
-  * [Web Access Control](#web-access-control)
+    * [Web Access Control](#web-access-control)
 6. [Content Representation](#content-representation)
 7. [Reading and Writing Resources](#reading-and-writing-resources)
-  * [HTTPS REST API](#https-rest-api)
-  * [WebSockets API](#websockets-api)
+    * [HTTPS REST API](#https-rest-api)
+    * [WebSockets API](#websockets-api)
 8. [Social Web App Protocols](#social-web-app-protocols)
-  * [Feed Discovery](#feed-discovery)
-  * [Notifications](#notifications)
-  * [Friends Lists, Followers and
-      Following](#friends-lists-followers-and-following)
+    * [Feed Discovery](#feed-discovery)
+    * [Notifications](#notifications)
+    * [Friends Lists, Followers and
+        Following](#friends-lists-followers-and-following)
 9. [Recommendations for Server
       Implementation](#recommendations-for-server-implementations)
 10. [Recommendations for Client App

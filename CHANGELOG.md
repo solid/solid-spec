@@ -1,3 +1,7 @@
+##### v0.7.0
+
+- Link to the WebID-OIDC spec, LDN spec, and to node-solid-server
+
 ##### v0.6.1
 
 - Extract the rest of the sections into component specs.

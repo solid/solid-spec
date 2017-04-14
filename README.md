@@ -4,7 +4,7 @@
 
 **Disclaimer: this is a living spec. Expect it to change often!**
 
-**Current Spec version:** `v.0.6.1` (see [CHANGELOG.md](CHANGELOG.md))
+**Current Spec version:** `v.0.7.0` (see [CHANGELOG.md](CHANGELOG.md))
 
 ## Table of Contents
 
@@ -123,9 +123,13 @@ provider or certificate authority.
 
 #### WebID-TLS
 
-Solid currently relies on the [WebID-TLS
-protocol](http://www.w3.org/2005/Incubator/webid/spec/tls/) as its primary
-authentication mechanism. Instead of usernames, it uses WebIDs as unique
+**Note:** Several browser vendors (Chrome, Firefox) have removed support
+for the `KEYGEN` element, on which WebID-TLS relied for in-browser certificate
+generation.
+
+Solid uses the [WebID-TLS
+protocol](http://www.w3.org/2005/Incubator/webid/spec/tls/) as one of its
+primary authentication mechanism. Instead of usernames, it uses WebIDs as unique
 identifiers, as previously mentioned. And instead of using passwords as bearer
 tokens, it uses cryptographic certificates (stored and managed by the user's web
 browser) to prove a user's identity.
@@ -140,15 +144,20 @@ authenticates them.
 **See component spec:
   [Solid WebID-TLS Specification](authn-webid-tls.md)**
 
-#### Alternative Authentication Mechanisms
+#### WebID-OIDC
 
-There are several other authentication alternatives to WebID-TLS that are
-currently being investigated. These include other client-side certificate
-management mechanisms such as HTTP-Signatures, OAuth2-based mechanisms such as
-IndieAuth, and others (such as combinations of traditional username-and-password
-authentication and WebID-TLS Delegation).
-See issue [solid/#22](https://github.com/solid/solid/issues/22) for ongoing
-developments.
+The Solid team is currently implementing support for WebID-OIDC as another
+primary authentication mechanism. It is based on the OAuth2/OpenID Connect
+protocols, adapted for WebID based decentralized use cases.
+
+**See component spec:
+  [WebID-OIDC Specification](https://github.com/solid/webid-oidc-spec)**
+
+#### Other Authentication Mechanisms
+
+There are several other authentication mechanisms that are
+currently being investigated, such as combinations of traditional
+username-and-password authentication and WebID-TLS Delegation).
 
 ### Secondary Authentication: Account Recovery
 
@@ -227,9 +236,7 @@ various social web applications that are part of the ecosystem.
 
 ### Notifications
 
-API recommendations for implementing Solid-compatible Notifications are
-currently being discussed at [solid/proposals/Solid Inboxes and
-Notifications](https://github.com/solid/solid/blob/master/proposals/notifications.md).
+**See component spec: [Linked Data Notifications](https://www.w3.org/TR/ldn/)**
 
 ### Friends Lists, Followers and Following
 
@@ -255,9 +262,11 @@ being discussed. TBD.
 **Server Implementations:** See
 [solid/solid-platform](https://github.com/solid/solid-platform#servers) for a
 list of Solid servers and developer tools.
-Note: The Solid team uses [ldnode](https://github.com/linkeddata/ldnode/) as
+Note: The Solid team uses
+[`node-solid-server`](https://github.com/solid/node-solid-server) as
 its main server implementation.
 
-**Client App Implementations:** See  
-[solid/solid-apps](https://github.com/solid/solid-apps) for an example list of
-Apps built using Solid
+**Client App Implementations:** See
+[`solid-client`](https://github.com/solid/solid-client) for the main client
+library, and [solid/solid-apps](https://github.com/solid/solid-apps) for an
+example list of Apps built using Solid.

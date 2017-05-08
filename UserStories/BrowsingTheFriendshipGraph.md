@@ -25,7 +25,7 @@ There are several implementations of viewers.
 * http://linkeddata.github.io/profile-editor/#/friends/view?webid=http:%2F%2Fbblfish.net%2Fpeople%2Fhenry%2Fcard%23me
 * http://foaf-visualizer.gnu.org.ua/?uri=http://danbri.org/foaf.rdf
 * https://deiu.me/profile#me
-* https://graphite.ecs.soton.ac.uk/browser/?uri=http%3A%2F%2Fmelvincarvalho.com%2F
+* http://graphite.ecs.soton.ac.uk/browser/?uri=https%3A%2F%2Fmelvincarvalho.com%2F
 
 ### Notes
 

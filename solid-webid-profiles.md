@@ -92,9 +92,9 @@ statements:
 1. A profile MUST include a `foaf:name` (see the discussion
   on [user names](#recommendation-for-user-names-in-profiles) below).
   This does not have to be a real name, it can by any pseudnym, but
-  a string proided for apps to use for representing the user, in chats, sharing etc etc.
+  a string provided for apps to use for representing the user, in chats, sharing etc etc.
 2. A profile SHOULD include a public `foaf:image` of either a mugshot of the person or a chosen avatar
-  to make the display of the user's contributions identifyable.
+  to make the display of the user's contributions identifiable.
 3. A profile MAY provide a `foaf:nick` nickname as a short string for use by user interfaces where
   space is limited.
 3. A profile SHOULD include `cert:key` public key certificate information, for
@@ -131,7 +131,7 @@ what to name the user, is to perform the following steps:
 1. An app SHOULD look in the user's WebID Profile for the `foaf:name` predicate,
   and use that as the name, if it's available.
 2. If an app does not find a name in the user profile, it MAY fall back to using
-  the WebID URL, r a part ofo it, as the username.
+  the WebID URL, or a part of it, as the username.
 
 ## Public and Private Profiles
 
@@ -175,18 +175,18 @@ by following a triple in the main profile (the result of looking up the webid)
 
 Where the subject is the user's original webid.
 
-It is the first private file that the app discovers in thie process, and
+It is the first private file that the app discovers in this process, and
 it is the place which either stores, or leads to, all of the
 data which is private to the user, including settings 
 and preferences, language and display preferences, and so on 
-and all the user's pesonal data, be it conntacts, pictures or health data.
+and all the user's pesonal data, be it contacts, pictures or health data.
 
 The `solid:preferencesFile` link is unusual then in that it is a link
-from public data to private data.  Otherwise, discovery happes in two 
-parallelel but otherwise congruent ways, in a tree of public information starting from
+from public data to private data.  Otherwise, discovery happens in two 
+parallel but otherwise congruent ways, in a tree of public information starting from
 the extended profile, and a tree of private information starting from the 
-private preferences file. Developers use urged to use common software for
-these cases, and also to make it extenssible in future for when 
+private preferences file. Developers are urged to use common software for
+these cases, and also to make it extensible in future for when 
 the congruent trees may be rooted in files corresponding to groups and organizations
 of which the user is a member.
 

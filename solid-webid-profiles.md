@@ -263,7 +263,7 @@ Example:
 # ...
 <#me>
     a foaf:Person ;
-    <http://www.w3.org/ns/solid/terms#inbox> </inbox/> .
+    <http://www.w3.org/ns/ldp#inbox> </inbox/> .
 ```
 
 ### Type Registry Index Discovery

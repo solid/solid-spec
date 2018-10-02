@@ -91,7 +91,7 @@ statements:
 
 1. A profile MUST include a `foaf:name` (see the discussion
   on [user names](#recommendation-for-user-names-in-profiles) below).
-  This does not have to be a real name, it can by any pseudnym, but
+  This does not have to be a real name, it can by any pseudonym, but
   a string provided for apps to use for representing the user, in chats, sharing etc etc.
 2. A profile SHOULD include a public `foaf:image` of either a mugshot of the person or a chosen avatar
   to make the display of the user's contributions identifiable.
@@ -161,7 +161,7 @@ the following triples in the main profile document:
 1. $webid   `http://www.w3.org/2002/07/owl#sameAs`  ?public
 2. $webid   `http://www.w3.org/2000/01/rdf-schema#seeAlso`  ?public
 
-Solid apps that interact as the user in question, logged in with their cedentials,
+Solid apps that interact as the user in question, logged in with their credentials,
 with their own WebID profile MUST also load and parse all
 of the related public public resources above and also will normally
 load the user's preferences file.
@@ -179,7 +179,7 @@ It is the first private file that the app discovers in this process, and
 it is the place which either stores, or leads to, all of the
 data which is private to the user, including settings 
 and preferences, language and display preferences, and so on 
-and all the user's pesonal data, be it contacts, pictures or health data.
+and all the user's personal data, be it contacts, pictures or health data.
 
 The `solid:preferencesFile` link is unusual then in that it is a link
 from public data to private data.  Otherwise, discovery happens in two 

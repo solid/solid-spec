@@ -12,7 +12,7 @@
 
 The Linked Data People graph extends to several million organic user profiles over hundreds of multiple domains.  If facebook is included (they are producers of linked data via turtle) it extends to over 1.4 billion profiles.  
 
-Facebook profiles generally require an OAuth token to use the API, this enables access control and viewing priveledges.  Solid in general uses WebAccessControl and ACL's to achieve the same thing, but implementors may choose which approach they wish to take.
+Facebook profiles generally require an OAuth token to use the API, this enables access control and viewing privileges.  Solid in general uses WebAccessControl and ACL's to achieve the same thing, but implementors may choose which approach they wish to take.
 
 In Solid people are denoted by an HTTP URI.  Normally, as a best practice the URI contains a fragment identifier (#).  This is to help software disambiguate between an HTTP document and the person it talks about, in much the same way that a passport contains information about a person but a passport ID is the ID of that document, not the person.
 

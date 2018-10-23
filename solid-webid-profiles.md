@@ -163,7 +163,7 @@ the following triples in the main profile document:
 
 Solid apps that interact as the user in question, logged in with their credentials,
 with their own WebID profile MUST also load and parse all
-of the related public public resources above and also will normally
+of the related public resources above and also will normally
 load the user's preferences file.
 
 ### Private preferences file

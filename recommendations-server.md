@@ -75,29 +75,29 @@ clients).
 
 **1)** When the `Origin` header is set:
 
-1. Client (browser) loads an app from `https://app.org` and wants to send an XHR
-  (ajax) request to the server at `https://example.org`. Before sending the
+1. Client (browser) loads an app from `https://app.example` and wants to send an XHR
+  (ajax) request to the server at `https://server.example`. Before sending the
   request over the wire, the browser adds the `Origin` header: `Origin:
-  https://app.org`, which corresponds to the domain from where the app was loaded.
+  https://app.example`, which corresponds to the domain from where the app was loaded.
 
-2. The server running on https://example.org receives the request and looks at the
-  `Origin` header. It sees `https://app.org`, stores the value and handles the
+2. The server running on `https://server.example` receives the request and looks at the
+  `Origin` header. It sees `https://app.example`, stores the value and handles the
   request.
 
 3. The server responds to the request and sets the value of the request `Origin`
   header to the CORS header in the HTTP response:
 
 ```http
-Access-Control-Allow-Origin: https://app.org
+Access-Control-Allow-Origin: https://app.example
 ```
 
 **2)** Without an `Origin` header:
 
-1. A curl request is sent from the terminal to `https://example.org`. Unless
+1. A curl request is sent from the terminal to `https://server.example`. Unless
   explicitly specified though a curl parameter, the `Origin` header will not be
   set.
 
-2. The server running on `https://example.org` receives the request and does not
+2. The server running on `https://server.example` receives the request and does not
   find an `Origin` header.
 
 3. The server responds to the request and sets a default "all" value for the

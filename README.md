@@ -26,7 +26,6 @@
     * [HTTPS REST API](#https-rest-api)
     * [WebSockets API](#websockets-api)
 8. [Social Web App Protocols](#social-web-app-protocols)
-    * [Feed Discovery](#feed-discovery)
     * [Notifications](#notifications)
     * [Friends Lists, Followers and
         Following](#friends-lists-followers-and-following)
@@ -35,7 +34,7 @@
 10. [Recommendations for Client App
       Implementation](#recommendations-for-client-app-implementations)
 11. [Examples](#examples)
-12. [Current Implementations](#implementations)
+12. [Current Implementations](#current-implementations)
 
 ## Overview
 
@@ -153,7 +152,7 @@ protocols, adapted for WebID based decentralized use cases.
 **See component spec:
   [WebID-OIDC Specification](https://github.com/solid/webid-oidc-spec)**
 
-#### Other Authentication Mechanisms
+#### Alternative Authentication Mechanisms
 
 There are several other authentication mechanisms that are
 currently being investigated, such as combinations of traditional

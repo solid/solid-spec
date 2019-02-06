@@ -93,7 +93,7 @@ statements:
   on [user names](#recommendation-for-user-names-in-profiles) below).
   This does not have to be a real name, it can by any pseudonym, but
   a string provided for apps to use for representing the user, in chats, sharing etc etc.
-2. A profile SHOULD include a public `foaf:image` of either a mugshot of the person or a chosen avatar
+2. A profile SHOULD include a public `foaf:img` of either a mugshot of the person or a chosen avatar
   to make the display of the user's contributions identifiable.
 3. A profile MAY provide a `foaf:nick` nickname as a short string for use by user interfaces where
   space is limited.

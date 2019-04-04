@@ -87,7 +87,7 @@ profile document.
 
 **Attention!** Because creating client certificates requires the [keygen HTML5
 element](http://www.w3schools.com/tags/tag_keygen.asp),
-which does not work with AJAX reques ts, the client must submit a form to the
+which does not work with AJAX requests, the client must submit a form to the
 **account host URI** -- i.e. `https://user.example.org/`. This restriction means
 that a predefined set of form element names must be respected on the server.
 Here is the minimum list of form element names (case sensitive!) that **MUST**

@@ -60,9 +60,16 @@ HTTP/1.1 200 OK
 
 #### Globbing (inlining on `GET`)
 
+**Note: this feature is _at risk_ of being
+[changed](https://github.com/solid/solid-spec/pull/148)
+or [removed](https://github.com/solid/solid-spec/pull/151).
+Please join the discussion.
+Code depending on this will still work for now.**
+
 In some cases, we have found that using the existing LDP features was not
 enough. For instance, to optimize certain applications, we needed to aggregate
 all RDF resources from a container and retrieve them with a single `GET`
+
 operation. We implemented this feature on the servers and decided to call it
 "globbing". Similar to [UNIX shell
 glob](https://en.wikipedia.org/wiki/Glob_(programming)), doing a `GET` on any URI

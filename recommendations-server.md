@@ -55,18 +55,15 @@ space#preferencesFile](http://www.w3.org/ns/pim/space#preferencesFile) property.
 ##### `/inbox/` (Inbox)
 
 A container to serve as a default primary channel for
-notifications. Note that this is complementary (and not necessarily replacing)
-app-specific notification inboxes such as the one used by
-[Dokieli](https://github.com/linkeddata/dokieli).
+notifications.
+
 **Default ACL:** append-only by public, read by owner.
 
-Discoverable from profile via
-[solid-terms](https://github.com/solid/vocab/blob/master/solid-terms.ttl)#Inbox
-property.
+Discoverable from profile using the [ldp:inbox](http://www.w3.org/ns/ldp#inbox) property as specified in [W3C Linked Data Notifications](https://www.w3.org/TR/ldn/).
 
 ```ttl
 <#me>
-    <http://www.w3.org/ns/solid/terms#inbox> <../inbox/> ;
+    <http://www.w3.org/ns/ldp#inbox> <../inbox/> ;
 ```
 
 ## CORS - Cross Origin Resource Sharing

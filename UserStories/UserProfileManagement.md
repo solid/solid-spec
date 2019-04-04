@@ -152,7 +152,7 @@ She can do this either with a PUT which requires re-sending the full document as
 
 #### update using PUT
 
-PUT is the easiest for the client, as it does not have to calculate a diff between the original version it has and the version it wishes to have. We use If-Match, to make sure we don't override someone elses content.
+PUT is the easiest for the client, as it does not have to calculate a diff between the original version it has and the version it wishes to have. We use If-Match, to make sure we don't override someone else's content.
 
 ```http
 PUT /card HTTP/1.1

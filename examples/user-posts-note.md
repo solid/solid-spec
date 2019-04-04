@@ -1,7 +1,7 @@
 # Example: User Posts a Note
 
 **Note:** This example is a component of the parent
-[Solid specification](README.md); the parent spec and all its components are
+[Solid specification](../README.md); the parent spec and all its components are
 versioned as a whole.
 
 This example is taken from [W3C Social Web

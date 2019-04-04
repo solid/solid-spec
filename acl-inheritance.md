@@ -51,7 +51,7 @@ In `defaultForNew`, ACL permissions are inherited from the whole path as in 'mom
 - Fast
 
 #### Cons
-- Generates a storage reuirement for all the ACL files, which is a pain, especialy in a fiel space shared with other systems.
+- Generates a storage requirement for all the ACL files, which is a pain, especially in a file space shared with other systems.
 - Users may lose access to their resource by creating an ACL file that does not contain themselves.
 - Changing permissions recursively to a folder will require changing permission on each subfolder's ACL
 

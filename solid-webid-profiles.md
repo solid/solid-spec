@@ -89,12 +89,18 @@ for the purposes of building distributed read-write-web applications.
 In addition, Solid recommends that WebID profiles include the following
 statements:
 
-1. A profile SHOULD include a `foaf:name` (see the discussion
+1. A profile MUST include a `foaf:name` (see the discussion
   on [user names](#recommendation-for-user-names-in-profiles) below).
-2. A profile SHOULD include `cert:key` public key certificate information, for
+  This does not have to be a real name, it can by any pseudonym, but
+  a string provided for apps to use for representing the user, in chats, sharing etc etc.
+2. A profile SHOULD include a public `foaf:img` of either a mugshot of the person or a chosen avatar
+  to make the display of the user's contributions identifiable.
+3. A profile MAY provide a `foaf:nick` nickname as a short string for use by user interfaces where
+  space is limited.
+3. A profile SHOULD include `cert:key` public key certificate information, for
   use with WebID+TLS (which is currently the primary Solid authentication
   mechanism).
-3. A profile SHOULD point to the root storage location using `pim:storage`
+4. A profile SHOULD point to the root storage location using `pim:storage`
   (so that applications will know where to read and write their data).
 
 ```ttl
@@ -125,7 +131,7 @@ what to name the user, is to perform the following steps:
 1. An app SHOULD look in the user's WebID Profile for the `foaf:name` predicate,
   and use that as the name, if it's available.
 2. If an app does not find a name in the user profile, it MAY fall back to using
-  the WebID URL as the username.
+  the WebID URL, or a part of it, as the username.
 
 ## Public and Private Profiles
 
@@ -148,13 +154,42 @@ across several RDF documents:
 The combination of the main WebID Profile document, and all of the *related*
 profile documents is referred to as the **Extended Profile**.
 
-Solid apps that interact with the WebID profile MUST also load and parse *all*
-of the related RDF resources that are linked to from the main profile using
-the following predicates:
+Solid apps that interact anonymously with the WebID profile MUST also load and parse *all*
+of the related public RDF resources that are linked to from the main profile using any
+the following triples in the main profile document:
 
-1. `http://www.w3.org/2002/07/owl#sameAs`
-2. `http://www.w3.org/2000/01/rdf-schema#seeAlso`
-3. `http://www.w3.org/ns/pim/space#preferencesFile`
+1. $webid   `http://www.w3.org/2002/07/owl#sameAs`  ?public
+2. $webid   `http://www.w3.org/2000/01/rdf-schema#seeAlso`  ?public
+
+Solid apps that interact as the user in question, logged in with their credentials,
+with their own WebID profile MUST also load and parse all
+of the related public resources above and also will normally
+load the user's preferences file.
+
+### Private preferences file
+
+The private preferences file is part of the extended profile. It is found
+by following a triple in the main profile (the result of looking up the webid)
+
+3. $webid   `http://www.w3.org/ns/pim/space#preferencesFile` ?preferences
+
+Where the subject is the user's original webid.
+
+It is the first private file that the app discovers in this process, and
+it is the place which either stores, or leads to, all of the
+data which is private to the user, including settings 
+and preferences, language and display preferences, and so on 
+and all the user's personal data, be it contacts, pictures or health data.
+
+The `solid:preferencesFile` link is unusual then in that it is a link
+from public data to private data.  Otherwise, discovery happens in two 
+parallel but otherwise congruent ways, in a tree of public information starting from
+the extended profile, and a tree of private information starting from the 
+private preferences file. Developers are urged to use common software for
+these cases, and also to make it extensible in future for when 
+the congruent trees may be rooted in files corresponding to groups and organizations
+of which the user is a member.
+
 
 ## Public Key Certificates
 
@@ -228,7 +263,7 @@ Example:
 # ...
 <#me>
     a foaf:Person ;
-    <http://www.w3.org/ns/solid/terms#inbox> </inbox/> .
+    <http://www.w3.org/ns/ldp#inbox> </inbox/> .
 ```
 
 ### Type Registry Index Discovery

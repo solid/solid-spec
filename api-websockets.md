@@ -8,7 +8,7 @@ versioned as a whole.
 
 Live updates are currently only supported through WebSockets. This describes a
 subscription mechanism through which clients can be notified in real time of
-changes affecting a give resource.
+changes affecting a given resource.
 
 The PubSub system is very basic. Clients only need to open a WebSocket
 connection and *sub*(scribe) to a given resource URI. If any change occurs in
@@ -16,7 +16,7 @@ that resource, a *pub*(lish) event will be sent to all the subscribed clients.
 
 The WebSocket server URI is the same for any resource located on a given data
 space (same hostname). To discover the URI of the WebSocket server, clients can
-send an HTTP OPTIONS. The server will then include an `Updates-Via` header in
+send an HTTP OPTIONS request. The server will then include an `Updates-Via` header in
 the response:
 
 REQUEST:

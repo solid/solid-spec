@@ -72,6 +72,8 @@ location of a public [WebID Profile document](#profiles) (see below).*
 **Example WebIDs:** `https://alice.databox.com/profile/card#me` or
 `http://somepersonalsite.com/#webid`
 
+The WebID needs to be independent from the data storage i.e. Pod in such a way that it is possible to change Pod provider without needing to change WebID. In the same way that changing phone number can be inconvenient, changing WebID is inconvenient because it is how to identify each other. Therefore it should never be possible for identity provision to be used as a bargaining chip to alter data processing preferences.  
+
 ## Profiles
 
 Solid uses WebID Profile Documents for management of user identity and security

@@ -14,9 +14,6 @@
     * [WebID Profile Documents](#webid-profile-documents)
 4. [Authentication](#authentication)
     * [Primary Authentication](#primary-authentication)
-      * [WebID-TLS](#webid-tls)
-      * [Alternative Authentication
-          Mechanisms](#alternative-authentication-mechanisms)
     * [Secondary Authentication: Account
         Recovery](#secondary-authentication-account-recovery)
 5. [Authorization and Access Control](#authorization-and-access-control)
@@ -106,7 +103,7 @@ services also have a *secondary authentication mechanism* (usually an external
 email address) that they use for account recovery (in case the user forgets or
 loses their primary authentication tokens, username and password).
 
-Solid currently uses WebID-TLS as its primary authentication mechanism.
+Solid currently uses WebID-OIDC as its primary authentication mechanism.
 Alternative complementary mechanisms are also being actively investigated.
 In addition, Solid recommends that server implementations also offer secondary
 authentication available for users for Account Recovery (via email or some
@@ -120,43 +117,13 @@ platforms and ecosystems. Specifically, it requires *cross-domain*,
 de-centralized authentication mechanisms not tied to any particular identity
 provider or certificate authority.
 
-#### WebID-TLS
-
-**Note:** Several browser vendors (Chrome, Firefox) have removed support
-for the `KEYGEN` element, on which WebID-TLS relied for in-browser certificate
-generation.
-
-Solid uses the [WebID-TLS
-protocol](http://www.w3.org/2005/Incubator/webid/spec/tls/) as one of its
-primary authentication mechanism. Instead of usernames, it uses WebIDs as unique
-identifiers, as previously mentioned. And instead of using passwords as bearer
-tokens, it uses cryptographic certificates (stored and managed by the user's web
-browser) to prove a user's identity.
-
-When accessing a Solid server using WebID-TLS, a user is presented by their
-web browsers with a popup asking them to select an appropriate security
-certificate for that site. After a user makes their selection, the server
-securely matches the private key stored by the browser with the public key
-stored in that user's [WebID Profile Document](#webid-profile-documents), and
-authenticates them.
-
-**See component spec:
-  [Solid WebID-TLS Specification](authn-webid-tls.md)**
-
 #### WebID-OIDC
 
-The Solid team is currently implementing support for WebID-OIDC as another
-primary authentication mechanism. It is based on the OAuth2/OpenID Connect
+WebID-OIDC is based on the OAuth2/OpenID Connect
 protocols, adapted for WebID based decentralized use cases.
 
 **See component spec:
   [WebID-OIDC Specification](https://github.com/solid/webid-oidc-spec)**
-
-#### Alternative Authentication Mechanisms
-
-There are several other authentication mechanisms that are
-currently being investigated, such as combinations of traditional
-username-and-password authentication and WebID-TLS Delegation).
 
 ### Secondary Authentication: Account Recovery
 

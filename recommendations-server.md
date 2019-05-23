@@ -49,7 +49,7 @@ space#preferencesFile](http://www.w3.org/ns/pim/space#preferencesFile) property.
 
 ```ttl
 <#me>
-    <http://www.w3.org/ns/pim/space#preferencesFile> <../settings/preferences.ttl> ;
+    <http://www.w3.org/ns/pim/space#preferencesFile> <../settings/preferences> ;
 ```
 
 ##### `/inbox/` (Inbox)

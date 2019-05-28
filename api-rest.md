@@ -58,6 +58,9 @@ HTTP/1.1 200 OK
     <http://www.w3.org/ns/posix/stat#size> "780" .
 ```
 
+### Deleting containers
+A container can only be deleted if contains neither member resources nor ACL documents.
+
 #### Globbing (inlining on GET)
 
 **Note: this feature is _at risk_ of being

@@ -31,9 +31,10 @@ RESPONSE:
 ```http
 HTTP/1.1 200 OK
 ...
-Updates-Via: wss://example.org/
+Updates-Via: wss://example.org/?access_token=Ne3jiZ1Mei6Air6iefoh
 ```
 
+The URL mentioned in the `Updates-Via` header should act as a [capability](https://en.wikipedia.org/wiki/Capability-based_security).
 To subscribe to a resource, clients will need to send the keyword `sub` followed
 by an empty space and then the URI of the resource:
 
@@ -41,7 +42,7 @@ by an empty space and then the URI of the resource:
 sub https://example.org/data/test
 ```
 
-If a change occurs and the client is subscribed to that resource, it will
+If a change occurs and the client is subscribed to that resource and has Read access to it, it will
 receive a WebSocket message composed of the keyword `pub`, followed by an empty
 space and the URI of the resource that has changed:
 
@@ -50,9 +51,10 @@ pub https://example.org/data/test
 ```
 
 Subscribing to a container can also be really useful, since all CRUD operations
-(POST, PUT, PATCH, DELETE) performed on resources of that container will trigger
+(POST, PUT, PATCH, DELETE) performed on member resources of that container will trigger
 a notification for the container URI. This makes synchronization between
-multiple apps really easy.
+multiple apps really easy. It only affects the parent container, of which the resource is a member,
+not further ancestor containers.
 
 For example, a client subscribes to the `data/` container:
 
@@ -74,6 +76,10 @@ Then the following notification message will be sent:
 ```
 pub https://example.org/data/
 ```
+
+The server may send additional informational messages for e.g. error reporting,
+as long as they don't start with `pub`.
+If a client subscribes to too many updates, the server may close the socket.
 
 Here is a Javascript example on how to subscribe to live updates for a `test`
 resource at `https://example.org/data/test`:

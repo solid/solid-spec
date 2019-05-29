@@ -51,10 +51,9 @@ pub https://example.org/data/test
 ```
 
 Subscribing to a container can also be really useful, since all CRUD operations
-(POST, PUT, PATCH, DELETE) performed on member resources of that container will trigger
+(POST, PUT, PATCH, DELETE) performed on resources of that container will trigger
 a notification for the container URI. This makes synchronization between
-multiple apps really easy. It only affects the parent container, of which the resource is a member,
-not further ancestor containers.
+multiple apps really easy.
 
 For example, a client subscribes to the `data/` container:
 

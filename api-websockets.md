@@ -49,6 +49,9 @@ space and the URI of the resource that has changed:
 pub https://example.org/data/test
 ```
 
+Some implementations also support using IRIs that are relative to the host,
+e.g. `/data/test` instead of `https://example.org/data/test`.
+
 Subscribing to a container can also be really useful, since all CRUD operations
 (POST, PUT, PATCH, DELETE) performed on resources of that container will trigger
 a notification for the container URI. This makes synchronization between

@@ -382,3 +382,11 @@ Access-Control-Allow-Origin: *
 Access-Control-Expose-Headers: User, Triples, Location, Link, Vary, Last-Modified, Content-Length
 Allow: OPTIONS, HEAD, GET, PATCH, POST, PUT, DELETE
 ```
+
+### WAC-Allow headers
+Servers SHOULD send a WAC-Allow response header on HEAD and GET, with a value like:
+
+```http
+WAC-Allow: user="read write append control",public="read"
+```
+In general, the format is `user="` + user-permissions = `",public="` + public-permissions + `"`. User-permissions and public-permissions should both be space-separated lists, containing a subset of ['read', 'write', 'append', 'control']. If 'write' is present then 'append' should also be present.

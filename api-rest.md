@@ -236,7 +236,7 @@ HTTP/1.1 201 Created
 ```
 
 ### Deleting containers
-A container can only be deleted if it contains neither member resources nor ACL documents.
+A container can only be deleted if it contains no resources.
 
 ### Creating documents (files)
 

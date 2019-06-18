@@ -52,9 +52,9 @@ pub https://example.org/data/test
 Only absolute URIs should be used in both the `sub` and the `pub` message.
 
 Subscribing to a container can also be really useful, since all CRUD operations
-(POST, PUT, PATCH, DELETE) performed on resources of that container will trigger
-a notification for the container URI. This makes synchronization between
-multiple apps really easy.
+(POST, PUT, PATCH, DELETE) performed on resources of that container and its subcontainers will trigger
+a notification for the container URI, provided the identified agent has read access to the resource
+that changed. This makes synchronization between multiple apps really easy.
 
 For example, a client subscribes to the `data/` container:
 

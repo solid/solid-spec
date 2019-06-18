@@ -17,7 +17,8 @@ header.
 ### Streams
 
 Being LDP (BasicContainer) compliant, Solid servers MUST return a full listing
-of container contents when receiving requests for containers. For every resource
+of container contents (including for instance ACL documents)
+when receiving requests for containers. For every resource
 in a container, a Solid server may include additional metadata, such as the time
 the resource was modified, the size of the resource, and more importantly any
 other RDF type specified for the resource in its metadata. You will notice in

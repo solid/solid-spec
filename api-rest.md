@@ -235,6 +235,9 @@ RESPONSE:
 HTTP/1.1 201 Created
 ```
 
+### Deleting containers
+A container can only be deleted if it contains no resources.
+
 ### Creating documents (files)
 
 To create a new resource, the `Link` header value must be set to the following

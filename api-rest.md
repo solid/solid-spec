@@ -332,7 +332,7 @@ MUST use POST (as defined by LDP) to create containers alone.
 
 #### Alternative: Using SPARQL
 
-To write data, clients can send an HTTP PATCH request with a SPARQL payload to
+To write data, clients can send an HTTP PATCH request with a sparql-update payload to
 the resource in question. If the resource doesn't exist, it should be created
 through an LDP POST or through a PUT.
 
@@ -358,6 +358,11 @@ RESPONSE:
 ```http
 HTTP/1.1 200 OK
 ```
+
+Willful violation of the sparql-update spec: DELETEs that don't match should
+result in a 409 response, not a 200 response.
+See https://github.com/solid/node-solid-server/issues/1085#issuecomment-461948770
+for more details.
 
 **IMPORTANT:** There is currently no support for blank nodes and RDF lists in
 our SPARQL patches.

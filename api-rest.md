@@ -330,11 +330,17 @@ If-None-Match](https://tools.ietf.org/html/rfc2616#section-14.24) HTTP headers.
 because the behavior of PUT (overwrite) is not well defined for containers. You
 MUST use POST (as defined by LDP) to create containers alone.
 
-#### Alternative: Using SPARQL
+#### Alternative: Using SPARQL Update
 
-To write data, clients can send an HTTP PATCH request with a sparql-update payload to
+To write data, clients can send an HTTP PATCH request with a [SPARQL Update](https://www.w3.org/TR/sparql11-update/) payload to
 the resource in question. If the resource doesn't exist, it should be created
-through an LDP POST or through a PUT.
+through an LDP POST or through a PUT first.
+Since PATCH requests only apply to a single graph, identified by the request target,
+only a subset of SPARQL Update is supported, namely:
+
+* [INSERT DATA](https://www.w3.org/TR/sparql11-update/#insertData)
+* [DELETE DATA](https://www.w3.org/TR/sparql11-update/#deleteData)
+* [INSERT/DELETE](https://www.w3.org/TR/sparql11-update/#deleteInsert)
 
 For instance, to update the `title` of the container from the previous example,
 the client would have to send a DELETE statement, followed by an INSERT
@@ -359,10 +365,14 @@ RESPONSE:
 HTTP/1.1 200 OK
 ```
 
-Willful violation of the sparql-update spec: DELETEs that don't match should
-result in a 409 response, not a 200 response.
-See https://github.com/solid/node-solid-server/issues/1085#issuecomment-461948770
-for more details.
+**Willful violation of the sparql-update spec:**
+Solid purposely deviates from the SPARQL UPDATE specification.
+A WHERE clause should result in _exactly_ one result mapping.
+If there are zero matches, or if there is more than one match,
+the server MUST reply with a 409.
+This mechanism acts as a semaphore,
+ensuring that the part of the data affected by the requested update
+has not been altered in the meantime.
 
 **IMPORTANT:** There is currently no support for blank nodes and RDF lists in
 our SPARQL patches.

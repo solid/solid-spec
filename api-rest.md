@@ -365,7 +365,7 @@ RESPONSE:
 HTTP/1.1 200 OK
 ```
 
-**Willful violation of the sparql-update spec:**
+**Willful violation of the SPARQL Update spec:**
 Solid purposely deviates from the SPARQL UPDATE specification.
 A WHERE clause should result in _exactly_ one result mapping.
 If there are zero matches, or if there is more than one match,

@@ -14,6 +14,8 @@
     * [WebID Profile Documents](#webid-profile-documents)
 4. [Authentication](#authentication)
     * [Primary Authentication](#primary-authentication)
+      * [WebID-OIDC](#webid-oidc)
+      * [WebID-TLS](#webid-tls)
     * [Secondary Authentication: Account
         Recovery](#secondary-authentication-account-recovery)
 5. [Authorization and Access Control](#authorization-and-access-control)
@@ -122,8 +124,24 @@ provider or certificate authority.
 WebID-OIDC is based on the OAuth2/OpenID Connect
 protocols, adapted for WebID based decentralized use cases.
 
+Implementations of WebID-OIDC IDPs for Solid SHOULD implement TLS as a login method
+alongside other login methods such as passwords.
+
 **See component spec:
   [WebID-OIDC Specification](https://github.com/solid/webid-oidc-spec)**
+
+#### WebID-TLS (Optional)
+
+**Note:** Several browser vendors (Chrome, Firefox) have removed support
+for the `KEYGEN` element, on which WebID-TLS relied for in-browser certificate
+generation.
+
+Solid servers MAY implement the [WebID-TLS
+protocol](http://www.w3.org/2005/Incubator/webid/spec/tls/) as one of their
+primary authentication mechanisms.
+
+**See component spec:
+  [Solid WebID-TLS Specification](authn-webid-tls.md)**
 
 ### Secondary Authentication: Account Recovery
 

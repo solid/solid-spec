@@ -73,8 +73,7 @@ location of a public [WebID Profile document](#profiles) (see below).*
 
 ## Profiles
 
-Solid uses WebID Profile Documents for management of user identity and security
-credentials (such as public keys), and user preferences discovery.
+Solid uses WebID Profile Documents for management of user identity and optionally security credentials (such as public keys), and user preferences discovery.
 
 Although here we mostly refer to them in the context of user profiles,
 other types of actors use these profiles as well, such as groups, organizations,

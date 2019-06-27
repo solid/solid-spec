@@ -97,7 +97,10 @@ statements:
   to make the display of the user's contributions identifiable.
 3. A profile MAY provide a `foaf:nick` nickname as a short string for use by user interfaces where
   space is limited.
-4. A profile SHOULD point to the root storage location using `pim:storage`
+4. A profile MAY include `cert:key` public key certificate information, for
+  use with WebID+TLS (which is currently the primary Solid authentication
+  mechanism).
+5. A profile SHOULD point to the root storage location using `pim:storage`
   (so that applications will know where to read and write their data).
 
 ```ttl
@@ -110,6 +113,8 @@ statements:
     foaf:name "Alice" ;
     <http://www.w3.org/ns/auth/cert#key> <#key6b4c> ;
     <http://www.w3.org/ns/pim/space#storage> <../> ;
+<#key6b4c>
+    # ... certificate key statements go here, see Certificates section
 ```
 
 ### Recommendation for User Names in Profiles
@@ -184,6 +189,45 @@ private preferences file. Developers are urged to use common software for
 these cases, and also to make it extensible in future for when 
 the congruent trees may be rooted in files corresponding to groups and organizations
 of which the user is a member.
+
+
+## Public Key Certificates
+
+Solid currently supports WebID+TLS as an optional Authentication mechanism.
+To enable this, WebID Profile documents on Solid-compliant servers MAY contain
+one or more Public Key Certificate sections, linked to from the main WebID
+subject via `cert:key` predicates.
+
+Example profile with a public key certificate (created by LDNode):
+
+```ttl
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix cert: <http://www.w3.org/ns/auth/cert#>.
+@prefix dc: <http://purl.org/dc/terms/>.
+@prefix XML: <http://www.w3.org/2001/XMLSchema#>.
+
+<https://alice.databox.com/profile/card>
+    a foaf:PersonalProfileDocument ;
+    foaf:primaryTopic <#me> .
+<#me>
+    a foaf:Person ;
+    foaf:name "Alice" ;
+    <http://www.w3.org/ns/auth/cert#key> <#key6b4c> ;
+    <http://www.w3.org/ns/pim/space#storage> <../> ;
+<#key6b4c>
+    dc:created
+       "2016-02-12T15:07:46.916Z"^^XML:dateTime;
+    dc:title
+       "Created by ldnode";
+    a    cert:RSAPublicKey;
+    rdfs:label
+       "LDNode Localhost Test Cert";
+    cert:exponent
+       "65537"^^XML:int;
+    cert:modulus
+        "970E88..(many digits here)..167801"^^XML:hexBinary.
+```
 
 ## Account Resource Discovery
 

@@ -271,7 +271,7 @@ More examples can be found in the LDP [Primer document](http://www.w3.org/TR/ldp
 
 #### HTTP PUT to create
 
-An alternative (though not standard) way of creating new resources is to use
+An alternative (though not common) way of creating new resources is to use
 HTTP PUT. Although HTTP PUT is commonly used to overwrite resources, this way is
 usually preferred when creating new non-RDF resources (i.e. using a mime type
 different than `text/turtle`).

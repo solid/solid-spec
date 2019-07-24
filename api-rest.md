@@ -149,6 +149,9 @@ RESPONSE:
 HTTP/1.1 201 Created
 ```
 
+### Deleting containers
+A container can only be deleted if it contains no resources.
+
 ### Creating documents (files)
 
 To create a new resource, the `Link` header value must be set to the following
@@ -182,7 +185,7 @@ More examples can be found in the LDP [Primer document](http://www.w3.org/TR/ldp
 
 #### HTTP PUT to create
 
-An alternative (though not standard) way of creating new resources is to use
+An alternative (though not common) way of creating new resources is to use
 HTTP PUT. Although HTTP PUT is commonly used to overwrite resources, this way is
 usually preferred when creating new non-RDF resources (i.e. using a mime type
 different than `text/turtle`).
@@ -296,3 +299,11 @@ Access-Control-Allow-Origin: *
 Access-Control-Expose-Headers: User, Triples, Location, Link, Vary, Last-Modified, Content-Length
 Allow: OPTIONS, HEAD, GET, PATCH, POST, PUT, DELETE
 ```
+
+### WAC-Allow headers
+Servers SHOULD send a WAC-Allow response header on HEAD and GET, with a value like:
+
+```http
+WAC-Allow: user="read write append control",public="read"
+```
+In general, the format is `user="` + user-permissions = `",public="` + public-permissions + `"`. User-permissions and public-permissions should both be space-separated lists, containing a subset of ['read', 'write', 'append', 'control']. If 'write' is present then 'append' should also be present.

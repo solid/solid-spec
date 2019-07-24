@@ -42,7 +42,7 @@ Our motivation is threefold:
   even though the resource is stored as a Turtle file).
 
  3. Direct mapping: the URLs map directly to the file system resources -- i.e.
-  `https://example.org/test.ttl` maps to `/home/user/www/test.ttl`
+  `https://example.org/avatar.png` maps to `/home/user/www/avatar.png`
 
 Servers must support the HEAD method for reading data. This returns a list of
 headers related to the resource in question. Among these headers, two very

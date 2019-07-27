@@ -1,10 +1,12 @@
-# Solid Specification
+# Solid Specification Draft
 [![](https://img.shields.io/badge/project-Solid-7C4DFF.svg?style=flat-square)](https://github.com/solid/solid)
 [![Join the chat at https://gitter.im/solid/solid-spec](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/solid/solid-spec)
 
-**Disclaimer: this is a living spec. Expect it to change often!**
+**Current version:** `v.0.7.0` (see [CHANGELOG.md](CHANGELOG.md))
 
-**Current Spec version:** `v.0.7.0` (see [CHANGELOG.md](CHANGELOG.md))
+**This document contains an informal description of implementation guidelines for Solid servers and clients.
+A normative specification is in the making at https://github.com/solid/specification/.
+For the time being, the present document contains the best approximation of expected server and client behavior.**
 
 ## Table of Contents
 

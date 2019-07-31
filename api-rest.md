@@ -362,7 +362,7 @@ HTTP/1.1 200 OK
 **IMPORTANT:** There is currently no support for blank nodes and RDF lists in
 our SPARQL patches.
 
-### Discovering server capabilities - the OPTIONS method
+## Discovering server capabilities - the OPTIONS method
 
 Returns a list of headers describing the server's capabilities.
 
@@ -386,10 +386,15 @@ Access-Control-Expose-Headers: User, Triples, Location, Link, Vary, Last-Modifie
 Allow: OPTIONS, HEAD, GET, PATCH, POST, PUT, DELETE
 ```
 
-### WAC-Allow headers
+## WAC-Allow headers
 Servers SHOULD send a WAC-Allow response header on HEAD and GET, with a value like:
 
 ```http
 WAC-Allow: user="read write append control",public="read"
 ```
 In general, the format is `user="` + user-permissions = `",public="` + public-permissions + `"`. User-permissions and public-permissions should both be space-separated lists, containing a subset of ['read', 'write', 'append', 'control']. If 'write' is present then 'append' should also be present.
+
+## Redirection on 404
+If https://example.com/foo/ exists as a container then https://example.com/foo can not exist as a non-container. Attempts to create https://example.com/foo should fail, and all other attempts to access https://example.com/foo should be responded to with a redirect to https://example.com/foo/.
+
+If https://example.com/foo exists as a non-container then https://example.com/foo/ can not exist as a container. Attempts to create https://example.com/foo/ (or any descendents of it) should fail, and all other attempts to access https://example.com/foo/ should be responded to with a redirect to https://example.com/foo.

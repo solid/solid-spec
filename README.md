@@ -270,6 +270,6 @@ Note: The Solid team uses
 its main server implementation.
 
 **Client App Implementations:** See
-[`solid-client`](https://github.com/solid/solid-client) for the main client
+[`solid-auth-client`](https://github.com/solid/solid-auth-client) for the main client
 library, and [solid/solid-apps](https://github.com/solid/solid-apps) for an
 example list of Apps built using Solid.

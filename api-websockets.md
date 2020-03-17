@@ -58,6 +58,13 @@ protocol solid-ws-draft/v0.1.0-alpha
 warning Unstandardized protocol version, proceed with care
 ```
 
+If the client did not specify a `Sec-WebSocket-Protocol` header,
+the server SHOULD warn the client as follows:
+
+```
+warning Missing Sec-WebSocket-Protocol header, expected value 'solid-ws-draft/v0.1.0-alpha'
+```
+
 ### Subscription
 Then, the client needs to *sub*(scribe) to a given resource URI.
 If any change occurs in that resource,

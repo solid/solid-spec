@@ -4,6 +4,10 @@
 [Solid specification](README.md); the parent spec and all its components are
 versioned as a whole.
 
+## Status
+This is a _draft_ protocol.
+This specific version is identified by the string `solid-ws-draft/v0.1.0-alpha`.
+
 ## Subscribing
 
 Live updates are currently only supported through WebSockets. This describes a

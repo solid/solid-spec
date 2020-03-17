@@ -50,6 +50,14 @@ For example, in JavaScript, this could be done as follows:
 const socket = new WebSocket('wss://example.org', ['solid-ws-draft/v0.1.0-alpha']);
 ```
 
+Upon connection,
+the server SHOULD indicate the protocol version as follows:
+
+```
+protocol solid-ws-draft/v0.1.0-alpha
+warning Unstandardized protocol version, proceed with care
+```
+
 ### Subscription
 Then, the client needs to *sub*(scribe) to a given resource URI.
 If any change occurs in that resource,

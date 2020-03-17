@@ -41,11 +41,13 @@ Updates-Via: wss://example.org
 ### Connection
 Then, the client needs to open a WebSocket connection
 to that URI.
+The client _SHOULD_ include the protocol version `solid-ws-draft/v0.1.0-alpha`
+in the `Sec-WebSocket-Protocol` header.
 
 For example, in JavaScript, this could be done as follows:
 
 ```
-const socket = new WebSocket('wss://example.org');
+const socket = new WebSocket('wss://example.org', ['solid-ws-draft/v0.1.0-alpha']);
 ```
 
 ### Subscription
@@ -101,7 +103,7 @@ Here is a Javascript example on how to subscribe to live updates for a `test`
 resource at `https://example.org/data/test`:
 
 ```js
-var socket = new WebSocket('wss://example.org/');
+var socket = new WebSocket('wss://example.org/', ['solid-ws-draft/v0.1.0-alpha']);
 socket.onopen = function() {
 	this.send('sub https://example.org/data/test');
 };

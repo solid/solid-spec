@@ -6,6 +6,8 @@
 
 **Publication status**: Unofficial Draft
 
+**Current development version:** `v.0.7.0-next` (evolving)
+
 **This document contains an informal description of implementation guidelines for Solid servers and clients.
 A normative specification is in the making at https://github.com/solid/specification/.
 For the time being, the present document contains the best approximation of expected server and client behavior.**

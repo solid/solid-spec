@@ -4,20 +4,24 @@
 [Solid specification](README.md); the parent spec and all its components are
 versioned as a whole.
 
-## Subscribing
+## Status
+This is a _draft_ protocol.
+This specific version is identified by the string `solid/0.1.0-alpha`.
+
+## Protocol description
 
 Live updates are currently only supported through WebSockets. This describes a
 subscription mechanism through which clients can be notified in real time of
 changes affecting a given resource.
 
-The PubSub system is very basic. Clients only need to open a WebSocket
-connection and *sub*(scribe) to a given resource URI. If any change occurs in
-that resource, a *pub*(lish) event will be sent to all the subscribed clients.
-
-The WebSocket server URI is the same for any resource located on a given data
-space (same hostname). To discover the URI of the WebSocket server, clients can
-send an HTTP OPTIONS request. The server will then include an `Updates-Via` header in
-the response:
+### Discovery
+The PubSub system is very basic.
+First, a client needs to obtain the URI of the WebSocket.
+The WebSocket server URI is the same for any resource
+located on a given data space (same hostname).
+To discover the URI of the WebSocket server,
+clients can send an HTTP `OPTIONS` request.
+The server will then include an `Updates-Via` header in the response:
 
 REQUEST:
 
@@ -31,8 +35,50 @@ RESPONSE:
 ```http
 HTTP/1.1 200 OK
 ...
-Updates-Via: wss://example.org/
+Updates-Via: wss://example.org
 ```
+
+### Connection
+Then, the client needs to open a WebSocket connection
+to that URI.
+The client _SHOULD_ include the protocol version `solid/0.1.0-alpha`
+in the `Sec-WebSocket-Protocol` header.
+
+For example, in JavaScript, this could be done as follows:
+
+```
+const socket = new WebSocket('wss://example.org', ['solid/0.1.0-alpha']);
+```
+
+Upon connection,
+the server SHOULD indicate the protocol version as follows:
+
+```
+protocol solid/0.1.0-alpha
+warning Unstandardized protocol version, proceed with care
+```
+
+If the client did not specify a `Sec-WebSocket-Protocol` header,
+the server SHOULD warn the client as follows:
+
+```
+warning Missing Sec-WebSocket-Protocol header, expected value 'solid/0.1.0-alpha'
+```
+
+Otherwise, if the set of values obtained
+from parsing the `Sec-WebSocket-Protocol` header
+does not contain `solid/0.1.0-alpha`,
+then the server SHOULD emit a warning
+and SHOULD close the connection:
+
+```
+error Client does not support protocol solid/0.1.0-alpha
+```
+
+### Subscription
+Then, the client needs to *sub*(scribe) to a given resource URI.
+If any change occurs in that resource,
+a *pub*(lish) event will be sent to all the subscribed clients.
 
 To subscribe to a resource, clients will need to send the keyword `sub` followed
 by an empty space and then the URI of the resource:
@@ -77,11 +123,12 @@ Then the following notification message will be sent:
 pub https://example.org/data/
 ```
 
+### Example
 Here is a Javascript example on how to subscribe to live updates for a `test`
 resource at `https://example.org/data/test`:
 
 ```js
-var socket = new WebSocket('wss://example.org/');
+var socket = new WebSocket('wss://example.org/', ['solid/0.1.0-alpha']);
 socket.onopen = function() {
 	this.send('sub https://example.org/data/test');
 };

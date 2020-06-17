@@ -8,6 +8,8 @@ versioned as a whole.
 This is a _draft_ protocol.
 This specific version is identified by the string `solid-0.1`.
 
+**WARNING: Future versions of this protocol will NOT be backward compatible for security reasons.**
+
 ## Protocol description
 
 Live updates are currently only supported through WebSockets. This describes a
@@ -55,7 +57,6 @@ the server SHOULD indicate the protocol version as follows:
 
 ```
 protocol solid-0.1
-warning Unstandardized protocol version, proceed with care
 ```
 
 If the client did not specify a `Sec-WebSocket-Protocol` header,

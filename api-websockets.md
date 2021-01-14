@@ -6,7 +6,9 @@ versioned as a whole.
 
 ## Status
 This is a _draft_ protocol.
-This specific version is identified by the string `solid/0.1.0-alpha`.
+This specific version is identified by the string `solid-0.1`.
+
+**WARNING: Future versions of this protocol will NOT be backward compatible for security reasons.**
 
 ## Protocol description
 
@@ -41,38 +43,37 @@ Updates-Via: wss://example.org
 ### Connection
 Then, the client needs to open a WebSocket connection
 to that URI.
-The client _SHOULD_ include the protocol version `solid/0.1.0-alpha`
+The client _SHOULD_ include the protocol version `solid-0.1`
 in the `Sec-WebSocket-Protocol` header.
 
 For example, in JavaScript, this could be done as follows:
 
 ```
-const socket = new WebSocket('wss://example.org', ['solid/0.1.0-alpha']);
+const socket = new WebSocket('wss://example.org', ['solid-0.1']);
 ```
 
 Upon connection,
 the server SHOULD indicate the protocol version as follows:
 
 ```
-protocol solid/0.1.0-alpha
-warning Unstandardized protocol version, proceed with care
+protocol solid-0.1
 ```
 
 If the client did not specify a `Sec-WebSocket-Protocol` header,
 the server SHOULD warn the client as follows:
 
 ```
-warning Missing Sec-WebSocket-Protocol header, expected value 'solid/0.1.0-alpha'
+warning Missing Sec-WebSocket-Protocol header, expected value 'solid-0.1'
 ```
 
 Otherwise, if the set of values obtained
 from parsing the `Sec-WebSocket-Protocol` header
-does not contain `solid/0.1.0-alpha`,
+does not contain `solid-0.1`,
 then the server SHOULD emit a warning
 and SHOULD close the connection:
 
 ```
-error Client does not support protocol solid/0.1.0-alpha
+error Client does not support protocol solid-0.1
 ```
 
 ### Subscription
@@ -128,7 +129,7 @@ Here is a Javascript example on how to subscribe to live updates for a `test`
 resource at `https://example.org/data/test`:
 
 ```js
-var socket = new WebSocket('wss://example.org/', ['solid/0.1.0-alpha']);
+var socket = new WebSocket('wss://example.org/', ['solid-0.1']);
 socket.onopen = function() {
 	this.send('sub https://example.org/data/test');
 };

@@ -1,5 +1,8 @@
 ## User Stories
 
+Note that there is a renewed effort to gather short user stories in a [separate repository](https://github.com/solid/user-stories).
+
+
 To illustrate how Solid would work it helps to look at this in terms of the [UserStories published by the Social Web WG](https://www.w3.org/wiki/Socialwg/Social_API/User_stories).
 
 For each user story we will  

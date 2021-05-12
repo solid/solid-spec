@@ -47,7 +47,7 @@ For the time being, the present document contains the best approximation of expe
 [Solid](https://github.com/solid/solid)
 is a proposed set of conventions and tools for building
 *decentralized applications* based on [Linked
-Data](http://www.w3.org/DesignIssues/LinkedData.html) principles. Solid is
+Data](https://www.w3.org/DesignIssues/LinkedData) principles. Solid is
 modular and extensible. It relies as much as possible on existing
 [W3C](http://www.w3.org/) standards and protocols.
 

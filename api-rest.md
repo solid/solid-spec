@@ -144,57 +144,6 @@ HTTP/1.1 200 OK
 Note: the aggregation process is not currently recursive, therefore it will not
 apply to children containers.
 
-### Alternative: using SPARQL
-
-Another possible way of reading and writing data is to use SPARQL. Currently,
-our Solid servers support a subset of [SPARQL
-1.1](https://www.w3.org/TR/sparql11-overview/), where each resource is its own
-SPARQL endpoint, accepting basic SELECT, INSERT and DELETE statements.
-
-To read (query) a resource, the client can send a SPARQL `SELECT` through a
-form-encoded HTTP GET request. The server will use the given resource as the
-default graph that is being queried. The resource can be an RDF document or even
-a container. The response will be serialized using `application/json` mime type.
-
-For instance, the client can send the following form-encoded query `SELECT *
-WHERE { ?s ?p ?o . }`:
-
-REQUEST:
-
-```http
-GET /data/?query=SELECT%20*%20WHERE%20%7B%20%3Fs%20%3Fp%20%3Fo%20.%20%7D HTTP/1.1
-Host: example.org
-```
-
-RESPONSE:
-
-```http
-HTTP/1.1 200 OK
-```
-```json
-{
-  "head": {
-    "vars": [ "s", "p", "o" ]
-  },
-  "results": {
-    "ordered" : false,
-    "distinct" : false,
-    "bindings" : [
-      {
-        "s" : { "type": "uri", "value": "https://example.org/data/" },
-        "p" : { "type": "uri", "value": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" },
-        "o" : { "type": "uri", "value": "http://www.w3.org/ns/ldp#BasicContainer" }
-      },
-      {
-        "s" : { "type": "uri", "value": "https://example.org/data/" },
-        "p" : { "type": "uri", "value": "http://purl.org/dc/terms/title" },
-        "o" : { "type": "literal", "value": "Basic container" }
-      }
-    ]
-  }
-}
-```
-
 ## Creating content
 
 When creating new resources (directories or documents) using LDP, the client

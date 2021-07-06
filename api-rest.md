@@ -146,6 +146,9 @@ apply to children containers.
 
 ### Alternative: using SPARQL
 
+**Note: this feature is _at risk_ of being removed.
+It is not supported by implementations at the moment.**
+
 Another possible way of reading and writing data is to use SPARQL. Currently,
 our Solid servers support a subset of [SPARQL
 1.1](https://www.w3.org/TR/sparql11-overview/), where each resource is its own

@@ -12,6 +12,10 @@
 A normative specification is in the making at https://github.com/solid/specification/.
 For the time being, the present document contains the best approximation of expected server and client behavior.**
 
+**Editor** Solid Specification Repository Manager
+
+**Contributors**
+
 ## Table of Contents
 
 1. [Overview](#overview)

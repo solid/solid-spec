@@ -97,10 +97,10 @@ statements:
   to make the display of the user's contributions identifiable.
 3. A profile MAY provide a `foaf:nick` nickname as a short string for use by user interfaces where
   space is limited.
-3. A profile SHOULD include `cert:key` public key certificate information, for
+4. A profile MAY include `cert:key` public key certificate information, for
   use with WebID+TLS (which is currently the primary Solid authentication
   mechanism).
-4. A profile SHOULD point to the root storage location using `pim:storage`
+5. A profile SHOULD point to the root storage location using `pim:storage`
   (so that applications will know where to read and write their data).
 
 ```ttl
@@ -193,7 +193,7 @@ of which the user is a member.
 
 ## Public Key Certificates
 
-Solid currently uses WebID+TLS as its main Authentication mechanism.
+Solid currently supports WebID+TLS as an optional Authentication mechanism.
 To enable this, WebID Profile documents on Solid-compliant servers MAY contain
 one or more Public Key Certificate sections, linked to from the main WebID
 subject via `cert:key` predicates.

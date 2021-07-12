@@ -58,7 +58,7 @@ HTTP/1.1 200 OK
     <http://www.w3.org/ns/posix/stat#size> "780" .
 ```
 
-#### Globbing (inlining on GET)
+#### Globbing (`GET` the merged RDF graph of a container)
 
 **Note: this feature is _at risk_ of being
 [changed](https://github.com/solid/solid-spec/pull/148)
@@ -66,65 +66,54 @@ or [removed](https://github.com/solid/solid-spec/pull/151).
 Please join the discussion.
 Code depending on this will still work for now.**
 
-We have found that in some cases, using the existing LDP features was not
-enough. For instance, to optimize certain applications we needed to aggregate
-all RDF resources from a container and retrieve them with a single GET
-operation. We implemented this feature on the servers and decided to call it
-"globbing". Similar to [UNIX shell
-glob](https://en.wikipedia.org/wiki/Glob_(programming)), doing a GET on any URI
-which ends with a `*` will return an aggregate view of all the resources that
-match the indicated pattern.
+To optimize certain applications,
+this specification defines a single `GET` operation
+that provides access to an aggregation of the RDF resources in a container.
+We refer to this feature as _globbing_,
+since it provides a subset of the functionality
+offered by the [UNIX shell glob](https://en.wikipedia.org/wiki/Glob_(programming)).
+Consider a container to which the user has _Read_ access,
+which will have a URL ending in `/`.
+If we append a `*` to that URL (so it ends in `/*`),
+we obtain the URL of a resource that,
+in response to a `GET` request,
+returns the [RDF graph merge](https://www.w3.org/TR/rdf-mt/#graphdefs)
+of all of the container's direct child resources
+that are available in an RDF format
+and for which the user has _Read_ access.
+Resources with syntax errors can be ignored or be partially included,
+but they do not cause a failure.
+The response can contain additional metadata about the container,
+such as the list of resources.
 
-For example, let's assume that `/data/res1` and `/data/res2` are two resources
-containing one triple each, which defines their type as follows:
+For example, consider a container `/data` that contains the following resources:
+- `resource1.ttl`
+- `resource2.ttl`
+- `hidden3.ttl`
+- `resource4.txt`
 
-For *res1*:
+The user performing the request had read access to `/data`,
+`resource1.ttl` and `resource2.ttl`,
+but not to `hidden3.ttl`.
+Let's assume that `/data/resource1.ttl` and `/data/resource2.ttl`
+contain one triple each:
 
 ```ttl
 <> a <https://example.org/ns/type#One> .
 ```
 
-For *res2*:
-
 ```ttl
 <> a <https://example.org/ns/type#Two> .
 ```
 
-If one would like to fetch all resources of a container beginning with `res`
-(e.g. `/data/res1`, `/data/res2`) in one request, they could do a GET on
-`/data/res*` as follows.
-
-REQUEST:
-
-```http
-GET /data/res* HTTP/1.1
-Host: example.org
-```
-
-RESPONSE:
-
-```http
-HTTP/1.1 200 OK
-```
-```ttl
-<res1>
-    a <https://example.org/ns/type#One> .
-
-<res2>
-    a <https://example.org/ns/type#Two> .
-```
-
-Alternatively, one could ask the server to inline *all* resources of a
-container, which includes the triples corresponding to the container itself:
-
-REQUEST:
+Then a request to `/data/*`
+will return a serialization of the [RDF graph merge](https://www.w3.org/TR/rdf-mt/#graphdefs)
+of the datasets contained in `resource1.ttl` and `resource2.ttl`:
 
 ```http
 GET /data/* HTTP/1.1
 Host: example.org
 ```
-
-RESPONSE:
 
 ```http
 HTTP/1.1 200 OK
@@ -132,17 +121,15 @@ HTTP/1.1 200 OK
 ```ttl
 <>
     a <http://www.w3.org/ns/ldp#BasicContainer> ;
-    <http://www.w3.org/ns/ldp#contains> <res1>, <res2> .
+    <http://www.w3.org/ns/ldp#contains> <resource1.ttl>, <resource2.ttl> .
 
-<res1>
+<resource1.ttl>
     a <https://example.org/ns/type#One> .
 
-<res2>
+<resource2.ttl>
     a <https://example.org/ns/type#Two> .
 ```
 
-Note: the aggregation process is not currently recursive, therefore it will not
-apply to children containers.
 
 ### Alternative: using SPARQL
 

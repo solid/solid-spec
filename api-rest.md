@@ -392,4 +392,4 @@ Servers SHOULD send a WAC-Allow response header on HEAD and GET, with a value li
 ```http
 WAC-Allow: user="read write append control",public="read"
 ```
-In general, the format is `user="` + user-permissions = `",public="` + public-permissions + `"`. User-permissions and public-permissions should both be space-separated lists, containing a subset of ['read', 'write', 'append', 'control']. If 'write' is present then 'append' should also be present.
+In general, the format is `user="` + user-permissions + `",public="` + public-permissions + `"`. User-permissions and public-permissions should both be space-separated lists, containing a subset of ['read', 'write', 'append', 'control']. If 'write' is present then 'append' should also be present.

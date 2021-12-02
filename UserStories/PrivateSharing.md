@@ -26,7 +26,6 @@ HTTP/1.1 200 Ok
 Accept-Patch: application/sparql-update
 Access-Control-Allow-Origin: *
 Allow: OPTIONS, GET, HEAD, SEARCH, PATCH
-Content-Type: text/turtle
 ETag: "1417390950000|Success(922)"
 Last-Modified: Sun, 1 April 2015 23:42:30 GMT
 Content-Type: text/turtle
